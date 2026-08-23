@@ -2,7 +2,7 @@
   "knowledge_version": "2026.08.16.2",
   "files": 92,
   "chunks": 362,
-  "characters": 208120,
+  "characters": 208122,
   "min_chunk_chars": 95,
   "max_chunk_chars": 960,
   "average_chunk_chars": 574.9,

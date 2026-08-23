@@ -969,7 +969,7 @@ chatLog.addEventListener("click", async (event) => {
   try {
     const ok = await sendAnswerFeedback(feedback.dataset.messageId, rating, reasons);
     feedback.dataset.sent = ok ? "true" : "false";
-    feedback.innerHTML = ok ? `<span class="feedback-thanks">已收到，谢谢你帮家雀变得更准。</span>` : `<span>反馈发送失败，请稍后再试。</span>`;
+    feedback.innerHTML = ok ? `<span class="feedback-thanks">已收到，谢谢你帮英歌小槌变得更准。</span>` : `<span>反馈发送失败，请稍后再试。</span>`;
   } catch (_) {
     feedback.dataset.sent = "false";
     feedback.innerHTML = `<span>反馈发送失败，请稍后再试。</span>`;
@@ -1226,13 +1226,13 @@ function playPetAction(stateName = "idle", hold = 0) {
   window.clearTimeout(petActionTimer);
   desktopPet.dataset.state = stateName;
   const labels = {
-    idle: "安静待机、偶尔眨眼的英歌家雀",
-    beat: "正在连续击槌的英歌家雀",
-    cheer: "正在欢呼跃起的英歌家雀",
-    think: "正在认真思考的英歌家雀",
-    explain: "正在展开卷轴讲解的英歌家雀",
-    surprised: "露出惊喜反应的英歌家雀",
-    sleep: "正在困倦打哈欠的英歌家雀"
+    idle: "安静待机、偶尔眨眼的英歌小槌",
+    beat: "正在连续击槌的英歌小槌",
+    cheer: "正在欢呼跃起的英歌小槌",
+    think: "正在认真思考的英歌小槌",
+    explain: "正在展开卷轴讲解的英歌小槌",
+    surprised: "露出惊喜反应的英歌小槌",
+    sleep: "正在困倦打哈欠的英歌小槌"
   };
   petSprite.setAttribute("aria-label", labels[stateName] || labels.idle);
   petSprite.style.animation = "none";
@@ -1254,7 +1254,7 @@ function resetPetIdleClock() {
 }
 
 function schedulePetRoam() {
-  // 家雀默认保持安静，只做低频眨眼；不再自动走动或频繁换动作。
+  // 英歌小槌默认保持安静，只做低频眨眼；不再自动走动或频繁换动作。
   window.clearTimeout(petRoamTimer);
   petRoamTimer = null;
 }

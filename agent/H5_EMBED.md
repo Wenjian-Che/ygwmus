@@ -9,7 +9,7 @@
   src="https://你的静态域名/agent-widget.js"
   data-api-base="https://你的 Agent API 域名"
   data-app-id="yingge-h5"
-  data-title="问家雀">
+  data-title="问英歌小槌">
 </script>
 ```
 
@@ -28,7 +28,7 @@
 window.YINGGE_MUGEDA_AGENT_CONFIG = {
   apiBase: "https://api.example.com",
   appId: "yingge-mugeda",
-  title: "问家雀",
+  title: "问英歌小槌",
   position: "right",
   mobileFullscreen: true
 };

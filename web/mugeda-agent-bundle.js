@@ -8,7 +8,7 @@
   var DEFAULT_CONFIG = {
     apiBase: "https://请替换为你的-agent-api-域名",
     appId: "yingge-mugeda",
-    title: "问家雀",
+    title: "问英歌小槌",
     subtitle: "英歌文化知识助手 · 证据优先",
     position: "right",
     mobileFullscreen: true,
@@ -47,7 +47,7 @@
      *   src="https://static.example.com/agent-widget.js"
      *   data-api-base="https://api.example.com"
      *   data-app-id="yingge-h5"
-     *   data-title="问家雀">
+     *   data-title="问英歌小槌">
      * </script>
      *
      * Platform usage (Mugeda and other script importers):
@@ -67,7 +67,7 @@
       var config = {
         apiBase: scriptConfig.apiBase || globalConfig.apiBase || window.location.origin,
         appId: scriptConfig.appId || globalConfig.appId || "yingge-h5",
-        title: scriptConfig.title || globalConfig.title || "问家雀",
+        title: scriptConfig.title || globalConfig.title || "问英歌小槌",
         subtitle: scriptConfig.subtitle || globalConfig.subtitle || "英歌文化知识助手 · 证据优先",
         knowledgeVersion: scriptConfig.knowledgeVersion || globalConfig.knowledgeVersion || "2026.08.01.1",
         position: scriptConfig.position || globalConfig.position || "right",

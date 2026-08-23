@@ -13,7 +13,7 @@ const output = `/*
   var DEFAULT_CONFIG = {
     apiBase: "https://请替换为你的-agent-api-域名",
     appId: "yingge-mugeda",
-    title: "问家雀",
+    title: "问英歌小槌",
     subtitle: "英歌文化知识助手 · 证据优先",
     position: "right",
     mobileFullscreen: true,
