@@ -1,0 +1,113 @@
+{
+  "version": "2026.07.28.1",
+  "items": [
+    {
+      "id": "faq-001",
+      "question": "英歌和英歌舞是同一个吗？",
+      "answer": "通常指同一种传统艺术。“英歌”是国家级非遗名录采用的正式项目名称，“英歌舞”是公众和媒体常用名称。",
+      "intent": "knowledge.general",
+      "source_files": ["00_英歌舞总纲.md", "24_术语表与概念辨析.md"],
+      "source_grade": "A",
+      "risk": "low"
+    },
+    {
+      "id": "faq-002",
+      "question": "英歌来自哪里？",
+      "answer": "核心流行于广东粤东潮汕及周边地区。国家级非遗项目包括普宁英歌和潮阳英歌，其他地区也有地方性传承或传播。",
+      "intent": "knowledge.history",
+      "source_files": ["01_历史渊源.md", "25_地域谱系与代表队伍.md"],
+      "source_grade": "A",
+      "risk": "low"
+    },
+    {
+      "id": "faq-003",
+      "question": "英歌有多少年历史？",
+      "answer": "国家级非遗名录资料使用“相传已有三百多年”的说法，但“相传”不等于已经建立了连续三百年的完整文献链。",
+      "intent": "knowledge.history",
+      "source_files": ["01_历史渊源.md", "30_常见争议与事实辨析.md"],
+      "source_grade": "A",
+      "risk": "medium"
+    },
+    {
+      "id": "faq-004",
+      "question": "英歌是不是起源于水浒传？",
+      "answer": "《水浒传》梁山英雄叙事深刻影响许多队伍的角色和表演解释，但起源仍有尚武习俗、秧歌、傩文化等不同观点，不能只用一种说法盖棺定论。",
+      "intent": "knowledge.history",
+      "source_files": ["01_历史渊源.md", "30_常见争议与事实辨析.md"],
+      "source_grade": "A",
+      "risk": "high"
+    },
+    {
+      "id": "faq-005",
+      "question": "舞者手里的木棒叫什么？",
+      "answer": "通常叫英歌槌或英歌棒。舞者双手持槌，通过对击、翻转和绕槌配合步法、锣鼓与队形变化。",
+      "intent": "performance.explain",
+      "source_files": ["05_道具与服饰.md", "19_英歌槌制作工艺详解.md"],
+      "source_grade": "B",
+      "risk": "low"
+    },
+    {
+      "id": "faq-006",
+      "question": "英歌一定要108个人吗？",
+      "answer": "不一定。国家级名录资料记载舞者多为双数，少则12人、多至108人。实际人数取决于队伍传统、演出空间和活动规模。",
+      "intent": "fact.check",
+      "source_files": ["03_表演形式.md", "16_核心角色详解.md", "30_常见争议与事实辨析.md"],
+      "source_grade": "A",
+      "risk": "high"
+    },
+    {
+      "id": "faq-007",
+      "question": "快板中板慢板有什么区别？",
+      "answer": "主要区别在速度、鼓点、槌长、击槌组合和整体气势。快板紧凑灵活，慢板凝重舒展，中板介于两者之间；同一地区也可能并存多种板式。",
+      "intent": "performance.style",
+      "source_files": ["14_快板中板慢板详解.md", "25_地域谱系与代表队伍.md"],
+      "source_grade": "A",
+      "risk": "medium"
+    },
+    {
+      "id": "faq-008",
+      "question": "英歌的国家级非遗编号是什么？",
+      "answer": "“英歌（普宁英歌、潮阳英歌）”于2006年列入第一批国家级非物质文化遗产名录，项目编号为Ⅲ—8。",
+      "intent": "heritage.status",
+      "source_files": ["08_非遗保护.md", "31_权威来源与参考书目.md"],
+      "source_grade": "A",
+      "risk": "high"
+    },
+    {
+      "id": "faq-009",
+      "question": "英歌就是傩舞吗？",
+      "answer": "不能直接等同。潮阳英歌的国家名录资料提到傩文化形态的延续，但相似的驱邪、彩绘和巡游元素不足以证明所有英歌都有唯一的傩舞起源。",
+      "intent": "fact.check",
+      "source_files": ["21_傩文化渊源详解.md", "30_常见争议与事实辨析.md"],
+      "source_grade": "A",
+      "risk": "high"
+    },
+    {
+      "id": "faq-010",
+      "question": "女子可以跳英歌吗？",
+      "answer": "可以。早期名录描述突出男子群舞，但女子英歌、少儿英歌和校园队伍已经成为当代英歌实践的一部分。",
+      "intent": "knowledge.general",
+      "source_files": ["12_女子英歌.md", "28_校园课程与公众教育.md"],
+      "source_grade": "B",
+      "risk": "low"
+    },
+    {
+      "id": "faq-011",
+      "question": "零基础能自己照视频学吗？",
+      "answer": "可以先学习节拍、文化背景和无槌步法，但持槌对击、快速变阵与低重心动作最好由有经验的教练现场指导。",
+      "intent": "learning.training",
+      "source_files": ["26_训练体系与安全规范.md"],
+      "source_grade": "B",
+      "risk": "high"
+    },
+    {
+      "id": "faq-012",
+      "question": "网上说英歌全网播放量超百亿可信吗？",
+      "answer": "要看原始平台、话题口径、统计日期和是否重复计数。无法找到原始页面时，只能说传播热度较高，不能把汇总数字当成确定事实。",
+      "intent": "fact.check",
+      "source_files": ["13_传播与影响.md", "30_常见争议与事实辨析.md"],
+      "source_grade": "B",
+      "risk": "high"
+    }
+  ]
+}

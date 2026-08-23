@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>英歌每日动态 · 候选审核</title>
+  <link rel="icon" href="./assets/yingge-mascot.webp" type="image/webp">
+  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./review.css">
+</head>
+<body>
+  <main class="admin-shell review-shell">
+    <header class="admin-header">
+      <a href="./admin.html" class="back">← 返回接入控制台</a>
+      <div class="status-pill" id="health-pill"><i></i><span>正在读取候选池</span></div>
+    </header>
+    <section class="admin-hero review-hero">
+      <p class="eyebrow">YINGGE DAILY RADAR</p>
+      <h1>把今天的英歌<br><em>留在今天</em></h1>
+      <p>自动抓取演出、活动、队伍动态和传承消息；审核通过后才进入动态知识层，历史知识库保持稳定。</p>
+    </section>
+    <section class="review-toolbar panel">
+      <div><div class="panel-kicker">CANDIDATES</div><h2>候选动态</h2></div>
+      <div class="review-actions"><select id="status-filter"><option value="pending_review">待审核</option><option value="approved">已通过</option><option value="rejected">已驳回</option><option value="all">全部</option></select><button class="button primary" id="refresh-btn">刷新候选</button></div>
+    </section>
+    <section id="candidate-list" class="candidate-list"><div class="empty">正在读取 automation/inbox …</div></section>
+  </main>
+  <template id="candidate-template">
+    <article class="candidate-card">
+      <div class="candidate-meta"><span class="grade"></span><span class="date"></span><span class="source"></span></div>
+      <h2 class="candidate-title"></h2>
+      <p class="candidate-summary"></p>
+      <a class="candidate-link" target="_blank" rel="noreferrer">查看原文 ↗</a>
+      <div class="candidate-footer"><small class="candidate-id"></small><div class="candidate-buttons"><button class="button ghost reject">驳回</button><button class="button primary approve">通过</button></div></div>
+    </article>
+  </template>
+  <script src="./review.js"></script>
+</body>
+</html>

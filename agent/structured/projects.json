@@ -1,0 +1,52 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "projects",
+  "records": [
+    {
+      "project_id": "yingge-chaoyang",
+      "official_name": "英歌（潮阳英歌）",
+      "project_no": 111,
+      "project_code": "Ⅲ—8",
+      "inclusion": {"year": 2006, "batch": "第一批", "type": "新增项目"},
+      "region": {"province": "广东省", "city": "汕头市", "district": "潮阳区"},
+      "protection_unit": "汕头市潮阳区文化馆",
+      "source_refs": [
+        {"source_id": "ihchina_chaoyang_project", "support": "direct"},
+        {"source_id": "gd_protection_units", "support": "direct"}
+      ],
+      "status": "verified",
+      "field_notes": "项目页同时记载板式与动作概括；不能外推为普宁、甲子或全国统一套路。"
+    },
+    {
+      "project_id": "yingge-puning",
+      "official_name": "英歌（普宁英歌）",
+      "project_no": 111,
+      "project_code": "Ⅲ—8",
+      "inclusion": {"year": 2006, "batch": "第一批", "type": "新增项目"},
+      "region": {"province": "广东省", "city": "揭阳市", "district": "普宁市"},
+      "protection_unit": "普宁市文化馆",
+      "source_refs": [
+        {"source_id": "ihchina_puning_project", "support": "direct"},
+        {"source_id": "gd_protection_units", "support": "direct"}
+      ],
+      "status": "verified",
+      "field_notes": "名录资料记录普宁人数与动作概括；不能把普宁个案写成英歌唯一标准。"
+    },
+    {
+      "project_id": "yingge-jiazi",
+      "official_name": "英歌（甲子英歌）",
+      "project_no": 111,
+      "project_code": "Ⅲ—8",
+      "inclusion": {"year": 2011, "batch": "第三批", "type": "扩展项目"},
+      "region": {"province": "广东省", "city": "汕尾市", "district": "陆丰市甲子镇"},
+      "protection_unit": "陆丰市甲子英歌文化艺术服务中心",
+      "source_refs": [
+        {"source_id": "ihchina_jiazi_project", "support": "direct"},
+        {"source_id": "shanwei_jiazi_unit_change", "support": "direct"},
+        {"source_id": "shanwei_jiazi", "support": "direct"}
+      ],
+      "status": "verified",
+      "field_notes": "甲子与潮阳、普宁共用项目序号和编号，但属于2011年第三批扩展项目；旧保护单位名称需按时间区分。"
+    }
+  ]
+}

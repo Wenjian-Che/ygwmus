@@ -1,0 +1,53 @@
+{
+  "status": "pass",
+  "structure_errors": [],
+  "chunk_count": 362,
+  "retrieval": {
+    "evaluated_answerable_cases": 91,
+    "recall_at_1": 0.681,
+    "recall_at_3": 0.923,
+    "recall_at_6": 1.0,
+    "misses_at_6": [],
+    "must_term_misses": [],
+    "routing_cases": 6,
+    "routing_accuracy": 1.0,
+    "routing_results": [
+      {
+        "id": "R031",
+        "expected": "realtime",
+        "actual": "realtime",
+        "pass": true
+      },
+      {
+        "id": "R032",
+        "expected": "realtime",
+        "actual": "realtime",
+        "pass": true
+      },
+      {
+        "id": "R033",
+        "expected": "clarify",
+        "actual": "clarify",
+        "pass": true
+      },
+      {
+        "id": "R034",
+        "expected": "clarify",
+        "actual": "clarify",
+        "pass": true
+      },
+      {
+        "id": "R035",
+        "expected": "out_of_scope",
+        "actual": "out_of_scope",
+        "pass": true
+      },
+      {
+        "id": "R045",
+        "expected": "clarify",
+        "actual": "clarify",
+        "pass": true
+      }
+    ]
+  }
+}

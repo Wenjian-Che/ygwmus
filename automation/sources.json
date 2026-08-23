@@ -1,0 +1,42 @@
+[
+  {
+    "id": "puning_culture_2026",
+    "publisher": "普宁市文化广电旅游体育局/普宁发布",
+    "title": "普宁英歌文化体验中心与系列活动",
+    "grade": "A",
+    "type": "html",
+    "url": "https://pnjcy.gov.cn/index.php/cms/item-view-id-3181.shtml",
+    "enabled": true,
+    "notes": "官方发布的普宁英歌出海展演、春节巡游和文化体验中心动态。"
+  },
+  {
+    "id": "jieyang_puning_tourism_2026",
+    "publisher": "揭阳市人民政府",
+    "title": "普宁新春文旅与英歌巡游动态",
+    "grade": "A",
+    "type": "html",
+    "url": "https://www.jieyang.gov.cn/xwdt/qxbmdt/content/post_1009335.html",
+    "enabled": true,
+    "notes": "普宁文旅活动与英歌巡游点位动态。"
+  },
+  {
+    "id": "shantou_chaoyang_ip_2026",
+    "publisher": "汕头市工商业联合会",
+    "title": "潮阳英歌主题IP活动",
+    "grade": "A",
+    "type": "html",
+    "url": "https://stgsl.shantou.gov.cn/stgsl/qxhwxx/202601/82480e19f707447ab5423394abdc47f3.shtml",
+    "enabled": true,
+    "notes": "潮阳英歌主题IP及传承发展活动动态。"
+  },
+  {
+    "id": "shanwei_heritage_education_2026",
+    "publisher": "汕尾市人民政府",
+    "title": "汕尾英歌非遗教学与展演",
+    "grade": "A",
+    "type": "html",
+    "url": "https://www.shanwei.gov.cn/slhwz/zjsw/content/post_1256426.html",
+    "enabled": true,
+    "notes": "汕尾本地英歌非遗教学与展演动态。"
+  }
+]

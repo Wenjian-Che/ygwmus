@@ -1,0 +1,5 @@
+{
+  "debugPortAddress": "127.0.0.1:54532",
+  "defaultEntrypointService": "assets:rpc-proxy:yingge-agent-sites",
+  "userWorkerService": "core:user:yingge-agent-sites"
+}

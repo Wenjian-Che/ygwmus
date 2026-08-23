@@ -1,0 +1,12 @@
+[
+  {
+    "app_id": "yingge-h5",
+    "name": "英歌主 H5",
+    "enabled": true
+  },
+  {
+    "app_id": "yingge-mugeda",
+    "name": "木疙瘩嵌入组件",
+    "enabled": true
+  }
+]

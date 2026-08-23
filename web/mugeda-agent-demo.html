@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>木疙瘩 · 英歌智能体接入验证</title>
+  <style>
+    html,body{height:100%}body{margin:0;background:radial-gradient(circle at 70% 15%,#264c52 0,#132523 32%,#091311 74%);color:#f3eee4;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;overflow:hidden}.stage{position:relative;height:100%;display:grid;place-items:center;text-align:center}.stage:before{content:"";position:absolute;inset:8%;border:1px solid #d7a45155;border-radius:50%;transform:scaleX(1.7)}.content{position:relative;max-width:760px;padding:32px}.eyebrow{color:#d7a451;font-size:12px;font-weight:800;letter-spacing:.22em}.content h1{margin:18px 0;font:700 clamp(42px,8vw,96px)/1.05 Georgia,"Songti SC",serif}.content p{margin:auto;max-width:560px;color:#b8c6bf;line-height:1.9}.actions{display:flex;justify-content:center;gap:12px;margin-top:28px;flex-wrap:wrap}.actions button{border:1px solid #d7a45166;border-radius:999px;padding:11px 18px;background:#0d1b19aa;color:#f3eee4;cursor:pointer}.status{position:fixed;left:18px;bottom:18px;color:#98aaa2;font-size:12px}
+  </style>
+</head>
+<body>
+  <main class="stage"><div class="content"><div class="eyebrow">MUGEDA EMBED TEST</div><h1>英歌智能体<br>悬浮组件</h1><p>本页模拟木疙瘩的 renderReady 生命周期，验证组件能否挂载到页面顶层、响应外部按钮，并在移动端切换为全屏对话。</p><div class="actions"><button onclick="MugedaYinggeAgent.open()">打开智能体</button><button onclick="MugedaYinggeAgent.ask('英歌为什么要敲槌？')">带问题打开</button></div></div></main>
+  <div class="status" id="status">等待组件加载…</div>
+  <script>
+    window.mugeda={listeners:{},addEventListener:function(name,callback){this.listeners[name]=callback;}};
+    window.YINGGE_MUGEDA_AGENT_CONFIG={apiBase:"http://127.0.0.1:8787",autoOpen:false};
+    window.addEventListener("yingge-mugeda:ready",function(){document.getElementById("status").textContent="组件已加载 · renderReady 正常";});
+    window.addEventListener("yingge-mugeda:error",function(event){document.getElementById("status").textContent=event.detail.error.message;});
+  </script>
+  <script src="./mugeda-agent-bundle.js"></script>
+  <script>window.setTimeout(function(){window.mugeda.listeners.renderReady();},300);</script>
+</body>
+</html>

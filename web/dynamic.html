@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>今日英歌 · 动态知识</title>
+  <link rel="icon" href="./assets/yingge-mascot.webp" type="image/webp">
+  <link rel="stylesheet" href="./admin.css">
+  <link rel="stylesheet" href="./review.css">
+  <style>
+    .dynamic-hero{padding-bottom:28px}.dynamic-note{color:var(--muted);max-width:660px}.dynamic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.dynamic-card{border:1px solid var(--line);background:#fffaf3d9;padding:26px;box-shadow:0 14px 45px #5a32110d}.dynamic-card h2{font:700 24px/1.3 Georgia,"Songti SC",serif;margin:14px 0 8px}.dynamic-card p{color:var(--muted);margin:0 0 14px}.dynamic-card a{color:var(--red);font-weight:800;text-decoration:none}.dynamic-meta{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px}.dynamic-meta span{padding:3px 8px;border-radius:99px;background:#f1e7d9}.dynamic-meta .fresh{color:var(--red);background:#a9322912;font-weight:800}.dynamic-footer{margin-top:34px;color:var(--muted);font-size:13px}@media(max-width:760px){.dynamic-list{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header"><a href="./" class="back">← 回到英歌文化志</a><div class="status-pill" id="status-pill"><i></i><span>正在读取动态</span></div></header>
+    <section class="admin-hero dynamic-hero"><p class="eyebrow">YINGGE TODAY</p><h1>今天的英歌<br><em>正在发生</em></h1><p class="dynamic-note">这里展示经过来源核验的近期演出、活动、队伍和传承动态。动态内容有有效期，不会替代历史知识库。</p></section>
+    <section id="dynamic-list" class="dynamic-list"><div class="empty">正在读取动态知识…</div></section>
+    <p class="dynamic-footer">内容由官方或授权来源发现，经审核后发布；过期动态会自动隐藏。</p>
+  </main>
+  <script src="./dynamic.js"></script>
+</body>
+</html>

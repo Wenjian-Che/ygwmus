@@ -1,0 +1,374 @@
+/* V7 · 展陈信息整理与有目的的动效
+   这一层只处理公开页面的文字层级、去装饰化和交互反馈。 */
+:root {
+  --v7-ink: #0b0e0d;
+  --v7-red: #d74336;
+  --v7-gold: #c59a62;
+}
+
+/* Decorative zooms and fixed overlays may extend their own paint area by a
+   few pixels. Keep that paint from creating a page-level horizontal scrollbar;
+   intentional carousels (the regional journey, archive and watch rails) keep
+   their own overflow containers below. */
+html,
+body {
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rhythm-copy > *,
+  .rhythm-section .big-drum,
+  .beat-sequencer,
+  .roles-intro > *,
+  .role-ledger > button,
+  .role-rule,
+  .facts-heading > *,
+  .myth-list details,
+  .evidence-ladder,
+  .agent-banner > * {
+    will-change: transform, opacity;
+  }
+}
+
+/* 这些内容曾经是设计注释，不是观众需要阅读的信息。 */
+.hero-stage-meta,
+.hero-scroll-cue,
+.hero-art-index {
+  display: none !important;
+}
+
+.visual-note {
+  right: clamp(24px, 5vw, 84px);
+  bottom: clamp(24px, 4vw, 56px);
+  max-width: 240px;
+  color: rgba(255, 255, 255, .58);
+  font-size: 11px;
+  line-height: 1.55;
+  text-align: right;
+}
+
+/* 章节导航显示名称即可，数字不再抢走阅读焦点。 */
+.chapter-rail {
+  width: 112px;
+  padding: 14px 14px 14px 16px;
+  border-radius: 16px;
+}
+.chapter-rail a b,
+.collection-number,
+.archive-tabs button b,
+.motion-score-steps button > b {
+  display: none !important;
+}
+.chapter-rail a span {
+  display: block;
+  max-width: none;
+  overflow: visible;
+  opacity: 1;
+  transition: color .2s ease, transform .2s ease;
+}
+.chapter-rail a { min-height: 26px; }
+.chapter-rail a:hover span,
+.chapter-rail a.is-active span { transform: translateX(3px); }
+
+@media (min-width: 1101px) {
+  /* 默认收窄，避免固定导航盖住档案内容；键盘聚焦或悬停时再展开。 */
+  .chapter-rail {
+    width: 44px;
+    padding-inline: 8px;
+  }
+  .chapter-rail nav { gap: 12px; }
+  .chapter-rail a { position: relative; justify-content: center; }
+  .chapter-rail a span {
+    position: absolute;
+    right: calc(100% + 12px);
+    max-width: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(6px);
+    transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s;
+  }
+  .chapter-rail:hover,
+  .chapter-rail:focus-within { width: 112px; }
+  .chapter-rail:hover a span,
+  .chapter-rail:focus-within a span {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+}
+
+/* 这里是档案纸的柔光，不再使用重复条纹做背景纹理。 */
+.living-archive {
+  background: linear-gradient(180deg, rgba(14, 18, 17, .98), rgba(10, 12, 12, .98));
+}
+.formation-cinema-copy::after {
+  content: none !important;
+}
+.formation-controls button::before {
+  content: none !important;
+}
+.formation-reading {
+  border-left: 0 !important;
+  border-top: 1px solid rgba(205, 165, 106, .25);
+  padding: 20px 24px 22px;
+  width: min(460px, 42vw);
+  right: clamp(24px, 3vw, 56px);
+  bottom: clamp(34px, 7vh, 78px);
+}
+.formation-reading span {
+  display: block;
+  margin-bottom: 10px;
+  color: #c59a62;
+  font-size: 11px;
+  letter-spacing: .08em;
+}
+.formation-reading strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(22px, 2vw, 31px);
+  line-height: 1.12;
+}
+.formation-reading p {
+  max-width: 34em;
+  margin: 12px 0 0;
+  color: rgba(241, 238, 230, .72);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.formation-stage-meta {
+  left: clamp(28px, 3vw, 56px);
+  bottom: clamp(122px, 16vh, 170px);
+  max-width: min(270px, 24vw);
+  padding: 12px 16px;
+  border-left: 1px solid rgba(217, 63, 51, .75);
+  background: rgba(7, 9, 8, .42);
+  backdrop-filter: blur(10px);
+}
+.formation-stage-meta b {
+  max-width: 24ch;
+  line-height: 1.6;
+}
+.formation-cinema-image figcaption {
+  left: clamp(28px, 3vw, 56px);
+  bottom: 24px;
+  max-width: min(460px, 40%);
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  color: rgba(241, 238, 230, .52);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* 删除编号后，动作步骤统一使用单列，防止移动端把标题挤成竖排。 */
+.motion-score-steps button {
+  grid-template-columns: 1fr !important;
+}
+.motion-score-steps li { opacity: .62; }
+.motion-score-steps strong { color: #e4e4dd; }
+.motion-score-steps small { color: #98a09b; }
+.motion-score-steps li.is-active { opacity: 1; }
+.motion-score-stage figcaption {
+  border-left: 0 !important;
+  border-top: 1px solid rgba(220, 65, 54, .72);
+  padding-top: 16px;
+}
+
+/* Native details is intentionally made explicit: closed answers must not
+   reserve vertical space or collide with the next evidence row. */
+.myth-list details:not([open]) > div { display: none; }
+.myth-list details[open] > div { display: block; }
+
+/* 角色卡片以轮廓和色相区分，红色只做选中反馈，不铺满整张卡。 */
+.character-ledger-grid {
+  grid-template-columns: 1.08fr repeat(3, minmax(0, 1fr));
+}
+.character-record:hover,
+.character-record:focus-visible {
+  z-index: 2;
+  outline: 0;
+  background: #171b18;
+  box-shadow: inset 0 0 0 1px rgba(217, 63, 51, .82);
+  transform: translateY(-2px);
+}
+.character-record:hover figure img,
+.character-record:focus-visible figure img {
+  transform: scale(1.08) translateY(-1.5%);
+}
+.character-ledger h3,
+.character-dialog h2,
+.motion-score-head h2 {
+  letter-spacing: -.04em;
+  text-wrap: balance;
+}
+.motion-score-steps button > i {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: .06em;
+  color: rgba(255, 255, 255, .38);
+}
+.motion-film-mark {
+  letter-spacing: .06em;
+}
+.motion-film-mark i {
+  display: none;
+}
+.agent-label {
+  text-transform: none;
+  letter-spacing: .04em;
+}
+
+/* 击槌反馈：只在用户明确点击时出现一次光晕。 */
+.impact-visual {
+  --impact-flash: 0;
+  isolation: isolate;
+}
+.impact-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(circle at 52% 48%, rgb(225 67 53 / calc(var(--impact-flash) * .34)), transparent 48%), linear-gradient(90deg, transparent 54%, #060707 100%);
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+.impact-trigger,
+.primary-action,
+.outline-action,
+.nav-agent,
+.agent-cta {
+  position: relative;
+  overflow: hidden;
+}
+.motion-ripple {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .34);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1100px) {
+  .chapter-rail { display: none; }
+}
+
+/* On tablet widths the fixed pet can sit directly over the beat controls or
+   map actions. The page already has the hero character and agent entry point
+   at this size, so remove the floating pet rather than hiding a live control. */
+@media (min-width: 621px) and (max-width: 1100px) {
+  .desktop-pet { display: none !important; }
+}
+
+@media (max-width: 900px) {
+  .character-ledger-grid { grid-template-columns: none; }
+}
+
+@media (max-width: 700px) {
+  .motion-score-steps button {
+    grid-template-columns: 1fr !important;
+    min-height: 74px;
+  }
+  .motion-score-steps button span { min-width: 0; }
+  .motion-score-steps strong { font-size: 16px; }
+}
+
+@media (max-width: 1100px) and (min-width: 721px) {
+  /* Keep the horizontal regional cards inside their grid tracks on tablet;
+     the legacy 76vw minimum made neighboring paragraphs overlap. */
+  .region-journey-track > article {
+    width: auto;
+    min-width: 0;
+    padding: 56px 30px;
+  }
+  .journey-card { overflow: hidden; }
+  .journey-card h3 { max-width: 9ch; font-size: clamp(34px, 4vw, 48px); }
+  .journey-card p { max-width: 23ch; font-size: 13px; line-height: 1.7; }
+  .formation-reading { width: min(410px, 48vw); }
+  .formation-stage-meta { max-width: 230px; }
+  .formation-cinema-image figcaption { max-width: 42%; }
+}
+
+@media (max-width: 720px) {
+  .formation-reading {
+    right: 18px;
+    bottom: 76px;
+    width: calc(100% - 36px);
+    padding: 16px 18px 18px;
+  }
+  .formation-reading p { font-size: 13px; }
+  .formation-cinema-image figcaption {
+    left: 18px;
+    right: 18px;
+    bottom: 8px;
+    max-width: none;
+    font-size: 10px;
+  }
+}
+
+/* The evidence card sits on a pale paper panel in the current theme; keep its
+   copy ink-led instead of inheriting the dark-surface white used elsewhere. */
+.evidence-ladder h3 {
+  color: #111514;
+}
+.evidence-ladder li span,
+.evidence-ladder > p {
+  color: rgba(17, 21, 20, .72) !important;
+}
+.evidence-ladder > p {
+  border-top-color: rgba(17, 21, 20, .16) !important;
+}
+
+/* The atlas progress rail is a positioned chapter control, not the site's
+   global footer.  Reset the global footer treatment here; its inherited
+   padding/background was creating a solid black slab over the scene copy. */
+.atlas-film-footer {
+  box-sizing: border-box;
+  min-height: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit;
+  grid-template-columns: auto minmax(100px, 340px);
+}
+.atlas-film-copy {
+  z-index: 12;
+  bottom: clamp(150px, 16.5vh, 178px);
+}
+.atlas-film-copy p {
+  position: relative;
+  z-index: 1;
+  color: #d8ddd9 !important;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, .72);
+}
+.atlas-film-scene::after {
+  background: linear-gradient(90deg, rgba(6, 8, 7, .95), rgba(6, 8, 7, .3) 36%, transparent 62%), linear-gradient(0deg, rgba(6, 8, 7, .68), transparent 31%);
+}
+.atlas-film-caption {
+  bottom: clamp(68px, 7vh, 78px);
+  max-width: min(440px, 34vw);
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .atlas-film-copy {
+    bottom: 108px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact-visual::after { display: none; }
+  .motion-ripple { display: none; }
+  .chapter-rail a span { transition: none; }
+}

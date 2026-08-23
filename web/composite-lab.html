@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>英歌角色分层合成工作台</title>
+  <link rel="stylesheet" href="./composite-lab.css?v=1">
+</head>
+<body>
+  <main class="composite-lab" data-composite-lab>
+    <img class="composite-bg" src="./assets/yingge-stage-background-v1.png" alt="无人物英歌舞台背景母版">
+    <div class="composite-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="composite-floor-shadow" aria-hidden="true"></div>
+    <figure class="composite-character">
+      <img src="./assets/yingge-character-action-alpha-v1.png" alt="独立透明背景的英歌IP角色动作母版">
+    </figure>
+    <div class="composite-grade" aria-hidden="true"></div>
+
+    <header class="lab-head">
+      <p>COMPOSITING LAB / 01</p>
+      <h1>背景与角色<br>已经分开</h1>
+      <span>当前只验证空间、光线与边缘，不把静态位移冒充正式动作。</span>
+    </header>
+
+    <aside class="layer-status" aria-label="分层资产状态">
+      <div class="is-ready"><b>01</b><span>背景母版</span><small>READY</small></div>
+      <div class="is-ready"><b>02</b><span>角色透明母版</span><small>READY</small></div>
+      <div><b>03</b><span>连续动作视频</span><small>WAITING FOR VIDEO MODEL</small></div>
+      <div><b>04</b><span>最终光影合成</span><small>NEXT</small></div>
+    </aside>
+
+    <footer class="lab-foot"><span>移动指针检查前后景视差</span><a href="./">返回主站</a></footer>
+  </main>
+  <script src="./composite-lab.js"></script>
+</body>
+</html>

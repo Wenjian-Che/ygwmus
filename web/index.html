@@ -1,0 +1,718 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0e">
+  <meta name="description" content="进入英歌的鼓点、动作、队形与传承现场。由英歌家雀陪你看懂这项国家级非遗。">
+  <title>英歌有意思｜进入一场英歌</title>
+  <link rel="icon" href="./assets/yingge-mascot.webp" type="image/webp">
+  <link rel="preload" as="image" href="./assets/yingge-hero-museum-v2.png" type="image/png">
+  <link rel="preload" as="image" href="./assets/pet-sprite-idle-aligned.webp" type="image/webp">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./site-v2.css?v=20260808-2">
+  <link rel="stylesheet" href="./site-v3.css?v=20260812-5">
+  <link rel="stylesheet" href="./site-v6.css?v=20260814-1">
+    <link rel="stylesheet" href="./site-v7.css?v=20260822-10">
+    <link rel="stylesheet" href="./site-v8.css?v=20260823-2">
+</head>
+<body>
+  <div class="reading-progress" aria-hidden="true"><i></i></div>
+  <aside class="chapter-rail" aria-label="页面章节导航">
+    <span class="chapter-rail-line" aria-hidden="true"><i></i></span>
+    <nav>
+      <a href="#top" class="is-active" data-chapter-link="opening"><span>开场</span></a>
+      <a href="#formation-title" data-chapter-link="formation"><span>阵形</span></a>
+      <a href="#know" data-chapter-link="reading"><span>识读</span></a>
+      <a href="#archive" data-chapter-link="archive"><span>活档案</span></a>
+      <a href="#rhythm" data-chapter-link="mechanism"><span>机制</span></a>
+      <a href="#timeline" data-chapter-link="heritage"><span>传承</span></a>
+    </nav>
+  </aside>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="英歌有意思首页">
+      <span class="brand-mark">英</span>
+      <span><b>英歌有意思</b><small>YINGGE, IN MOTION</small></span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#know">看懂英歌</a>
+      <a href="#rhythm">进入鼓点</a>
+      <a href="#timeline">证据与传承</a>
+      <a href="./dynamic.html">今日动态</a>
+      <button class="nav-agent" data-open-agent>问家雀 <span aria-hidden="true">↗</span></button>
+    </nav>
+    <button class="menu-toggle" aria-label="打开导航" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title" data-chapter="opening">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <canvas class="hero-webgl" id="hero-webgl" aria-hidden="true"></canvas>
+      <div class="hero-grain" aria-hidden="true"></div>
+      <div class="hero-copy reveal">
+        <p class="eyebrow">国家级非物质文化遗产</p>
+        <h1 id="hero-title"><span>一槌落地</span><br>万人同拍</h1>
+        <p class="hero-lead">跟着英歌家雀，从鼓点进入动作，从动作看见一支队伍。</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#know">进入英歌 <span>↘</span></a>
+          <button class="text-action" data-open-agent>问家雀 <span>↗</span></button>
+        </div>
+      </div>
+      <div class="hero-stage-meta" aria-hidden="true">
+        <span class="hero-stage-no">开场</span>
+        <span class="hero-stage-rule"></span>
+        <span class="hero-stage-mode">进入节奏</span>
+      </div>
+      <div class="mascot-stage hero-exhibition-art reveal" aria-label="英歌IP形象家雀">
+        <div class="hero-pet-bubble" role="status" aria-live="polite">
+          <b>家雀带路</b>
+          <span>点我一下，听见队伍怎样醒来。</span>
+        </div>
+        <div class="hero-beat-lines" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="mascot-halo"></div>
+        <div class="hero-shutters" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="hero-signal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="hero-scene-caption" aria-hidden="true"><b>先听一拍</b><span>起、走、合</span></div>
+        <div class="hero-art-index" aria-hidden="true"><span>01</span><i></i><b>跟鼓入场</b></div>
+        <img src="./assets/yingge-hero-museum-v2.png" width="1536" height="864" fetchpriority="high" alt="家雀IP形象置身黑漆、红绸与鼓点光环构成的英歌数字舞台">
+      </div>
+      <p class="visual-note">画面为数字化演示，不对应具体队伍槌法。</p>
+    </section>
+
+    <section class="atlas-film" id="atlas-film" aria-labelledby="atlas-film-title">
+      <div class="atlas-film-stage">
+        <header class="atlas-film-head">
+          <p>英歌图鉴</p>
+          <h2 id="atlas-film-title">一卷英歌，<br>随镜头展开</h2>
+        </header>
+
+        <nav class="atlas-film-nav" aria-label="动态英歌图鉴章节">
+          <button class="is-active" type="button" data-atlas-nav="0"><span>见其人</span></button>
+          <button type="button" data-atlas-nav="1"><span>识其器</span></button>
+          <button type="button" data-atlas-nav="2"><span>读其动</span></button>
+          <button type="button" data-atlas-nav="3"><span>成其阵</span></button>
+        </nav>
+
+        <div class="atlas-film-viewport">
+          <article class="atlas-film-scene is-active" data-atlas-scene="0">
+            <div class="atlas-film-image"><img src="./assets/yingge-jiaque-portrait-v1.png" alt="家雀脸谱、银冠和刺绣服装细节"></div>
+            <div class="atlas-film-copy"><span>人物</span><h3>先看见<br>一个人</h3><p>脸谱、盔饰、服色与体态共同建立角色识别。IP 形象用于导览，不替代真实队伍中的人物与脸谱考证。</p></div>
+            <div class="atlas-note note-face"><i></i><span><b>脸谱</b>色块与线条共同形成角色气质</span></div>
+            <div class="atlas-note note-crown"><i></i><span><b>盔饰</b>银饰、绒球与翎尾构成上部轮廓</span></div>
+            <p class="atlas-film-caption">从人物进入知识，而不是从一段定义开始。</p>
+          </article>
+          <article class="atlas-film-scene" data-atlas-scene="1" aria-hidden="true">
+            <div class="atlas-film-image"><img src="./assets/yingge-objects-archive-v1.png" alt="英歌短槌、锣鼓、盔饰和服装器物档案"></div>
+            <div class="atlas-film-copy"><span>器物</span><h3>器物不是<br>静物</h3><p>双槌把动作变成可见节奏，锣鼓提供共同时间，服装与盔饰则让队伍在快速移动中仍然可辨。</p></div>
+            <div class="atlas-note note-stick"><i></i><span><b>双槌</b>动作轨迹与击打关系的可见媒介</span></div>
+            <div class="atlas-note note-drum"><i></i><span><b>锣鼓</b>组织起、转、收等段落信号</span></div>
+            <p class="atlas-film-caption">同一件器物，同时参与声音、动作和角色塑造。</p>
+          </article>
+          <article class="atlas-film-scene" data-atlas-scene="2" aria-hidden="true">
+            <div class="atlas-film-image atlas-motion-video">
+              <video data-atlas-video muted loop playsinline preload="auto" poster="./assets/yingge-film-shot-01.png" aria-label="家雀英歌动作电影短片">
+                <source src="./assets/yingge-action-film-v1.webm" type="video/webm">
+              </video>
+              <p class="motion-film-mark"><span>动作片段</span></p>
+            </div>
+            <div class="atlas-film-copy"><span>动作</span><h3>动作，<br>自己发生</h3><p>镜头连续记录准备、移重心与定势。滚动只负责进入这一幕，不再被拆成生硬的逐帧切换。</p></div>
+            <p class="atlas-film-caption">进入这一幕自动播放，离开后自动暂停</p>
+          </article>
+          <article class="atlas-film-scene" data-atlas-scene="3" aria-hidden="true">
+            <div class="atlas-film-image"><img src="./assets/yingge-characters-archive-v2.png" alt="家雀、靛锋、玄岳和青翎四个独立设计的英歌IP角色"></div>
+            <div class="atlas-film-copy"><span>队伍</span><h3>最后，<br>看见一支队伍</h3><p>轮廓、重心和色彩各不相同，进入阵形后又必须共享同一节奏。角色差异与群体协同在这里同时成立。</p></div>
+            <div class="atlas-note note-individual"><i></i><span><b>个体</b>先辨识轮廓与色彩，再观察进入阵形</span></div>
+            <div class="atlas-note note-ensemble"><i></i><span><b>群体</b>差异最终进入同一空间秩序</span></div>
+            <p class="atlas-film-caption">下一幕：从角色群像进入真实阵形的空间逻辑。</p>
+          </article>
+        </div>
+
+        <footer class="atlas-film-footer"><span>当前章节 <b data-atlas-current>1</b></span><i aria-hidden="true"><em data-atlas-progress></em></i></footer>
+      </div>
+    </section>
+
+    <section class="provenance-strip" aria-label="英歌核心事实">
+      <dl>
+        <div><dt>2006</dt><dd>列入首批国家级非遗</dd></div>
+        <div><dt>Ⅲ-8</dt><dd>国家名录项目编号</dd></div>
+        <div><dt>12-108</dt><dd>国家名录记载舞者人数范围</dd></div>
+      </dl>
+      <p>三项数据均来自国家级非遗名录资料</p>
+      <div class="provenance-annotation" aria-hidden="true"><span>档案入口</span><i></i><b>从声音、形态和意味进入英歌。</b></div>
+    </section>
+
+    <section class="impact-story" id="impact" aria-labelledby="impact-title">
+      <figure class="impact-visual reveal">
+        <img class="impact-atmosphere" src="./assets/yingge-rhythm-installation-v1.png" width="1536" height="864" loading="lazy" alt="英歌槌、鼓面、银饰与阵形光点构成的数字艺术装置">
+        <canvas id="impact-webgl" aria-label="两根抽象木槌碰击形成冲击波的三维互动"></canvas>
+      <div class="impact-material-note" aria-hidden="true"><span>木、鼓、阵形</span><i></i><b>器物进入节拍，<br>节拍组织队伍。</b></div>
+        <button class="impact-trigger" type="button" data-impact-trigger>击槌</button>
+        <figcaption>三维节奏示意，不对应具体队伍槌法</figcaption>
+      </figure>
+      <div class="impact-copy">
+        <p>一声槌响，不只是一声响。</p>
+        <h2 id="impact-title">它把全队的时间<br>压进同一个落点</h2>
+        <ol class="impact-beats" aria-label="从节奏到队形的四个观察层次">
+          <li><b>起</b><span>锣鼓给出共同速度</span></li>
+          <li><b>踏</b><span>落脚与重心进入循环</span></li>
+          <li><b>转</b><span>领舞与声音提示段落</span></li>
+          <li><b>击</b><span>槌、步、阵在同一刻汇合</span></li>
+        </ol>
+        <button class="outline-action" data-query="英歌敲槌为什么能帮助全队同步？">让家雀拆解这声槌</button>
+      </div>
+    </section>
+
+    <section class="motion-score" id="motion-score" aria-labelledby="motion-score-title">
+      <div class="motion-score-shell" data-motion-score data-motion-phase="support">
+        <header class="motion-score-head">
+          <p><span>02</span> / 动作解剖</p>
+          <h2 id="motion-score-title">力量不在手上开始</h2>
+          <div>
+            <p>把一记槌拆开看，先看脚底与重心，再看躯干怎样把力量送到手臂，最后看槌端如何减速、收住，并为下一拍留下位置。</p>
+            <span>这是观察框架，不是所有队伍统一使用的教学口令。</span>
+          </div>
+        </header>
+
+        <div class="motion-score-layout">
+          <figure class="motion-score-stage">
+            <img src="./assets/yingge-strike-exhibition-v1.png" width="1536" height="1024" loading="lazy" alt="家雀以低重心持双槌定势，用于观察动作动力链的数字展陈画面">
+            <div class="motion-score-shade" aria-hidden="true"></div>
+            <svg class="motion-score-traces" viewBox="0 0 100 100" aria-hidden="true">
+              <g data-motion-trace="support">
+                <path d="M48 86 L76 86"></path><path d="M54 82 L54 90 M70 82 L70 90"></path>
+                <circle cx="54" cy="86" r="2.2"></circle><circle cx="70" cy="86" r="2.2"></circle>
+              </g>
+              <g data-motion-trace="shift">
+                <path d="M62 82 C58 73 57 64 60 54"></path><path d="M60 54 l-2.4 5.8 M60 54 l3.6 5"></path>
+                <circle cx="60" cy="66" r="7"></circle>
+              </g>
+              <g data-motion-trace="transfer">
+                <path d="M60 68 C61 57 64 50 71 44 C77 39 80 34 82 28"></path>
+                <path d="M60 68 C58 58 55 52 48 48 C42 44 38 40 35 35"></path>
+                <circle cx="60" cy="68" r="2.4"></circle>
+              </g>
+              <g data-motion-trace="recover">
+                <circle cx="60" cy="47" r="7"></circle><circle cx="60" cy="47" r="12"></circle>
+                <path d="M71 42 C69 48 66 53 61 57"></path>
+              </g>
+            </svg>
+            <figcaption>
+              <span data-motion-kicker>支撑</span>
+              <strong data-motion-title>先看脚底，不先看槌</strong>
+              <p data-motion-description>稳定来自站距、朝向与落脚支撑。肩颈如果先耸起，手臂往往会抢在身体之前发力。</p>
+            </figcaption>
+          </figure>
+
+          <ol class="motion-score-steps" aria-label="动作动力链的四个观察层次">
+            <li class="is-active" data-motion-step="support">
+               <button type="button"><span><strong>支撑</strong><small>脚底建立稳定边界</small></span></button>
+            </li>
+            <li data-motion-step="shift">
+               <button type="button"><span><strong>移重</strong><small>重心变化早于槌端加速</small></span></button>
+            </li>
+            <li data-motion-step="transfer">
+               <button type="button"><span><strong>传递</strong><small>下肢与躯干把力量送向手臂</small></span></button>
+            </li>
+            <li data-motion-step="recover">
+               <button type="button"><span><strong>收力</strong><small>接触或轨迹顶点之后仍要可控</small></span></button>
+            </li>
+          </ol>
+        </div>
+
+        <footer class="motion-score-note">
+          <span>OBSERVATION, NOT INSTRUCTION</span>
+          <p>具体站式、手位、槌法名称与节奏口令，应以对应队伍和传承人的现场教学为准。</p>
+          <button class="outline-action" data-query="怎样从脚底支撑、重心、躯干和槌路观察英歌动作？">让家雀继续拆解</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="formation-cinema" aria-labelledby="formation-title" data-chapter="formation">
+      <div class="formation-cinema-copy">
+        <h2 id="formation-title">一个人发力<br>一支队伍成形</h2>
+        <p>看英歌不能只追着前排。退后一步，才能看见开合、转向、穿插和收势怎样共同组织空间。</p>
+        <button class="outline-action" data-query="第一次现场看英歌，应该怎样观察队形变化？">学习看阵</button>
+      </div>
+      <figure class="formation-cinema-image">
+        <img class="formation-ensemble" src="./assets/yingge-ensemble-distinct-v1.png" alt="家雀与七位不同脸谱、盔饰和服色的英歌角色组成双列队形的空间示意">
+        <canvas id="formation-webgl" aria-label="依据潮阳英歌地方标准绘制的七种基础队形动态示意"></canvas>
+         <div class="formation-stage-meta" aria-hidden="true"><span>阵形观察</span><i></i><b>动点不是图案，<br>是队伍占据空间的方式。</b></div>
+        <div class="formation-controls" role="group" aria-label="选择潮阳英歌基础队形">
+          <button type="button" class="active" data-formation="double-columns">双列队形</button>
+          <button type="button" data-formation="square">方形阵</button>
+          <button type="button" data-formation="twin-dragon">双龙出海</button>
+          <button type="button" data-formation="conch">田螺阵</button>
+          <button type="button" data-formation="wheat-ear">麦穗花阵</button>
+          <button type="button" data-formation="four-seas">四海升平</button>
+          <button type="button" data-formation="bagua">八卦阵</button>
+        </div>
+        <div class="formation-reading" aria-live="polite">
+           <span>潮阳英歌地方标准</span>
+          <strong id="formation-name">双列队形</strong>
+          <p id="formation-description">两列平行、左右对称向前行进，是巡游中最基础的队形。</p>
+        </div>
+        <figcaption>依据地方标准附录 D 重绘；红点为相对站位，动画展示变阵过程。角色群像为 IP 概念展示，不对应具体队伍。</figcaption>
+      </figure>
+    </section>
+
+    <section class="manifesto" aria-label="英歌概述">
+      <p class="kicker">英歌是什么</p>
+      <h2 class="reveal">它不是一支<br><em>整齐划一</em>的舞。</h2>
+      <figure class="manifesto-portrait reveal" data-art-parallax>
+        <img src="./assets/yingge-strike-exhibition-v1.png" width="1536" height="1024" loading="lazy" alt="家雀IP摆出英歌击槌动作的数字展陈画面">
+        <figcaption><span>动作不是孤立姿势</span><b>每一次落槌，都要回到节奏、步法与队伍。</b></figcaption>
+      </figure>
+      <div class="manifesto-copy reveal">
+        <p>“英歌”是国家级非遗采用的正式项目名称。它融合舞蹈、南拳套路与戏曲表演，以持槌群舞、锣鼓节奏和队形变换形成强烈的广场气势。</p>
+        <p>从普宁、潮阳到潮南、惠来，不同村落与队伍都有自己的板式、脸谱、套路与讲法。看懂英歌，先要尊重这些差异。</p>
+      </div>
+      <div class="ink-stamp" aria-hidden="true">英<br>歌</div>
+    </section>
+
+    <section class="know-section" id="know" aria-labelledby="know-title" data-chapter="reading">
+      <div class="section-head">
+        <div><p class="knowledge-sequence">三道入口</p><h2 id="know-title">一眼入阵，<br>看见英歌筋骨</h2><p>从声、形、意三个入口理解英歌。点击任一主题，家雀会带你继续深挖。</p></div>
+        <p class="knowledge-side-note">选择一个入口<br>跟着节奏深入</p>
+      </div>
+      <div class="feature-grid collection-stage" data-collection-stage>
+        <canvas id="collection-webgl" aria-hidden="true"></canvas>
+        <article class="feature-card collection-panel card-sound is-active reveal" data-query="英歌的锣鼓和槌击有什么作用？" tabindex="0">
+          <img class="collection-image" src="./assets/yingge-rhythm-installation-v1.png" alt="锣鼓、英歌槌、盔饰和绣片组成的节奏器物展台">
+           <div class="collection-copy"><p>声音：锣鼓与槌</p><h3>击节成阵</h3><span>听见领奏、应答与队伍转换</span></div>
+          <i class="collection-sheen" aria-hidden="true"></i>
+        </article>
+        <article class="feature-card collection-panel card-form reveal" data-query="英歌有哪些常见队形和变阵？" tabindex="0">
+          <img class="collection-image" src="./assets/yingge-ensemble-distinct-v1.png" alt="八位不同脸谱、盔饰和服色的英歌角色组成队列">
+           <div class="collection-copy"><p>形态：武步与阵法</p><h3>众角成阵</h3><span>从人物差异看合阵、穿插与收势</span></div>
+          <i class="collection-sheen" aria-hidden="true"></i>
+        </article>
+        <article class="feature-card collection-panel card-spirit reveal" data-query="英歌为什么常被理解为忠勇刚健？" tabindex="0">
+          <img class="collection-image" src="./assets/yingge-jiaque-portrait-v1.png" alt="家雀脸谱、银质盔饰与刺绣服装的近景特写">
+           <div class="collection-copy"><p>意味：脸谱与乡土</p><h3>一面一性</h3><span>辨认脸谱、角色气质与社区叙事</span></div>
+          <i class="collection-sheen" aria-hidden="true"></i>
+        </article>
+      </div>
+    </section>
+
+    <section class="living-archive" id="archive" aria-labelledby="archive-title" data-chapter="archive">
+      <header class="archive-head">
+        <div>
+           <p>档案事实</p>
+          <h2 id="archive-title">不是一张图，<br>是一套可读的动作档案</h2>
+        </div>
+        <p>图像用于观察关系；名称、事实与适用边界以可核验档案为准。</p>
+      </header>
+
+      <div class="archive-shell" data-archive-shell data-active-archive="motion">
+        <nav class="archive-tabs" aria-label="选择档案视图">
+           <button type="button" class="is-active" data-archive-tab="motion"><span>动作时间切片</span></button>
+           <button type="button" data-archive-tab="objects"><span>器物解构</span></button>
+           <button type="button" data-archive-tab="characters"><span>角色与脸谱</span></button>
+        </nav>
+
+        <div class="archive-viewport">
+          <figure class="archive-panel is-active" data-archive-panel="motion">
+            <img src="./assets/yingge-motion-archive-v1.png" alt="家雀同一动作的准备、转身与定势三个时间切片">
+            <div class="archive-callout callout-a"><i></i><span><b>准备</b>先建立稳定支撑与持槌空间</span></div>
+            <div class="archive-callout callout-b"><i></i><span><b>转换</b>屈膝、移重心并带动双槌轨迹</span></div>
+            <div class="archive-callout callout-c"><i></i><span><b>定势</b>动作终点仍需保持身体平衡</span></div>
+          </figure>
+          <figure class="archive-panel" data-archive-panel="objects" hidden>
+            <img src="./assets/yingge-objects-archive-v1.png" alt="英歌短槌、鼓、锣、盔饰与刺绣服装组成的器物档案">
+            <div class="archive-callout callout-a"><i></i><span><b>双槌</b>动作与节奏的可见媒介</span></div>
+            <div class="archive-callout callout-b"><i></i><span><b>锣鼓</b>提供共同时间与段落信号</span></div>
+            <div class="archive-callout callout-c"><i></i><span><b>盔饰服装</b>角色气质与队伍识别的一部分</span></div>
+          </figure>
+          <figure class="archive-panel" data-archive-panel="characters" hidden>
+            <img src="./assets/yingge-characters-archive-v2.png" alt="由四张独立角色基础图组合的家雀、靛锋、玄岳和青翎英歌IP角色档案">
+            <div class="archive-callout callout-a"><i></i><span><b>家雀与靛锋</b>脸谱、盔饰轮廓与体态分别建立身份</span></div>
+            <div class="archive-callout callout-b"><i></i><span><b>三视图</b>正面、动作与背面帮助观察角色轮廓</span></div>
+            <div class="archive-callout callout-c"><i></i><span><b>IP边界</b>概念角色不替代具体历史人物考证</span></div>
+          </figure>
+        </div>
+
+        <footer class="archive-footer">
+          <p><span>阅读方法</span> 先看图像关系，再查名称、来源与适用边界</p>
+          <button type="button" class="outline-action" data-query="怎样从重心、槌路和时间切片观察英歌动作？">让家雀讲动作观察方法</button>
+        </footer>
+        <section class="character-ledger" aria-labelledby="character-ledger-title">
+          <header>
+             <div><span>角色档案</span><h3 id="character-ledger-title">每个角色，先成为一个人</h3></div>
+            <p>四套轮廓、四色主调、四种体态，用于本页角色导览；不对应具体历史人物。</p>
+          </header>
+          <div class="character-ledger-grid">
+            <button class="character-record" type="button" data-character-record data-character-name="家雀" data-character-code="主视觉" data-character-meta="朱红 / 银冠 / 黑纹 / 灵动" data-character-note="朱红服装、银质盔饰与双短槌，构成家雀最醒目的识别组合。" data-character-src="./assets/yingge-jiaque-turnaround.png">
+              <figure><img class="character-card-hero" data-character-card-hero src="./assets/yingge-character-action-alpha-v1.png" alt="家雀持双槌的动作立像"><img class="character-card-turnaround" data-character-card-turnaround src="./assets/yingge-jiaque-turnaround.png" alt="" aria-hidden="true"><span class="character-view-cue" aria-hidden="true">移入看三视 ↗</span><i aria-hidden="true"></i></figure>
+              <span>主视觉</span><h4>家雀</h4><p>朱红、灵动</p><b>展开档案 ↗</b>
+            </button>
+            <button class="character-record" type="button" data-character-record data-character-name="靛锋" data-character-code="行阵" data-character-meta="靛蓝 / 银饰 / 浪纹 / 稳健" data-character-note="靛蓝衣甲、窄高盔与修长体态，呈现沉着、稳定的行阵气质。" data-character-src="./assets/character-dianfeng-turnaround-v1.png">
+              <figure><img class="character-card-hero" data-character-card-hero src="./assets/character-dianfeng-turnaround-v1.png" alt="靛锋持双槌的动作立像"><img class="character-card-turnaround" data-character-card-turnaround src="./assets/character-dianfeng-turnaround-v1.png" alt="" aria-hidden="true"><span class="character-view-cue" aria-hidden="true">移入看三视 ↗</span><i aria-hidden="true"></i></figure>
+              <span>行阵</span><h4>靛锋</h4><p>靛蓝、稳健</p><b>展开档案 ↗</b>
+            </button>
+            <button class="character-record" type="button" data-character-record data-character-name="玄岳" data-character-code="守阵" data-character-meta="黑金 / 宽盔 / 山纹 / 厚重" data-character-note="黑金配色、宽阔轮廓与较低重心，呈现厚重、稳固的守阵气质。" data-character-src="./assets/character-xuanyue-turnaround-v1.png">
+              <figure><img class="character-card-hero" data-character-card-hero src="./assets/character-xuanyue-turnaround-v1.png" alt="玄岳持双槌的动作立像"><img class="character-card-turnaround" data-character-card-turnaround src="./assets/character-xuanyue-turnaround-v1.png" alt="" aria-hidden="true"><span class="character-view-cue" aria-hidden="true">移入看三视 ↗</span><i aria-hidden="true"></i></figure>
+              <span>守阵</span><h4>玄岳</h4><p>黑金、厚重</p><b>展开档案 ↗</b>
+            </button>
+            <button class="character-record" type="button" data-character-record data-character-name="青翎" data-character-code="游阵" data-character-meta="玉白 / 青绿 / 侧翎 / 轻捷" data-character-note="玉白与青绿服色、侧向翎饰和轻捷体态，呈现灵活的游阵气质。" data-character-src="./assets/character-qingling-turnaround-v1.png">
+              <figure><img class="character-card-hero" data-character-card-hero src="./assets/character-qingling-turnaround-v1.png" alt="青翎持双槌的动作立像"><img class="character-card-turnaround" data-character-card-turnaround src="./assets/character-qingling-turnaround-v1.png" alt="" aria-hidden="true"><span class="character-view-cue" aria-hidden="true">移入看三视 ↗</span><i aria-hidden="true"></i></figure>
+              <span>游阵</span><h4>青翎</h4><p>青绿、轻捷</p><b>展开档案 ↗</b>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <dialog class="character-dialog" data-character-dialog aria-labelledby="character-dialog-title">
+      <button type="button" class="character-dialog-close" data-character-dialog-close aria-label="关闭角色档案">关闭 ×</button>
+      <div class="character-dialog-visual"><img data-character-dialog-image src="./assets/yingge-jiaque-turnaround.png" alt="角色三视图大图"></div>
+      <article>
+        <p data-character-dialog-code>主视觉</p>
+        <h2 id="character-dialog-title" data-character-dialog-name>家雀</h2>
+        <span data-character-dialog-meta>朱红 / 银冠 / 黑纹 / 灵动</span>
+        <div class="character-dialog-rule" aria-hidden="true"><i></i></div>
+        <p data-character-dialog-note>朱红服装、银质盔饰与双短槌，构成家雀最醒目的识别组合。</p>
+        <small>概念角色档案。它用于导览，不替代真实队伍的地方性考证。</small>
+      </article>
+    </dialog>
+
+    <section class="watch-section" aria-labelledby="watch-title">
+      <div class="watch-intro">
+        <p>第一次看英歌</p>
+        <h2 id="watch-title">别只拍高潮，<br>先看懂五件事</h2>
+        <p>一场英歌的力量，不只来自快速对槌。锣鼓、领舞、步法、队形与空间共同决定你看到的节奏和气势。</p>
+      </div>
+      <ol class="watch-track">
+        <li class="reveal" data-query="英歌锣鼓如何指挥动作和队形？" tabindex="0">
+          <span>先听</span><h3>锣鼓信号</h3>
+          <p>留意起鼓、加速、转段和收势。鼓点不仅伴奏，也在组织全队行动。</p>
+        </li>
+        <li class="reveal" data-query="英歌头槌和二槌承担什么职责？" tabindex="0">
+          <span>再找</span><h3>前排领舞</h3>
+          <p>头槌、二槌常承担方向、节奏示范或队形启动，但对应人物因队伍而异。</p>
+        </li>
+        <li class="reveal" data-query="怎样观察英歌的低重心和步法？" tabindex="0">
+          <span>看脚下</span><h3>重心与步法</h3>
+          <p>观察屈膝、踏地、转身和移动路线，感受武术步型如何转化为群舞。</p>
+        </li>
+        <li class="reveal" data-query="英歌对槌动作应该怎么看？" tabindex="0">
+          <span>看配合</span><h3>槌击关系</h3>
+          <p>对击、翻转和绕槌与步法同步。速度越快，越要看队员之间的距离控制。</p>
+        </li>
+        <li class="reveal" data-query="英歌队形如何适应街巷和舞台？" tabindex="0">
+          <span>看全局</span><h3>队形与空间</h3>
+          <p>街巷、广场和舞台会改变人数、行进方向、队形宽度和完整段落。</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="mechanism-section" aria-labelledby="mechanism-title" data-chapter="mechanism">
+      <div class="mechanism-sticky">
+        <p>从一声鼓到一次变阵</p>
+        <h2 id="mechanism-title">全队怎样<br>听见同一拍</h2>
+        <button class="outline-action" data-query="锣鼓怎样同时组织动作和队形变化？">让家雀完整讲解</button>
+      </div>
+      <div class="mechanism-steps">
+        <article>
+          <b>起鼓</b>
+          <h3>先建立共同时间</h3>
+          <p>第一组循环确定速度、注意力和入场时点。舞者由此统一起势、落脚与第一次击槌。</p>
+          <span>声音先行</span>
+        </article>
+        <article>
+          <b>稳拍</b>
+          <h3>让动作落在循环里</h3>
+          <p>踏地、转身、对槌和移位不是各自完成，而是在稳定周期中彼此校准。</p>
+          <span>身体同步</span>
+        </article>
+        <article>
+          <b>转段</b>
+          <h3>重音打开变化窗口</h3>
+          <p>密度、响度、停顿或约定鼓句提示段落转换，领舞再用方向与位置完成确认。</p>
+          <span>声觉与视觉协同</span>
+        </article>
+        <article>
+          <b>收势</b>
+          <h3>把力量收回同一点</h3>
+          <p>固定尾句、停鼓或领舞定势让队伍同时结束。段落结束和整场收队需要分开理解。</p>
+          <span>共同完成</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="region-section" aria-labelledby="region-title">
+      <div class="region-copy">
+        <h2 id="region-title">同一声槌响，<br>各有各的气韵</h2>
+        <p>“普宁快、潮阳慢”只是便于记忆的粗略印象。真正比较时，还要回到具体队伍、板式、套路、锣鼓和演出场景。</p>
+        <button class="outline-action" data-query="普宁、潮阳、潮南和惠来的英歌有什么差异？">请家雀细讲地域差异</button>
+      </div>
+      <div class="region-map official-map-stage" aria-label="中国官方标准地图与潮汕英歌位置交互图">
+        <div class="official-map-viewport" id="official-map-viewport">
+          <div class="map-north" aria-label="北向上"><b>N</b><span>北</span></div>
+          <canvas id="official-map-webgl" aria-label="以官方标准地图原图为纹理、可拖动旋转和缩放的三维地图板"></canvas>
+          <div class="official-map-sheet">
+            <img src="./assets/china-standard-map-gs2023-2762-preview.jpg" width="2048" height="2414" data-original="./assets/china-standard-map-gs2023-2762.jpeg" alt="自然资源部监制中国标准地图，审图号 GS(2023)2762号">
+            <button class="map-hotspot hotspot-chaoshan" type="button" aria-label="查看广东潮汕英歌重点区域"><i></i><span>潮汕英歌</span></button>
+          </div>
+          <div class="official-map-loading" id="official-map-loading">正在加载官方三维地图</div>
+        </div>
+        <div class="map-mode" role="group" aria-label="地图视角">
+          <button class="active" type="button" data-official-map-view="china">完整图廓</button>
+          <button type="button" data-official-map-view="guangdong">定位广东</button>
+        </div>
+        <details class="map-legend">
+          <summary><b>图面说明</b><span>按需展开</span></summary>
+          <div>
+            <b>官方标准地图</b>
+            <span><i></i> 潮汕英歌重点区域</span>
+            <span><i></i> 完整保留国界、南海诸岛与审图号</span>
+             <small>拖动旋转，滚轮缩放</small>
+          </div>
+        </details>
+        <p class="map-compliance">标准地图由自然资源部监制，审图号 GS(2023)2762号；公开图件来源于人民日报。页面保留完整原图与审图号，不重绘行政边界，正式上线前仍应在标准地图服务系统复核最新版本。<a href="https://bzdt.tianditu.gov.cn/" target="_blank" rel="noopener">核对官方标准地图 ↗</a></p>
+      </div>
+    </section>
+
+    <section class="region-journey" aria-labelledby="journey-title">
+      <div class="region-journey-track">
+        <article class="journey-intro">
+          <p>地域不是标签，是一组具体队伍与具体实践</p>
+          <h2 id="journey-title">沿着槌声<br>走进地方谱系</h2>
+        </article>
+        <article class="journey-card journey-puning" data-query="普宁英歌内部有哪些不同队伍和板式？" tabindex="0">
+          <span>普宁</span><h3>队伍多，不能只记“快”</h3>
+          <p>国家名录记录多种人数与队形。真正比较要落到南山、泥沟、华市等具体队伍。</p>
+        </article>
+        <article class="journey-card journey-chaoyang" data-query="潮阳慢板中板快板怎样并存？" tabindex="0">
+          <span>潮阳</span><h3>慢、中、快三类并存</h3>
+          <p>文光岭东、西门女子、城南忠精等队伍各有板式、套路和组织历史。</p>
+        </article>
+        <article class="journey-card journey-jiazi" data-query="甲子英歌的武畔文畔和107人结构是什么？" tabindex="0">
+          <span>甲子</span><h3>个案资料格外完整</h3>
+          <p>107人结构、武畔文畔、乐器配置和八拍吆喝都有公开记录，但只适用于甲子个案。</p>
+        </article>
+        <article class="journey-card journey-huilai" data-query="惠来神泉英歌有哪些可核实资料？" tabindex="0">
+          <span>惠来与周边</span><h3>地方项目仍需持续建档</h3>
+          <p>神泉英歌等地方传统需要结合项目名录、队伍口述和当代活动记录继续补充。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="structure-section" aria-labelledby="structure-title">
+      <div class="structure-intro">
+        <h2 id="structure-title">一场表演，<br>不止持槌群舞</h2>
+        <p>国家非遗资料常用“前棚、后棚”概括传统结构。现代巡游、舞台和短视频会对它重新剪裁，因此不能把高潮片段当作完整英歌。</p>
+        <button class="outline-action" data-query="英歌的前棚和后棚分别是什么？">详细了解前棚与后棚</button>
+      </div>
+      <div class="structure-flow">
+        <article>
+          <span>起</span>
+          <div><h3>集合与起鼓</h3><p>队员完成角色、站位和器材确认。部分社区存在祭拜或出队程序，但并非所有队伍都有。</p></div>
+        </article>
+        <article>
+          <span>行</span>
+          <div><h3>前棚主体</h3><p>锣鼓与持槌群舞构成核心。队伍通过步法、击槌和变阵向前行进或定点表演。</p></div>
+        </article>
+        <article>
+          <span>演</span>
+          <div><h3>后棚节目</h3><p>传统描述中可包含小戏、武术或其他拿手节目。具体内容需要回到当地和队伍资料。</p></div>
+        </article>
+        <article>
+          <span>收</span>
+          <div><h3>收势与收队</h3><p>现代活动可能在定点收势后转场；社区巡游还涉及回程、器材归还与当地程序。</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="rhythm-section" id="rhythm" aria-labelledby="rhythm-title">
+      <div class="rhythm-copy">
+        <h2 id="rhythm-title">锣鼓是全队的<br><em>共同呼吸</em></h2>
+        <p>点按鼓面，感受由疏至密的节奏。真实队伍的鼓点与口传节奏各有差异，这里只做声画体验，不代替具体队伍谱例。</p>
+        <div class="tempo-tabs" role="group" aria-label="选择节奏">
+          <button class="active" data-tempo="slow">慢板 <small>72 BPM</small></button>
+          <button data-tempo="mid">中板 <small>104 BPM</small></button>
+          <button data-tempo="fast">快板 <small>138 BPM</small></button>
+        </div>
+      </div>
+      <button class="big-drum" id="drum" aria-label="敲击英歌鼓">
+        <span class="drum-ring"></span>
+        <span class="drum-face"><b>鼓</b><small>点击敲响</small></span>
+        <i class="beat beat-1"></i><i class="beat beat-2"></i><i class="beat beat-3"></i>
+      </button>
+      <div class="beat-sequencer" aria-label="八拍节奏体验">
+        <div class="beat-sequencer-head">
+          <div><b>八拍节奏台</b><span id="beat-status">点击开始，观察鼓点怎样推进动作</span></div>
+          <button id="beat-toggle" type="button" aria-pressed="false">开始</button>
+        </div>
+        <div class="beat-grid" role="list" aria-label="八个节拍">
+          <button role="listitem" data-beat="1"><b>1</b><span>起</span></button>
+          <button role="listitem" data-beat="2"><b>2</b><span>踏</span></button>
+          <button role="listitem" data-beat="3"><b>3</b><span>转</span></button>
+          <button role="listitem" data-beat="4"><b>4</b><span>击</span></button>
+          <button role="listitem" data-beat="5"><b>5</b><span>合</span></button>
+          <button role="listitem" data-beat="6"><b>6</b><span>行</span></button>
+          <button role="listitem" data-beat="7"><b>7</b><span>穿</span></button>
+          <button role="listitem" data-beat="8"><b>8</b><span>收</span></button>
+        </div>
+        <p>这是一套交互示意，不是任何队伍的传统鼓谱。真实对应关系必须按具体队伍核实。</p>
+      </div>
+      <div class="rhythm-word" aria-hidden="true">铿<br>锵</div>
+    </section>
+
+    <section class="roles-section" aria-labelledby="roles-title">
+      <div class="roles-intro">
+        <p>角色辨识的第一原则</p>
+        <h2 id="roles-title">先看队伍职能，<br>再认文学人物</h2>
+        <p>“头槌、二槌、司鼓”是功能称谓；李逵、关胜、宋江、时迁等是人物身份。两层如何对应，由具体队伍决定。</p>
+        <button class="outline-action" data-query="为什么不能用一张统一角色表解释所有英歌？">为什么没有统一角色表</button>
+      </div>
+      <div class="role-ledger">
+        <button data-query="英歌头槌通常承担什么职责？">
+          <span>领舞职能</span><b>头槌</b><small>方向、节奏示范、队形启动</small>
+        </button>
+        <button data-query="英歌二槌通常承担什么职责？">
+          <span>前排组织</span><b>二槌</b><small>配合领舞与前排组织</small>
+        </button>
+        <button data-query="英歌里的时迁负责什么？">
+          <span>特殊角色</span><b>时迁</b><small>穿行、引路、角色表演或调度</small>
+        </button>
+        <button data-query="英歌司鼓如何指挥全队？">
+          <span>声音组织</span><b>司鼓</b><small>组织速度、段落和动作变化</small>
+        </button>
+        <div class="role-rule">
+          <b>不能只凭脸谱颜色下结论</b>
+          <p>可靠判断依次参考节目单、队伍说明、固定谱样、历年照片、道具、站位和动作。仅凭“红脸”“黑脸”猜人物，可靠度最低。</p>
+          <button data-query="如何根据照片辨认英歌角色？">查看视觉辨识方法</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="timeline-section" id="timeline" aria-labelledby="timeline-title" data-chapter="heritage">
+      <div class="section-head">
+        <div><h2 id="timeline-title">从“相传”到<br>有据可循</h2><p>历史叙述需要区分地方传说、名录表述与连续文献。这里展示证据层级，不把多种观点压成一条单一起源线。</p></div>
+      </div>
+      <ol class="timeline">
+        <li class="reveal"><time>传统记忆</time><b>相传三百余年</b><p>重要的社区历史表达，不等同于完整连续的文献证明。</p></li>
+        <li class="reveal"><time>地方文献</time><b>多种源流解释</b><p>水浒叙事、尚武传统、秧歌与傩文化等观点并存。</p></li>
+        <li class="reveal"><time>2006</time><b>列入首批国家级非遗</b><p>“英歌（普宁英歌、潮阳英歌）”，项目编号Ⅲ-8。</p></li>
+        <li class="reveal"><time>当代</time><b>新的传承现场</b><p>女子、少儿、校园与海外传播不断拓展英歌的实践边界。</p></li>
+      </ol>
+    </section>
+
+    <section class="facts-section" aria-labelledby="facts-title">
+      <div class="facts-heading">
+        <h2 id="facts-title">这些说法，<br>先别急着相信</h2>
+        <p>面对“唯一、正宗、最早、固定人数”等说法，先问清它适用于哪个地区、哪支队伍、什么年代，以及证据来自哪里。</p>
+      </div>
+      <div class="myth-list">
+        <details>
+          <summary><span>英歌必须由108人表演？</span><i></i></summary>
+          <div><p>不是。国家名录资料记载舞者多为双数，少则12人、多至108人。实际人数还受队伍传统、道路和舞台条件影响。</p><button data-query="英歌为什么不一定是108人？">继续追问</button></div>
+        </details>
+        <details>
+          <summary><span>快板只属于普宁，慢板只属于潮阳？</span><i></i></summary>
+          <div><p>这是过度简化。潮阳名录资料本身就记载慢板、中板和快板并存，普宁内部也有多种速度与队伍风格。</p><button data-query="快板、中板、慢板和地域是什么关系？">继续追问</button></div>
+        </details>
+        <details>
+          <summary><span>红脸一定是关胜，黑脸一定是李逵？</span><i></i></summary>
+          <div><p>不能这样判断。英歌脸谱受人物、村落审美、师承和绘脸体系影响，必须结合队伍资料、站位、道具和动作。</p><button data-query="英歌脸谱颜色能直接对应人物吗？">继续追问</button></div>
+        </details>
+        <details>
+          <summary><span>所有英歌都有固定的三棚结构？</span><i></i></summary>
+          <div><p>不是。权威名录常见“前棚、后棚”的概括；部分材料有其他分段，现代演出也经常压缩或省略后棚。</p><button data-query="前棚中棚后棚是统一结构吗？">继续追问</button></div>
+        </details>
+        <details>
+          <summary><span>某一个村就是唯一发源地？</span><i></i></summary>
+          <div><p>不同地方可能有自己的发源地叙述。若缺少连续文献、谱系和多方研究，不宜认定唯一答案。</p><button data-query="怎样判断英歌发源地说法是否可靠？">继续追问</button></div>
+        </details>
+      </div>
+      <aside class="evidence-ladder" aria-label="英歌知识来源等级">
+        <h3>证据如何排序</h3>
+        <ol>
+          <li><b>A</b><span>政府、国家非遗名录、保护单位</span></li>
+          <li><b>B</b><span>地方志、学术专著、论文与正式调查</span></li>
+          <li><b>C</b><span>传承人访谈、队伍资料、文化馆记录</span></li>
+          <li><b>D</b><span>新闻、自媒体、短视频与商业宣传</span></li>
+        </ol>
+        <p>A、B级通常优先；具体队伍自己的套路与角色解释，以该队的一手材料为准，但不能扩大到所有英歌。</p>
+      </aside>
+    </section>
+
+    <section class="agent-banner" data-chapter="agent">
+      <div class="agent-mascot-small"><img src="./assets/yingge-mascot.webp" width="444" height="827" loading="lazy" alt=""></div>
+      <div>
+         <span class="agent-label">英歌知识智能体</span>
+        <h2>别带着疑问离场。<br>让家雀陪你查。</h2>
+        <p>知识库覆盖历史、队伍、角色、动作、锣鼓、传承与当代实践，回答附真实来源和适用边界。</p>
+      </div>
+      <button class="agent-cta" data-open-agent><span>开始对话</span><b>问家雀</b><i>↗</i></button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand footer-brand"><span class="brand-mark">英</span><span><b>英歌有意思</b><small>数字文化志</small></span></div>
+    <p>尊重地方差异，坚持证据分层，让传统被准确地看见。</p>
+    <a href="#top">回到顶部 ↑</a>
+  </footer>
+
+  <div class="desktop-pet" id="desktop-pet" data-side="right" data-state="idle">
+    <div class="pet-bubble" role="status" aria-live="polite">
+      <button type="button" data-pet-dismiss aria-label="关闭家雀气泡">×</button>
+      <b id="pet-bubble-title">家雀有话说</b>
+      <p id="pet-bubble-text">英歌不一定要108人，具体要看队伍和场地。</p>
+    </div>
+    <div class="pet-actions" aria-label="家雀快捷动作">
+      <button type="button" data-pet-action="ask">问我</button>
+      <button type="button" data-pet-action="drum">敲槌</button>
+      <button type="button" data-pet-action="pose">换动作</button>
+      <button type="button" data-pet-action="side">换边</button>
+    </div>
+    <button class="pet-main" id="pet-main" type="button" aria-label="和英歌家雀互动" aria-expanded="false">
+      <span class="pet-sprite" id="pet-sprite" role="img" aria-label="正在呼吸待机的英歌家雀"></span>
+    </button>
+  </div>
+
+  <aside class="agent-panel" aria-hidden="true" aria-label="英歌知识智能体">
+    <div class="agent-backdrop" data-close-agent></div>
+    <div class="agent-shell" role="dialog" aria-modal="true" aria-labelledby="agent-title">
+      <header>
+        <div class="agent-avatar"><img src="./assets/yingge-mascot.webp" width="444" height="827" alt=""></div>
+        <div><b id="agent-title">英歌家雀</b><span id="knowledge-status"><i></i> 知识库载入中</span></div>
+        <div class="agent-header-actions">
+          <button class="new-chat-button" type="button" data-new-chat title="开启新对话">新对话</button>
+          <button data-close-agent aria-label="关闭对话">×</button>
+        </div>
+      </header>
+      <div class="chat-log" id="chat-log" aria-live="polite">
+        <div class="message assistant">
+          <p>好势！我是英歌家雀。关于历史、队伍、脸谱、动作、锣鼓和非遗保护，都可以问我。</p>
+          <span>回答会注明知识来源；实时活动需要另行核实。</span>
+        </div>
+        <div class="suggestions">
+          <button>英歌为什么要敲槌？</button>
+          <button>一定要108人吗？</button>
+          <button>普宁和潮阳有什么不同？</button>
+        </div>
+      </div>
+      <form id="chat-form">
+        <label for="chat-input">向家雀提问</label>
+        <textarea id="chat-input" rows="1" maxlength="200" placeholder="例如：英歌的脸谱有什么讲究？"></textarea>
+        <button type="submit" aria-label="发送问题">↑</button>
+      </form>
+       <p class="agent-disclaimer">内容来自英歌知识库。实时活动请以权威发布为准。</p>
+    </div>
+  </aside>
+
+  <script src="./vendor/gsap.min.js"></script>
+  <script src="./vendor/ScrollTrigger.min.js"></script>
+  <script src="./app.js?v=20260820-1" defer></script>
+  <script src="./site-v2.js?v=20260808-3" defer></script>
+  <script src="./site-v3.js?v=20260812-5" defer></script>
+  <script src="./site-v6.js?v=20260814-1" defer></script>
+    <script src="./site-v7.js?v=20260822-6" defer></script>
+    <script src="./site-v8.js?v=20260823-2" defer></script>
+  <script type="module" src="./three-scenes.js?v=20260813-3"></script>
+</body>
+</html>

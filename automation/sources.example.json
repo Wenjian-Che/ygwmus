@@ -1,0 +1,20 @@
+[
+  {
+    "id": "official-ichina-feed",
+    "publisher": "中国非物质文化遗产网",
+    "grade": "A",
+    "type": "rss",
+    "url": "",
+    "enabled": false,
+    "notes": "填入可公开访问的官方 RSS 或 JSON Feed；没有 Feed 时不要伪造地址。"
+  },
+  {
+    "id": "local-culture-feed",
+    "publisher": "地方文旅部门",
+    "grade": "A",
+    "type": "rss",
+    "url": "",
+    "enabled": false,
+    "notes": "按地区增加汕头、汕尾、揭阳等官方 Feed。"
+  }
+]

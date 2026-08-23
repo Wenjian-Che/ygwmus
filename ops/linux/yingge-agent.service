@@ -1,0 +1,27 @@
+[Unit]
+Description=Yingge Culture Agent API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=yingge
+Group=yingge
+WorkingDirectory=/opt/yingge
+EnvironmentFile=/etc/yingge/agent.env
+ExecStart=/usr/bin/node /opt/yingge/backend/server.mjs
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+KillSignal=SIGINT
+UMask=0027
+
+# The service only needs to write runtime data and reviewed knowledge updates.
+ReadWritePaths=/opt/yingge/backend /opt/yingge/agent/generated /opt/yingge/automation /opt/yingge/backups /opt/yingge/web/data /opt/yingge/84_审核通过知识补充.md
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

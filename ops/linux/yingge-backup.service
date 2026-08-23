@@ -1,0 +1,6 @@
+[Unit]
+Description=Back up Yingge Culture Agent data
+
+[Service]
+Type=oneshot
+ExecStart=/opt/yingge/ops/linux/backup.sh

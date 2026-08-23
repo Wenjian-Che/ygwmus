@@ -1,0 +1,68 @@
+# Secrets and private deployment material
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+*.pem
+*.key
+**/authorized_keys
+**/*secret*
+**/*token*
+**/*password*
+
+# Dependencies and build output
+node_modules/
+**/node_modules/
+.pnpm-store/
+**/.pnpm-store/
+.next/
+**/.next/
+.open-next/
+**/.open-next/
+dist/
+**/dist/
+coverage/
+**/coverage/
+
+# Logs, caches, backups and local runtime files
+*.log
+backups/
+**/.backups/
+tmp/
+**/tmp/
+.cache/
+**/.cache/
+*.pid
+*.pid.lock
+
+# Local editor / agent metadata
+.obsidian/
+.agents/
+.codex/
+.vscode/
+
+# Temporary visual audits and deployment bundles
+web/*.zip
+web/*-audit.cjs
+web/*-audit.png
+web/*-preview.png
+web/.playwright/
+
+web/.edge-audit/
+sites-app/
+
+
+# Generated visual audits and local browser profiles
+**/__pycache__/
+web/audit-*.png
+web/graph-*.png
+web/black-check*.png
+web/character-preview-*.png
+web/map-annotation-check.png
+web/public-atlas-scene*.png
+web/remote-atlas-current.png
+web/.edge-audit/
+.tmp-map-*.jpg
+production/video-input/output/

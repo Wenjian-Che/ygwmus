@@ -1,0 +1,18 @@
+[Unit]
+Description=Discover and evaluate daily Yingge knowledge candidates
+After=network-online.target yingge-agent.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=yingge
+Group=yingge
+WorkingDirectory=/opt/yingge
+EnvironmentFile=/etc/yingge/agent.env
+ExecStart=/opt/yingge/ops/linux/daily-refresh.sh
+UMask=0027
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/opt/yingge/backend /opt/yingge/agent/generated /opt/yingge/automation

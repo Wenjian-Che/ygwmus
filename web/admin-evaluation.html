@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>英歌智能体 · 回答质量评测</title>
+  <link rel="icon" href="./assets/yingge-mascot.webp" type="image/webp">
+  <link rel="stylesheet" href="./admin.css">
+  <style>
+    .eval-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;padding:48px 3px 30px}.eval-hero h1{margin:10px 0 8px;color:var(--navy);font:700 clamp(34px,4vw,52px)/1 Georgia,"Songti SC",serif}.eval-hero p{max-width:620px;margin:0;color:var(--muted);font-size:13px}.eval-actions{display:flex;gap:9px;align-items:center}.eval-actions select{border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);padding:10px 12px}.eval-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.eval-card{padding:17px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}.eval-card b{display:block;color:var(--navy);font-size:28px}.eval-card span{color:var(--muted);font-size:11px}.eval-card.good b{color:var(--green)}.eval-card.warn b{color:var(--gold)}.eval-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:18px}.eval-panel{padding:22px;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow)}.eval-panel h2{margin:0 0 15px;color:var(--navy);font:700 22px Georgia,"Songti SC",serif}.eval-table{width:100%;border-collapse:collapse;font-size:11px}.eval-table th,.eval-table td{padding:10px 8px;border-bottom:1px solid #edf0f3;text-align:left;vertical-align:top}.eval-table th{color:#7c8995;font-size:10px;letter-spacing:.06em}.eval-table td:first-child{color:var(--red);font-weight:800}.eval-table td:last-child{color:var(--muted)}.eval-note{padding:12px 14px;border-left:3px solid var(--gold);background:#fff8eb;color:#755b36;font-size:12px;line-height:1.7}.eval-status{margin-top:12px;color:var(--muted);font-size:11px}.eval-empty{color:#8b98a5;font-size:12px;padding:12px 0}@media(max-width:900px){.eval-grid{grid-template-columns:repeat(3,1fr)}.eval-layout{grid-template-columns:1fr}}@media(max-width:600px){.eval-hero{display:block;padding-top:30px}.eval-actions{margin-top:18px}.eval-grid{grid-template-columns:repeat(2,1fr)}.eval-panel{padding:16px}.admin-main{padding-left:16px;padding-right:16px}}
+    .answer-result{border-top:1px solid #edf0f3;padding:12px 0}.answer-result:first-child{border-top:0}.answer-result summary{cursor:pointer;color:var(--navy);font-size:12px;display:flex;gap:10px;justify-content:space-between}.answer-result .score{color:var(--red);font-weight:800}.answer-copy{margin:10px 0 0;padding:12px;background:#fbfcfd;border-radius:7px;color:#536170;font-size:12px;line-height:1.8;white-space:normal}.answer-flags{color:#9a6b26;font-size:11px;margin-top:8px}.readiness-checks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}.readiness-check{padding:12px;border-radius:8px;background:#f7f9fb;border:1px solid #e8edf2}.readiness-check b{display:block;font-size:17px;color:var(--navy)}.readiness-check span{font-size:10px;color:var(--muted)}.readiness-check.pass{border-color:#b8dec9;background:#f2fbf5}.readiness-check.pass b{color:var(--green)}.readiness-check.fail{border-color:#f0c4bd;background:#fff7f5}.readiness-check.fail b{color:var(--red)}@media(max-width:900px){.readiness-checks{grid-template-columns:repeat(3,1fr)}}@media(max-width:600px){.readiness-checks{grid-template-columns:repeat(2,1fr)}}
+    #answer-metrics{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+  </style>
+</head>
+<body>
+  <div class="admin-app">
+    <aside class="admin-sidebar">
+      <a class="brand" href="./"><span class="brand-mark">英</span><span><b>英歌智能体</b><small>CONTROL PLANE</small></span></a>
+      <div class="sidebar-caption">管理导航</div>
+      <nav class="sidebar-nav">
+        <a href="./admin.html"><span class="nav-icon">⌂</span>总览</a>
+        <a href="./admin-provider.html"><span class="nav-icon">◉</span>模型接入</a>
+        <a href="./admin-knowledge.html"><span class="nav-icon">✦</span>知识运营</a>
+        <a class="active" href="./admin-evaluation.html"><span class="nav-icon">✓</span>质量评测</a>
+        <a href="./admin-apps.html"><span class="nav-icon">▦</span>应用与监控</a>
+      </nav>
+      <div class="sidebar-footer"><a class="back-link" href="./">← 回到英歌文化志</a><div class="sidebar-status"><i></i><span id="sidebar-status-text">正在检查接口</span></div></div>
+    </aside>
+    <main class="admin-main">
+      <header class="topbar"><div class="breadcrumb"><span>英歌智能体</span><b>/</b><strong>回答质量评测</strong></div><div class="topbar-actions"><span class="knowledge-version" id="version-text">知识库版本读取中…</span><div class="status-pill" id="health-pill"><i></i><span>正在检查接口</span></div><span class="top-avatar">英</span></div></header>
+      <section class="eval-hero"><div><p class="eyebrow">AGENT EVALUATION / RETRIEVAL QA</p><h1>回答质量评测</h1><p>先用 97 条标准问题检查检索与边界路由，再用 20 条黄金问题真实调用模型，验证回答是否切题、准确、有证据且不过度泛化。</p></div><div class="eval-actions"><select id="eval-limit" aria-label="检索条数"><option value="6">Top 6 证据</option><option value="8">Top 8 证据</option></select><button class="button primary" id="run-eval">运行评测</button></div></section>
+      <section class="eval-grid" id="eval-metrics"><div class="eval-card"><b>—</b><span>Recall@1</span></div><div class="eval-card"><b>—</b><span>Recall@3</span></div><div class="eval-card"><b>—</b><span>Recall@6</span></div><div class="eval-card"><b>—</b><span>必备词覆盖</span></div><div class="eval-card"><b>—</b><span>路由准确率</span></div></section>
+      <div class="eval-layout"><section class="eval-panel"><h2>未召回问题</h2><div id="eval-misses" class="eval-empty">点击“运行评测”查看结果</div></section><section class="eval-panel"><h2>评测说明</h2><div class="eval-note">Recall@6 表示前 6 个证据中至少命中一个预期知识文件。必备词覆盖检查回答所需的关键事实是否进入证据上下文；它们不是模型生成后的字数指标。</div><div id="eval-status" class="eval-status">尚未运行</div></section></div>
+      <section class="eval-panel" style="margin-top:18px"><h2>评测历史</h2><div id="eval-history" class="eval-empty">暂无快照</div></section>
+      <section class="eval-panel" style="margin-top:18px"><div class="panel-heading"><div><p class="eyebrow">GOLDEN ANSWER REGRESSION</p><h2>黄金回答真实回归</h2></div><span class="section-badge" id="answer-eval-badge">未运行</span></div><div class="eval-note" style="margin-bottom:14px">20 题覆盖因果机制、地域比较、起源辨析、非遗级别、队伍个案、阵形、听觉机制、多模态边界和实时信息。每题真实调用模型，并检查开头切题、关键事实、证据编号、必要边界、长度、重复与错误泛化。</div><div class="eval-actions" style="margin-bottom:14px"><select id="answer-eval-limit" aria-label="回答质检题数"><option value="4">前 4 题</option><option value="8">前 8 题</option><option value="12">前 12 题</option><option value="20" selected>完整 20 题</option></select><button class="button ghost" id="run-answer-eval">运行黄金回归</button></div><section class="eval-grid" id="answer-metrics"><div class="eval-card"><b>—</b><span>平均分</span></div><div class="eval-card"><b>—</b><span>通过率</span></div><div class="eval-card"><b>—</b><span>开头切题率</span></div><div class="eval-card"><b>—</b><span>证据完整率</span></div><div class="eval-card"><b>—</b><span>边界合格率</span></div><div class="eval-card"><b>—</b><span>错误泛化规避</span></div></section><div id="answer-status" class="eval-status">选择题数后手动运行；不会在打开页面时自动消耗模型额度。</div><div id="answer-results" class="eval-empty">尚未生成黄金回答回归结果</div></section>
+      <footer class="admin-footer">英歌有意思 · 智能体质量控制<span>证据优先，持续回归</span></footer>
+      <section class="eval-panel readiness-panel" style="margin-top:18px"><div class="panel-heading"><div><p class="eyebrow">RELEASE GATE</p><h2>上线前质量门禁</h2></div><span class="section-badge" id="readiness-badge">检查中</span></div><div id="readiness-summary" class="eval-status">正在汇总检索与模型质检结果…</div><div id="readiness-checks" class="readiness-checks"></div></section>
+      <section class="eval-panel" style="margin-top:18px"><div class="panel-heading"><div><p class="eyebrow">AUTOMATION MONITOR</p><h2>每日回归记录</h2></div><span class="section-badge" id="automation-badge">读取中</span></div><div id="automation-summary" class="eval-status">正在读取 daily_quality_runs.jsonl…</div><div id="automation-history" class="eval-empty">暂无自动回归记录</div></section>
+    </main>
+  </div>
+  <script src="./admin.js"></script>
+  <script src="./admin-evaluation.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "yingge-digital-archive",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "three": "^0.180.0"
+  }
+}
