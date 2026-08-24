@@ -290,3 +290,8 @@
 @media (prefers-reduced-motion:reduce){.provenance-strip .provenance-token{opacity:1!important;transform:none!important}}
 
 .provenance-strip dt{font-size:clamp(38px,4.7vw,72px)}
+
+/* V8.4 · the structure rail is a gesture surface, not a button carousel */
+.structure-slider-viewport{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.structure-slider.is-dragging .structure-slider-viewport{cursor:grabbing}
+.structure-slider.is-dragging .structure-flow-track{will-change:transform}

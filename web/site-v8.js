@@ -180,6 +180,7 @@
           let progressTween = null;
           let paused = false;
           let inView = false;
+          let drag = null;
 
           const measure = () => {
             step = slides[0].getBoundingClientRect().height;
@@ -255,6 +256,72 @@
             schedule();
           };
 
+          const settleAfterDrag = direction => {
+            if (!drag) return;
+            const currentY = Number(gsap.getProperty(track, "y")) || -cursor * step;
+            drag = null;
+            structureSlider.classList.remove("is-dragging");
+            if (direction) {
+              move(direction);
+              return;
+            }
+            tween = gsap.to(track, {
+              y: -cursor * step,
+              duration: .46,
+              ease: "power3.out",
+              overwrite: true,
+              onComplete: () => {
+                tween = null;
+                resume();
+              }
+            });
+            // Keep the current transform until the settle tween renders; this
+            // avoids a one-frame snap when a short swipe is released.
+            gsap.set(track, { y: currentY });
+          };
+
+          const onPointerDown = event => {
+            if (event.pointerType === "mouse" && event.button !== 0) return;
+            if (event.target.closest("button, a")) return;
+            measure();
+            tween?.kill();
+            tween = null;
+            autoCall?.kill();
+            autoCall = null;
+            progressTween?.pause();
+            drag = {
+              id: event.pointerId,
+              startY: event.clientY,
+              lastY: event.clientY,
+              delta: 0,
+              velocity: 0,
+              baseY: Number(gsap.getProperty(track, "y")) || -cursor * step,
+              moved: false
+            };
+            viewport.setPointerCapture?.(event.pointerId);
+            structureSlider.classList.add("is-dragging");
+          };
+          const onPointerMove = event => {
+            if (!drag || event.pointerId !== drag.id) return;
+            const delta = event.clientY - drag.startY;
+            const increment = event.clientY - drag.lastY;
+            drag.delta = delta;
+            drag.velocity = increment;
+            drag.lastY = event.clientY;
+            if (Math.abs(delta) > 4) drag.moved = true;
+            if (!drag.moved) return;
+            event.preventDefault();
+            gsap.set(track, { y: drag.baseY + delta });
+          };
+          const onPointerUp = event => {
+            if (!drag || event.pointerId !== drag.id) return;
+            const threshold = Math.max(42, step * .16);
+            const direction = drag.delta < -threshold || drag.velocity < -7 ? 1
+              : drag.delta > threshold || drag.velocity > 7 ? -1 : 0;
+            viewport.releasePointerCapture?.(event.pointerId);
+            settleAfterDrag(direction);
+          };
+
           measure();
           gsap.set(track, { y: -cursor * step });
           setActive();
@@ -275,8 +342,22 @@
               schedule();
             }
           });
+          listen(viewport, "pointerdown", onPointerDown);
+          listen(viewport, "pointermove", onPointerMove, { passive: false });
+          listen(viewport, "pointerup", onPointerUp);
+          listen(viewport, "pointercancel", event => {
+            if (!drag || event.pointerId !== drag.id) return;
+            viewport.releasePointerCapture?.(event.pointerId);
+            settleAfterDrag(0);
+          });
+          listen(viewport, "wheel", event => {
+            if (Math.abs(event.deltaY) <= Math.abs(event.deltaX) || Math.abs(event.deltaY) < 16) return;
+            event.preventDefault();
+            hold();
+            move(event.deltaY > 0 ? 1 : -1);
+          }, { passive: false });
           listen(structureSlider, "pointerenter", hold);
-          listen(structureSlider, "pointerleave", resume);
+          listen(structureSlider, "pointerleave", () => { if (!drag) resume(); });
           listen(structureSlider, "focusin", hold);
           listen(structureSlider, "focusout", event => {
             if (!structureSlider.contains(event.relatedTarget)) resume();
