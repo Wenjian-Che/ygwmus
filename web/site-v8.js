@@ -584,3 +584,55 @@
   window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
   window.addEventListener('pagehide', () => { trigger.kill(); timeline.kill(); }, { once: true });
 })();
+
+/* V8.7 · agent headline director
+   The headline is already grouped semantically in HTML, so the animation
+   reveals four complete Chinese phrases rather than scrambling characters. */
+(() => {
+  const { gsap, ScrollTrigger } = window;
+  const root = document.querySelector('.agent-banner');
+  if (!gsap || !ScrollTrigger || !root || root.dataset.agentHeadlineMotionReady === 'true') return;
+  root.dataset.agentHeadlineMotionReady = 'true';
+
+  const label = root.querySelector('.agent-label');
+  const lines = [...root.querySelectorAll('.agent-headline-line')];
+  const description = root.querySelector(':scope > div:nth-child(2) > p');
+  const cta = root.querySelector('.agent-cta');
+  if (!lines.length) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
+  const timeline = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  gsap.set(lines, { yPercent: 112, rotateX: -14, autoAlpha: 0, transformOrigin: '0% 100%' });
+  if (label) gsap.set(label, { y: 14, autoAlpha: 0 });
+  if (description) gsap.set(description, { y: 16, autoAlpha: 0 });
+  if (cta) gsap.set(cta, { scale: .9, rotation: -5, autoAlpha: 0, transformOrigin: '50% 50%' });
+
+  timeline
+    .to(label, { y: 0, autoAlpha: 1, duration: .42 }, 0)
+    .to(lines, {
+      yPercent: 0,
+      rotateX: 0,
+      autoAlpha: 1,
+      duration: .78,
+      stagger: .09,
+      ease: 'expo.out'
+    }, .08)
+    .to(description, { y: 0, autoAlpha: .78, duration: .52, ease: 'power3.out' }, .48)
+    .to(cta, { scale: 1, rotation: 0, autoAlpha: 1, duration: .72, ease: 'back.out(1.35)' }, .22);
+
+  const trigger = ScrollTrigger.create({
+    trigger: root,
+    start: 'top 78%',
+    once: true,
+    invalidateOnRefresh: true,
+    onEnter: () => timeline.play(0)
+  });
+
+  const cleanup = () => {
+    trigger.kill();
+    timeline.kill();
+  };
+  window.addEventListener('pagehide', cleanup, { once: true });
+})();

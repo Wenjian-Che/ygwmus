@@ -373,3 +373,128 @@
   .chapter-rail,
   .chapter-rail a span { transition: none; }
 }
+
+/* V8.7 · agent headline: a four-beat editorial lockup instead of an
+   accidental browser wrap. The line masks give GSAP a clean reveal surface. */
+.agent-banner > div:nth-child(2) { min-width: 0; }
+.agent-banner .agent-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.agent-banner .agent-label::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  flex: 0 0 auto;
+  background: currentColor;
+  opacity: .62;
+}
+.agent-headline {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  max-width: none !important;
+  margin: 0;
+  font-size: clamp(52px, 5.8vw, 88px) !important;
+  line-height: .92 !important;
+  letter-spacing: -.065em !important;
+  text-wrap: nowrap !important;
+  text-wrap: nowrap;
+  font-kerning: normal;
+}
+.agent-headline-mask {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: clip;
+  padding: .02em .04em .08em 0;
+}
+.agent-headline-line {
+  display: block;
+  width: max-content;
+  transform-origin: 0% 100%;
+  will-change: transform, opacity;
+}
+.agent-headline-accent { color: #f3c680; }
+.agent-banner > div:nth-child(2) > p {
+  max-width: 36em;
+  margin-top: 28px;
+  line-height: 1.75;
+}
+
+@media (min-width: 1101px) {
+  .agent-banner {
+    grid-template-columns: minmax(260px, .78fr) minmax(470px, 1.32fr) minmax(190px, .58fr);
+    gap: clamp(28px, 3vw, 52px);
+  }
+}
+
+/* Between tablet and desktop, let the copy own the wide left field while the
+   mascot becomes a quiet watermark. This prevents a 900–1100px viewport from
+   squeezing Chinese glyphs into accidental extra lines. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .agent-banner {
+    grid-template-columns: minmax(0, 1fr) minmax(170px, 22vw);
+    gap: clamp(24px, 4vw, 42px);
+    padding-inline: clamp(34px, 7vw, 84px);
+  }
+  .agent-banner > div:nth-child(2) { grid-column: 1; }
+  .agent-banner .agent-mascot-small {
+    position: absolute;
+    left: -7%;
+    bottom: 0;
+    width: 38%;
+    height: 100%;
+    opacity: .14;
+    pointer-events: none;
+  }
+  .agent-banner .agent-cta {
+    grid-column: 2;
+    width: min(190px, 22vw);
+    height: auto;
+    aspect-ratio: 1;
+    justify-self: end;
+  }
+  .agent-headline { font-size: clamp(48px, 5.8vw, 74px) !important; }
+}
+
+@media (min-width: 621px) and (max-width: 900px) {
+  .agent-banner {
+    grid-template-columns: minmax(0, 1fr) 160px;
+    gap: 28px;
+    padding: 72px 36px 0;
+  }
+  .agent-banner > div:nth-child(2) { grid-column: 1; }
+  .agent-banner .agent-mascot-small {
+    position: absolute;
+    left: -8%;
+    bottom: 0;
+    width: 42%;
+    height: 100%;
+    opacity: .12;
+    pointer-events: none;
+  }
+  .agent-banner .agent-cta {
+    grid-column: 2;
+    width: 150px;
+    height: 150px;
+    justify-self: end;
+  }
+  .agent-headline { font-size: clamp(46px, 8vw, 68px) !important; }
+}
+
+@media (max-width: 620px) {
+  .agent-banner { text-align: left; }
+  .agent-banner .agent-label { margin-bottom: 14px; }
+  .agent-headline {
+    font-size: clamp(44px, 12.4vw, 72px) !important;
+    line-height: .94 !important;
+  }
+  .agent-banner > div:nth-child(2) > p { max-width: 28em; margin-top: 24px; }
+  .agent-banner .agent-cta { margin: 30px 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-headline-line { will-change: auto; }
+}
