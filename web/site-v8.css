@@ -498,3 +498,410 @@
 @media (prefers-reduced-motion: reduce) {
   .agent-headline-line { will-change: auto; }
 }
+
+
+/* ================================================================
+   V8.8 — 绯红 × 湛蓝：国风色彩系统与全局视觉收口
+   ================================================================ */
+:root {
+  --cn-vermilion: #a55d51;
+  --cn-vermilion-deep: #743b37;
+  --cn-vermilion-bright: #c87363;
+  --cn-indigo: #1f3b54;
+  --cn-indigo-deep: #0b1d2a;
+  --cn-indigo-soft: #2e5872;
+  --cn-paper: #eee7d8;
+  --cn-paper-deep: #d5cab6;
+  --cn-ink: #09151e;
+  --cn-gold: #c6a66b;
+  --v3-red: var(--cn-vermilion);
+  --v3-red-deep: var(--cn-vermilion-deep);
+  --v3-gold: var(--cn-gold);
+  --v3-paper: var(--cn-paper);
+  --v3-bg: var(--cn-indigo-deep);
+  --v3-bg-deep: #07131b;
+  --stage: var(--cn-indigo-deep);
+  --surface: #102b3d;
+  --surface-2: #17384c;
+  --surface2: #17384c;
+  --text: #f3eddf;
+  --muted: #aeb8b8;
+  --red: var(--cn-vermilion);
+  --gold: var(--cn-gold);
+}
+
+html,
+body {
+  background: var(--cn-ink);
+  color: var(--cn-paper);
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 84% 8%, rgba(46, 88, 114, 0.18), transparent 31rem),
+    radial-gradient(circle at 8% 42%, rgba(165, 93, 81, 0.09), transparent 28rem);
+}
+
+::selection {
+  color: var(--cn-paper);
+  background: rgba(165, 93, 81, 0.82);
+}
+
+.site-header,
+.topbar,
+.chapter-rail,
+.chapter-nav,
+.floating-nav {
+  border-color: rgba(198, 166, 107, 0.22);
+  background-color: rgba(9, 29, 42, 0.88);
+  box-shadow: 0 18px 55px rgba(3, 12, 18, 0.22);
+  backdrop-filter: blur(18px) saturate(118%);
+}
+
+.chapter-rail::before,
+.chapter-nav::before {
+  background: linear-gradient(180deg, var(--cn-vermilion), var(--cn-gold));
+}
+
+.chapter-rail a:hover,
+.chapter-rail a:focus-visible,
+.chapter-rail a.is-active,
+.chapter-nav a:hover,
+.chapter-nav a.is-active {
+  color: var(--cn-paper);
+}
+
+.chapter-rail a.is-active,
+.chapter-nav a.is-active {
+  background: linear-gradient(90deg, rgba(165, 93, 81, 0.22), transparent 88%);
+}
+
+.stage,
+.impact,
+.formation-stage,
+.formation-lab,
+.role-atlas,
+.living-archive,
+.mechanism-section,
+.rhythm-section,
+.watch-section,
+.motion-score,
+.knowledge-section,
+.knowledge-atlas,
+.field-notes,
+.evidence-section {
+  background-color: var(--cn-indigo-deep);
+}
+
+.stage::before,
+.impact::before,
+.formation-stage::before,
+.role-atlas::before,
+.living-archive::before,
+.mechanism-section::before,
+.rhythm-section::before {
+  background-image:
+    radial-gradient(circle at 78% 22%, rgba(46, 88, 114, 0.2), transparent 34rem),
+    radial-gradient(circle at 16% 70%, rgba(165, 93, 81, 0.1), transparent 28rem);
+}
+
+.impact-card,
+.formation-card,
+.mechanism-card,
+.rhythm-card,
+.archive-card,
+.role-card,
+.fact-card,
+.evidence-card,
+.watch-card,
+.field-note,
+.source-card {
+  border-color: rgba(198, 166, 107, 0.22);
+}
+
+.impact-card:hover,
+.formation-card:hover,
+.mechanism-card:hover,
+.rhythm-card:hover,
+.archive-card:hover,
+.role-card:hover,
+.watch-card:hover {
+  border-color: rgba(200, 115, 99, 0.62);
+  box-shadow: 0 24px 70px rgba(3, 16, 24, 0.32);
+}
+
+.eyebrow,
+.kicker,
+.section-label,
+.archive-label,
+.role-kicker,
+.agent-label,
+.chapter-index,
+.data-label {
+  color: var(--cn-gold);
+}
+
+.btn-primary,
+.primary-button,
+.agent-open,
+.agent-launch,
+.active-pill,
+button.is-active,
+.tab.is-active {
+  color: var(--cn-paper);
+  background: var(--cn-vermilion);
+  border-color: var(--cn-vermilion);
+}
+
+.btn-primary:hover,
+.primary-button:hover,
+.agent-open:hover,
+.agent-launch:hover {
+  background: var(--cn-vermilion-bright);
+  border-color: var(--cn-vermilion-bright);
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--cn-gold);
+  outline-offset: 4px;
+}
+
+.character-card,
+.role-card,
+.archive-card {
+  --card-accent: var(--cn-vermilion);
+  background-color: rgba(11, 29, 42, 0.76);
+}
+
+.character-card figure,
+.role-card figure,
+.archive-card figure,
+.character-card-media,
+.role-card-media {
+  background: linear-gradient(145deg, #f3eee4, #dcd2c0);
+}
+
+.character-card:hover,
+.character-card:focus-within,
+.role-card:hover,
+.archive-card:hover {
+  background-color: rgba(31, 59, 84, 0.9);
+}
+
+.provenance-strip,
+.facts-strip,
+.archive-proof,
+.data-provenance {
+  color: #172733;
+  background-color: var(--cn-paper);
+  background-image:
+    linear-gradient(rgba(31, 59, 84, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 59, 84, 0.045) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.provenance-strip h2,
+.provenance-strip h3,
+.facts-strip h2,
+.facts-strip h3,
+.archive-proof h2,
+.archive-proof h3,
+.data-provenance h2,
+.data-provenance h3 {
+  color: var(--cn-indigo-deep);
+}
+
+.provenance-strip p,
+.facts-strip p,
+.archive-proof p,
+.data-provenance p {
+  color: rgba(23, 39, 51, 0.72);
+}
+
+.agent-banner {
+  background:
+    radial-gradient(circle at 78% 35%, rgba(238, 231, 216, 0.12), transparent 19rem),
+    linear-gradient(112deg, var(--cn-vermilion-deep) 0 56%, var(--cn-indigo) 56% 100%);
+  border-top-color: rgba(198, 166, 107, 0.55);
+  border-bottom-color: rgba(198, 166, 107, 0.38);
+}
+
+.agent-banner::before {
+  border-color: rgba(238, 231, 216, 0.08);
+}
+
+.agent-headline-accent {
+  color: var(--cn-paper);
+  text-shadow: 0 0 30px rgba(198, 166, 107, 0.12);
+}
+
+.agent-cta {
+  color: var(--cn-indigo-deep);
+  background: var(--cn-paper);
+  border-color: rgba(198, 166, 107, 0.72);
+  box-shadow: 0 22px 70px rgba(4, 17, 25, 0.28);
+}
+
+.agent-cta:hover,
+.agent-cta:focus-visible {
+  color: var(--cn-paper);
+  background: var(--cn-indigo-deep);
+  border-color: var(--cn-gold);
+}
+
+.display-title,
+.hero-title,
+.section-title,
+.agent-headline,
+.archive-title,
+.impact-title,
+.formation-title {
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+
+@media (max-width: 760px) {
+  .agent-banner {
+    background:
+      radial-gradient(circle at 75% 18%, rgba(238, 231, 216, 0.1), transparent 15rem),
+      linear-gradient(155deg, var(--cn-vermilion-deep) 0 58%, var(--cn-indigo) 58% 100%);
+  }
+
+  .site-header,
+  .topbar,
+  .chapter-rail,
+  .chapter-nav,
+  .floating-nav {
+    background-color: rgba(9, 29, 42, 0.95);
+  }
+
+  .display-title,
+  .hero-title,
+  .section-title,
+  .agent-headline,
+  .archive-title,
+  .impact-title,
+  .formation-title {
+    max-width: 100%;
+    word-break: keep-all;
+  }
+}
+
+
+
+/* V8.8.1 — remove remaining neutral-black islands and inherit the full palette. */
+:root {
+  --v3-panel: #102b3d;
+  --v3-panel-2: #17384c;
+  --v3-ink: #f3eddf;
+  --v3-muted: #aeb8b8;
+  --v3-dim: #778a92;
+  --v3-chrome: #d5cab6;
+  --v3-line: rgba(198, 166, 107, 0.18);
+  --v3-line-strong: rgba(198, 166, 107, 0.34);
+  --surface-raised: #17384c;
+  --line: rgba(198, 166, 107, 0.18);
+  --red-bright: var(--cn-vermilion-bright);
+  --cyan: #789ba8;
+  --jade: #6f9288;
+}
+
+.hero,
+.impact-story,
+.formation-cinema {
+  background-color: var(--cn-indigo-deep) !important;
+}
+
+.hero-bg {
+  background-image:
+    linear-gradient(90deg, rgba(7, 19, 27, .98), rgba(11, 29, 42, .73) 35%, rgba(11, 29, 42, .04) 70%),
+    linear-gradient(0deg, var(--cn-indigo-deep), transparent 38%) !important;
+}
+
+.hero::after {
+  background:
+    radial-gradient(circle at 76% 48%, transparent 0 20%, rgba(31, 59, 84, .12) 57%, rgba(7, 19, 27, .72)),
+    linear-gradient(0deg, var(--cn-indigo-deep), transparent 26%) !important;
+}
+
+.impact-visual::after {
+  background: linear-gradient(90deg, transparent 60%, var(--cn-indigo-deep)) !important;
+}
+
+.formation-cinema-image::after {
+  background:
+    linear-gradient(90deg, rgba(7, 19, 27, .96), rgba(11, 29, 42, .7) 38%, rgba(11, 29, 42, .05) 76%),
+    linear-gradient(0deg, rgba(7, 19, 27, .72), transparent 30%) !important;
+}
+
+.agent-banner {
+  background:
+    radial-gradient(circle at 78% 35%, rgba(238, 231, 216, .12), transparent 19rem),
+    linear-gradient(112deg, var(--cn-vermilion-deep) 0 56%, var(--cn-indigo) 56% 100%) !important;
+}
+
+.agent-banner::before {
+  background: repeating-radial-gradient(circle at 16% 50%, transparent 0 47px, rgba(238, 231, 216, .06) 48px 49px);
+  border-color: rgba(238, 231, 216, .08);
+}
+
+.region-journey,
+.timeline-section,
+.facts-section,
+.roles-section,
+.structure-section {
+  background-color: var(--cn-indigo-deep) !important;
+}
+
+.evidence-ladder {
+  color: var(--cn-indigo-deep);
+  background: var(--cn-paper);
+  border-color: rgba(31, 59, 84, .14);
+}
+
+.evidence-ladder li b {
+  color: var(--cn-paper);
+  background: var(--cn-vermilion);
+}
+
+@media (max-width: 900px) {
+  .impact-visual::after {
+    background: linear-gradient(0deg, var(--cn-indigo-deep), transparent 42%) !important;
+  }
+
+  .formation-cinema-image::after {
+    background: linear-gradient(0deg, rgba(7, 19, 27, .98), rgba(11, 29, 42, .68) 52%, transparent 88%) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .agent-banner {
+    background:
+      radial-gradient(circle at 75% 18%, rgba(238, 231, 216, .1), transparent 15rem),
+      linear-gradient(155deg, var(--cn-vermilion-deep) 0 58%, var(--cn-indigo) 58% 100%) !important;
+  }
+}
+
+
+
+/* V8.8.2 — give the vermilion mechanism chapter depth without decorative noise. */
+.mechanism-section {
+  background:
+    radial-gradient(circle at 88% 16%, rgba(31, 59, 84, .24), transparent 34rem),
+    radial-gradient(circle at 10% 82%, rgba(198, 166, 107, .08), transparent 25rem),
+    repeating-linear-gradient(118deg, rgba(238, 231, 216, .018) 0 1px, transparent 1px 18px),
+    linear-gradient(135deg, #8f4d45 0%, var(--cn-vermilion-deep) 58%, #653734 100%) !important;
+}
+
+.mechanism-section .mechanism-steps article,
+.mechanism-section .mechanism-card {
+  border-color: rgba(238, 231, 216, .18);
+}
+
+.mechanism-section .mechanism-steps article:hover,
+.mechanism-section .mechanism-card:hover {
+  background: rgba(31, 59, 84, .14);
+  border-color: rgba(198, 166, 107, .42);
+}
