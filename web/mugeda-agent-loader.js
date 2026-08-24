@@ -17,8 +17,8 @@
     position: "right",
     mobileFullscreen: true,
     autoOpen: false,
-    primaryColor: "#b9362d",
-    darkColor: "#092743"
+    primaryColor: "#a55d51",
+    darkColor: "#1f3b54"
   };
 
   var loaderScript = document.currentScript;

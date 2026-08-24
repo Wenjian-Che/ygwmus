@@ -3,9 +3,9 @@ import { OrbitControls } from "./vendor/OrbitControls.js";
 
 const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = matchMedia("(pointer:fine)").matches;
-const red = 0xd7352c;
-const cyan = 0x8cc7d2;
-const ink = 0x0b0d0e;
+const red = 0xa55d51;
+const cyan = 0x789ba8;
+const ink = 0x0b1d2a;
 
 function rendererFor(canvas, alpha = true) {
   const renderer = new THREE.WebGLRenderer({ canvas, alpha, antialias: true, powerPreference: "high-performance" });
@@ -94,12 +94,12 @@ function initHero() {
     seeds[i] = Math.random();
   }
   geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  const particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xf2c47c, size: .115, transparent: true, opacity: .42, depthWrite: false, blending: THREE.AdditiveBlending }));
+  const particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xc6a66b, size: .115, transparent: true, opacity: .42, depthWrite: false, blending: THREE.AdditiveBlending }));
   scene.add(particles);
 
   const rings = new THREE.Group();
   for (let i = 0; i < 4; i++) {
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(6 + i * 3.2, .035, 6, 180), new THREE.MeshBasicMaterial({ color: i % 2 ? 0xe3ba78 : red, transparent: true, opacity: .2, blending: THREE.AdditiveBlending }));
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(6 + i * 3.2, .035, 6, 180), new THREE.MeshBasicMaterial({ color: i % 2 ? 0xc6a66b : red, transparent: true, opacity: .2, blending: THREE.AdditiveBlending }));
     ring.position.set(9, -1, -4 - i * 1.2);
     ring.rotation.x = .18;
     rings.add(ring);
@@ -108,14 +108,14 @@ function initHero() {
 
   const pulse = new THREE.Mesh(
     new THREE.RingGeometry(2.8, 3.02, 180),
-    new THREE.MeshBasicMaterial({ color: 0xf0b86f, transparent: true, opacity: .23, side: THREE.DoubleSide, blending: THREE.AdditiveBlending })
+    new THREE.MeshBasicMaterial({ color: 0xc6a66b, transparent: true, opacity: .23, side: THREE.DoubleSide, blending: THREE.AdditiveBlending })
   );
   pulse.position.set(9, -1, -1.8);
   scene.add(pulse);
 
   const streaks = new THREE.Group();
   for (let i = 0; i < 18; i++) {
-    const line = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, 3 + Math.random() * 8, 5), new THREE.MeshBasicMaterial({ color: i % 3 ? 0x75888d : red, transparent: true, opacity: .2 + Math.random() * .28 }));
+    const line = new THREE.Mesh(new THREE.CylinderGeometry(.025, .025, 3 + Math.random() * 8, 5), new THREE.MeshBasicMaterial({ color: i % 3 ? 0x789ba8 : red, transparent: true, opacity: .2 + Math.random() * .28 }));
     line.rotation.z = Math.PI / 2 + (Math.random() - .5) * .3;
     line.position.set(-6 + Math.random() * 34, -13 + Math.random() * 26, -9 + Math.random() * 12);
     streaks.add(line);
@@ -155,17 +155,17 @@ function initImpact() {
   scene.fog = new THREE.FogExp2(ink, .045);
   const camera = new THREE.PerspectiveCamera(38, 1, .1, 100);
   camera.position.set(0, 0, 28);
-  scene.add(new THREE.AmbientLight(0xb8c8cc, 1.2));
+  scene.add(new THREE.AmbientLight(0xd5cab6, 1.2));
   const key = new THREE.PointLight(0xffffff, 75, 50); key.position.set(-8, 10, 16); scene.add(key);
   const rim = new THREE.PointLight(red, 90, 40); rim.position.set(10, -5, 8); scene.add(rim);
 
-  const wood = new THREE.MeshStandardMaterial({ color: 0x8a4228, roughness: .48, metalness: .05 });
-  const cap = new THREE.MeshStandardMaterial({ color: 0xe9e7df, roughness: .65 });
+  const wood = new THREE.MeshStandardMaterial({ color: 0x70422f, roughness: .48, metalness: .05 });
+  const cap = new THREE.MeshStandardMaterial({ color: 0xeee7d8, roughness: .65 });
   const makeStick = () => {
     const group = new THREE.Group();
     const shaft = new THREE.Mesh(new THREE.CylinderGeometry(.58, .72, 11.5, 18), wood);
     const end = new THREE.Mesh(new THREE.CylinderGeometry(.6, .6, 1.7, 18), cap); end.position.y = 6.3;
-    const band = new THREE.Mesh(new THREE.CylinderGeometry(.63, .63, .24, 18), new THREE.MeshStandardMaterial({ color: 0xd4a34c, metalness: .65, roughness: .25 })); band.position.y = 5.34;
+    const band = new THREE.Mesh(new THREE.CylinderGeometry(.63, .63, .24, 18), new THREE.MeshStandardMaterial({ color: 0xc6a66b, metalness: .65, roughness: .25 })); band.position.y = 5.34;
     shaft.castShadow = true; group.add(shaft, end, band); return group;
   };
   const left = makeStick(), right = makeStick();
@@ -178,7 +178,7 @@ function initImpact() {
   const pCount = 180, pGeo = new THREE.BufferGeometry(), pPos = new Float32Array(pCount * 3), velocity = [];
   for (let i = 0; i < pCount; i++) velocity.push(new THREE.Vector3());
   pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3));
-  const sparks = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xf4d7c4, size: .095, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+  const sparks = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: 0xeee7d8, size: .095, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
   scene.add(sparks);
   let energy = 0, burst = 0;
   const strike = () => {
@@ -282,22 +282,22 @@ function initFormation() {
   const light = new THREE.PointLight(cyan, 150, 90); light.position.set(0, 22, 8); scene.add(light);
   const count = innerWidth < 700 ? 72 : 108;
   const geometry = new THREE.CylinderGeometry(.31, .31, .16, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xe44034, roughness: .34, metalness: .36, emissive: 0x74100d, emissiveIntensity: .95 });
+  const material = new THREE.MeshStandardMaterial({ color: 0xa55d51, roughness: .34, metalness: .36, emissive: 0x381c1a, emissiveIntensity: .95 });
   const nodes = new THREE.InstancedMesh(geometry, material, count);
   nodes.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(nodes);
   const ringGeometry = new THREE.TorusGeometry(.38, .045, 8, 28);
-  const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xd8dfdc, transparent: true, opacity: .8 });
+  const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xd5cab6, transparent: true, opacity: .8 });
   const rings = new THREE.InstancedMesh(ringGeometry, ringMaterial, count);
   rings.instanceMatrix.setUsage(THREE.DynamicDrawUsage); scene.add(rings);
   const trailPositions = new Float32Array((count - 1) * 6);
   const trailGeometry = new THREE.BufferGeometry();
   trailGeometry.setAttribute("position", new THREE.BufferAttribute(trailPositions, 3));
-  const trails = new THREE.LineSegments(trailGeometry, new THREE.LineBasicMaterial({ color: 0xb9c7c2, transparent: true, opacity: .1, depthWrite: false }));
+  const trails = new THREE.LineSegments(trailGeometry, new THREE.LineBasicMaterial({ color: 0x789ba8, transparent: true, opacity: .1, depthWrite: false }));
   scene.add(trails);
   let activeMode = "double-columns";
   const current = formationTargets(count, activeMode); let targets = formationTargets(count, activeMode);
   const dummy = new THREE.Object3D();
-  const floor = new THREE.GridHelper(44, 22, 0x35413e, 0x1b211f); floor.position.y = -.32;
+  const floor = new THREE.GridHelper(44, 22, 0x2e5872, 0x17384c); floor.position.y = -.32;
   floor.material.transparent = true; floor.material.opacity = .42; scene.add(floor);
   const select = (mode) => {
     activeMode = mode;
@@ -340,17 +340,17 @@ function initCollection() {
   const camera = new THREE.PerspectiveCamera(36, 1, .1, 100);
   camera.position.set(0, 0, 32);
   scene.add(new THREE.AmbientLight(0xffffff, 1.1));
-  const warm = new THREE.PointLight(0xf0b56a, 90, 80);
+  const warm = new THREE.PointLight(0xc6a66b, 90, 80);
   warm.position.set(-8, 8, 18);
   scene.add(warm);
-  const redLight = new THREE.PointLight(0xd7352c, 120, 80);
+  const redLight = new THREE.PointLight(0xa55d51, 120, 80);
   redLight.position.set(10, -5, 13);
   scene.add(redLight);
 
   const group = new THREE.Group();
   scene.add(group);
   const beadMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xb3211d,
+    color: 0x743b37,
     metalness: .35,
     roughness: .2,
     clearcoat: 1,
@@ -359,14 +359,14 @@ function initCollection() {
     opacity: .86
   });
   const silverMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xb9c2bf,
+    color: 0xd5cab6,
     metalness: .86,
     roughness: .2,
     transparent: true,
     opacity: .66
   });
   const goldMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0xc3944a,
+    color: 0xc6a66b,
     metalness: .78,
     roughness: .26,
     transparent: true,
@@ -441,10 +441,10 @@ async function initMap() {
   try {
     const data = await fetch("./data/china-provinces.geojson").then(response => { if (!response.ok) throw new Error("地图数据加载失败"); return response.json(); });
     const renderer = rendererFor(canvas, false);
-    renderer.setClearColor(0x090b0c, 1);
-    const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x090b0c, .0045);
+    renderer.setClearColor(0x09151e, 1);
+    const scene = new THREE.Scene(); scene.fog = new THREE.FogExp2(0x09151e, .0045);
     const camera = new THREE.PerspectiveCamera(34, 1, .1, 500); camera.position.set(0, -32, 132);
-    scene.add(new THREE.HemisphereLight(0xd7f3f7, 0x180707, 2.35));
+    scene.add(new THREE.HemisphereLight(0xd5cab6, 0x0b1d2a, 2.35));
     const key = new THREE.DirectionalLight(0xffffff, 4.4); key.position.set(-30, -10, 80); scene.add(key);
     const redLight = new THREE.PointLight(red, 150, 150); redLight.position.set(35, -20, 45); scene.add(redLight);
     const group = new THREE.Group(); group.rotation.x = -.48; group.rotation.z = reducedMotion ? 0 : -.035; group.position.y = 4; group.scale.setScalar(reducedMotion ? 1 : .9); scene.add(group);
@@ -455,9 +455,9 @@ async function initMap() {
       ringsFromGeometry(feature.geometry).forEach(polygon => {
         const shape = shapeFromPolygon(polygon); if (!shape) return;
         const geometry = new THREE.ExtrudeGeometry(shape, { depth: isGuangdong ? 2.4 : .72, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: .08, bevelThickness: .1 });
-        const material = new THREE.MeshStandardMaterial({ color: isGuangdong ? 0xe04439 : 0x3b535d, roughness: .52, metalness: .42, emissive: isGuangdong ? 0x520b07 : 0x07141a, emissiveIntensity: isGuangdong ? .9 : .48 });
+        const material = new THREE.MeshStandardMaterial({ color: isGuangdong ? 0xa55d51 : 0x1f3b54, roughness: .52, metalness: .42, emissive: isGuangdong ? 0x381c1a : 0x07131b, emissiveIntensity: isGuangdong ? .9 : .48 });
         const mesh = new THREE.Mesh(geometry, material); mesh.userData = { name, baseColor: material.color.getHex(), isGuangdong }; group.add(mesh); meshes.push(mesh);
-        const edge = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 22), new THREE.LineBasicMaterial({ color: isGuangdong ? 0xffa29a : 0x78939e, transparent: true, opacity: isGuangdong ? .9 : .55 })); group.add(edge);
+        const edge = new THREE.LineSegments(new THREE.EdgesGeometry(geometry, 22), new THREE.LineBasicMaterial({ color: isGuangdong ? 0xc6a66b : 0x789ba8, transparent: true, opacity: isGuangdong ? .9 : .55 })); group.add(edge);
       });
     });
 
@@ -505,14 +505,14 @@ function initOfficialMap() {
   const stage = canvas.closest(".official-map-stage");
   const loading = document.querySelector("#official-map-loading");
   const renderer = rendererFor(canvas, true);
-  renderer.setClearColor(0x090b0b, 0);
+  renderer.setClearColor(0x09151e, 0);
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x090b0b, .012);
+  scene.fog = new THREE.FogExp2(0x09151e, .012);
   const camera = new THREE.PerspectiveCamera(34, 1, .1, 180);
   camera.position.set(0, 0, 78);
-  scene.add(new THREE.HemisphereLight(0xf5eee2, 0x172420, 2.2));
-  const key = new THREE.DirectionalLight(0xfff5e6, 4.8); key.position.set(-18, 26, 42); scene.add(key);
-  const rim = new THREE.PointLight(0xde3d30, 120, 95); rim.position.set(28, -20, 30); scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xeee7d8, 0x0b1d2a, 2.2));
+  const key = new THREE.DirectionalLight(0xeee7d8, 4.8); key.position.set(-18, 26, 42); scene.add(key);
+  const rim = new THREE.PointLight(0xa55d51, 120, 95); rim.position.set(28, -20, 30); scene.add(rim);
 
   const mapGroup = new THREE.Group();
   // Keep the official sheet north-up. OrbitControls is constrained below so
@@ -520,8 +520,8 @@ function initOfficialMap() {
   mapGroup.rotation.set(0, 0, 0);
   scene.add(mapGroup);
   const width = 43, height = width * 8073 / 6849;
-  const sideMaterial = new THREE.MeshStandardMaterial({ color: 0x211614, roughness: .32, metalness: .48 });
-  const backMaterial = new THREE.MeshStandardMaterial({ color: 0x0e1715, roughness: .42, metalness: .36 });
+  const sideMaterial = new THREE.MeshStandardMaterial({ color: 0x2a2320, roughness: .32, metalness: .48 });
+  const backMaterial = new THREE.MeshStandardMaterial({ color: 0x0b1d2a, roughness: .42, metalness: .36 });
   let pulseRing = null;
   let markerAnchor = null;
   let mapAnnotation = null;
@@ -564,14 +564,14 @@ function initOfficialMap() {
     );
     board.castShadow = true; board.receiveShadow = true; mapGroup.add(board);
 
-    const frame = new THREE.LineSegments(new THREE.EdgesGeometry(board.geometry), new THREE.LineBasicMaterial({ color: 0xcda56a, transparent: true, opacity: .5 }));
+    const frame = new THREE.LineSegments(new THREE.EdgesGeometry(board.geometry), new THREE.LineBasicMaterial({ color: 0xc6a66b, transparent: true, opacity: .5 }));
     mapGroup.add(frame);
     // Calibrated to the hollow city marker beside 汕头 on GS(2023)2762.
     // Keep this as normalized sheet coordinates so the pin follows every zoom.
     const u = .746, v = .579, markerX = (u - .5) * width, markerY = (.5 - v) * height;
     markerAnchor = new THREE.Vector3(markerX, markerY, 1.2);
     const beacon = new THREE.Group(); beacon.position.copy(markerAnchor); mapGroup.add(beacon);
-    pulseRing = new THREE.Mesh(new THREE.RingGeometry(.16, .22, 48), new THREE.MeshBasicMaterial({ color: 0xf0523e, side: THREE.DoubleSide, transparent: true, opacity: .58, depthWrite: false }));
+    pulseRing = new THREE.Mesh(new THREE.RingGeometry(.16, .22, 48), new THREE.MeshBasicMaterial({ color: 0xa55d51, side: THREE.DoubleSide, transparent: true, opacity: .58, depthWrite: false }));
     beacon.add(pulseRing);
     mapAnnotation = document.createElement("div");
     mapAnnotation.className = "map-annotation";
