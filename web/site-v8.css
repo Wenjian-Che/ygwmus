@@ -274,3 +274,19 @@
   .structure-flow-track article[data-clone="true"] { display: none; }
   .structure-slider-controls button[data-structure-pause] { display: none; }
 }
+/* V8.3 · provenance typography: stable editorial grid + restrained text reveal */
+.provenance-strip{position:relative;overflow:clip;isolation:isolate}
+.provenance-strip dl{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;margin:0}
+.provenance-strip dl>div{min-width:0;min-height:9.8rem;padding:clamp(1.2rem,2.2vw,2rem) clamp(1rem,2.4vw,2.5rem) 0;display:grid;grid-template-rows:auto 1fr;align-content:start;border-right:1px solid var(--line,rgba(20,24,26,.22))}
+.provenance-strip dl>div:first-child{padding-left:0}.provenance-strip dl>div:last-child{padding-right:0;border-right:0}
+.provenance-strip dt{display:block;width:max-content;max-width:100%;white-space:nowrap;word-break:keep-all;line-height:.94;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.055em}
+.provenance-strip dd{max-width:22ch;margin:.85rem 0 0;line-height:1.5;word-break:normal;overflow-wrap:normal}
+.provenance-strip .provenance-token{display:inline-block;vertical-align:baseline;will-change:transform,opacity}
+.provenance-strip dt .provenance-token{margin-inline-end:0;transform-origin:50% 100%}
+.provenance-strip dd .provenance-token,.provenance-strip>p .provenance-token,.provenance-strip .provenance-annotation .provenance-token{margin-inline-end:.08em}
+@media (hover:hover) and (pointer:fine){.provenance-strip dl>div{transition:color .25s ease,transform .25s ease}.provenance-strip dl>div:hover,.provenance-strip dl>div:focus-within{transform:translateY(-3px)}}
+@media (max-width:900px){.provenance-strip dl>div{min-height:8.4rem;padding-inline:clamp(.75rem,2vw,1.25rem)}.provenance-strip dd{max-width:18ch}}
+@media (max-width:620px){.provenance-strip dl{grid-template-columns:1fr}.provenance-strip dl>div,.provenance-strip dl>div:first-child,.provenance-strip dl>div:last-child{min-height:0;padding:1.15rem 0;border-right:0;border-bottom:1px solid var(--line,rgba(20,24,26,.22))}.provenance-strip dl>div:last-child{border-bottom:0}.provenance-strip dd{max-width:34ch}}
+@media (prefers-reduced-motion:reduce){.provenance-strip .provenance-token{opacity:1!important;transform:none!important}}
+
+.provenance-strip dt{font-size:clamp(38px,4.7vw,72px)}

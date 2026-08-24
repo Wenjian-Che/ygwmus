@@ -424,3 +424,77 @@
     }
   );
 })();
+
+/* V8.3 · provenance text director
+   Split only the visual layer: the source copy stays in the DOM, while GSAP
+   reveals values, descriptions and the archive cue in reading order. */
+(() => {
+  const { gsap, ScrollTrigger } = window;
+  if (!gsap || !ScrollTrigger || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const root = document.querySelector('.provenance-strip');
+  if (!root || root.dataset.provenanceMotionReady === 'true') return;
+  root.dataset.provenanceMotionReady = 'true';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const tokenGroups = [];
+  const splitText = (element, chars) => {
+    if (!element || element.dataset.provenanceSplit === 'true') return [];
+    const text = element.textContent.trim();
+    if (!text) return [];
+    element.dataset.provenanceSplit = 'true';
+    element.setAttribute('aria-label', text);
+    const parts = chars ? Array.from(text) : [text];
+    const fragment = document.createDocumentFragment();
+    const tokens = [];
+    parts.forEach(part => {
+      if (/^\s+$/.test(part)) {
+        fragment.append(document.createTextNode(part));
+        return;
+      }
+      const token = document.createElement('span');
+      token.className = 'provenance-token';
+      token.textContent = part;
+      token.setAttribute('aria-hidden', 'true');
+      fragment.append(token);
+      tokens.push(token);
+    });
+    element.replaceChildren(fragment);
+    tokenGroups.push(tokens);
+    return tokens;
+  };
+
+  const headlineTokens = [...root.querySelectorAll('dt')].flatMap(el => splitText(el, false));
+  const detailTokens = [...root.querySelectorAll('dd')].flatMap(el => splitText(el, true));
+  const noteTokens = [...root.querySelectorAll(':scope > p')].flatMap(el => splitText(el, true));
+  const cueTokens = [...root.querySelectorAll('.provenance-annotation > span, .provenance-annotation > b')]
+    .flatMap(el => splitText(el, true));
+  const allTokens = [...headlineTokens, ...detailTokens, ...noteTokens, ...cueTokens];
+  if (!allTokens.length) return;
+
+  gsap.set(allTokens, { autoAlpha: 0 });
+  const timeline = gsap.timeline({ paused: true });
+  timeline
+    .fromTo(headlineTokens,
+      { yPercent: 115, rotateX: -18, autoAlpha: 0 },
+      { yPercent: 0, rotateX: 0, autoAlpha: 1, duration: .78, ease: 'power4.out', stagger: { each: .1, from: 'start' } }, 0)
+    .fromTo(detailTokens,
+      { y: 12, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: .38, ease: 'power3.out', stagger: { each: .026, from: 'start' } }, .28)
+    .fromTo(noteTokens,
+      { y: 10, autoAlpha: 0 },
+      { y: 0, autoAlpha: 1, duration: .42, ease: 'power3.out', stagger: .018 }, .56)
+    .fromTo(cueTokens,
+      { x: 12, autoAlpha: 0 },
+      { x: 0, autoAlpha: 1, duration: .5, ease: 'power3.out', stagger: .018 }, .68);
+
+  const trigger = ScrollTrigger.create({
+    trigger: root,
+    start: 'top 82%',
+    once: true,
+    onEnter: () => timeline.play(0)
+  });
+
+  window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+  window.addEventListener('pagehide', () => { trigger.kill(); timeline.kill(); }, { once: true });
+})();
