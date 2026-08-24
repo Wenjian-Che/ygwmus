@@ -189,8 +189,13 @@
           const currentIndex = () => (cursor - 1 + slides.length) % slides.length;
           const setActive = () => {
             const activeIndex = currentIndex();
-            slides.forEach((slide, index) => {
-              const active = index === activeIndex;
+            const trackSlides = [...track.querySelectorAll("[data-structure-slide]")];
+            trackSlides.forEach(slide => {
+              const slideIndex = Number(slide.dataset.structureSlide);
+              const isClone = slide.dataset.clone === "true";
+              const cloneIsInView = (cursor === 0 && slideIndex === slides.length - 1)
+                || (cursor === slides.length + 1 && slideIndex === 0);
+              const active = slideIndex === activeIndex && (isClone ? cloneIsInView : cursor > 0 && cursor < slides.length + 1);
               slide.classList.toggle("is-current", active);
               slide.setAttribute("aria-current", active ? "step" : "false");
             });
