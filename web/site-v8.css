@@ -295,3 +295,22 @@
 .structure-slider-viewport{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .structure-slider.is-dragging .structure-slider-viewport{cursor:grabbing}
 .structure-slider.is-dragging .structure-flow-track{will-change:transform}
+
+/* V8.5 · structure palette: cinnabar is the accent, old-gold carries the reading state */
+.structure-flow-track article{opacity:.58}
+.structure-flow-track article>span{
+  color:#d8b26d;
+  background:linear-gradient(145deg,#302b24,#171918 78%);
+  border:1px solid rgba(216,178,109,.42);
+  box-shadow:inset 0 1px 0 rgba(255,242,214,.08),0 10px 24px rgba(0,0,0,.2);
+  transition:color .35s ease,background .35s ease,border-color .35s ease,box-shadow .35s ease,transform .35s ease;
+}
+.structure-flow-track article.is-current{opacity:1;border-color:rgba(216,178,109,.62)}
+.structure-flow-track article.is-current>span{
+  color:#fff3d6;
+  background:linear-gradient(145deg,#ed5b46 0%,#c83c32 56%,#962724 100%);
+  border-color:rgba(255,224,166,.74);
+  box-shadow:0 0 0 7px rgba(216,178,109,.12),0 0 30px rgba(228,64,52,.22),inset 0 1px 0 rgba(255,255,255,.18);
+  transform:translateY(-1px);
+}
+.structure-flow-track article:not(.is-current)>span{filter:saturate(.82)}
