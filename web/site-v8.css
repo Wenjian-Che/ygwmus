@@ -314,3 +314,62 @@
   transform:translateY(-1px);
 }
 .structure-flow-track article:not(.is-current)>span{filter:saturate(.82)}
+
+/* V8.6 · chapter rail hover panel: labels stay inside the glass rail.
+   The earlier hover treatment positioned the labels to the left of a
+   collapsed 44px rail. On a narrow capture that made the navigation look
+   like a clipped, overlapping vertical list. Keep the collapsed state as a
+   quiet indicator, then reveal a real readable panel on hover/focus. */
+@media (min-width: 1101px) {
+  .chapter-rail {
+    width: 44px;
+    min-width: 44px;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: width .36s cubic-bezier(.22,.61,.36,1), background-color .25s ease;
+  }
+
+  .chapter-rail nav {
+    min-width: 0;
+  }
+
+  .chapter-rail a {
+    position: relative;
+    min-width: 0;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .chapter-rail a span {
+    position: static;
+    display: block;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-6px);
+    transition: max-width .36s cubic-bezier(.22,.61,.36,1), opacity .2s ease,
+      transform .36s cubic-bezier(.22,.61,.36,1), visibility 0s linear .36s;
+  }
+
+  .chapter-rail:hover,
+  .chapter-rail:focus-within {
+    width: 132px;
+    background: rgba(9, 12, 11, .88);
+  }
+
+  .chapter-rail:hover a span,
+  .chapter-rail:focus-within a span {
+    max-width: 86px;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chapter-rail,
+  .chapter-rail a span { transition: none; }
+}
