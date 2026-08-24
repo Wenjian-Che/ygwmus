@@ -149,6 +149,173 @@
         window.requestAnimationFrame(animateFormationCopy);
       }
 
+      // The performance rail turns the four-part performance structure into a
+      // calm infinite slider. It pauses on intent, supports keyboard controls,
+      // and loops through cloned edge cards without a visible jump.
+      const structureSlider = document.querySelector("[data-structure-slider]");
+      if (structureSlider) {
+        const viewport = structureSlider.querySelector("[data-structure-viewport]");
+        const track = structureSlider.querySelector("[data-structure-track]");
+        const slides = [...structureSlider.querySelectorAll("[data-structure-slide]")];
+        const nextButton = structureSlider.querySelector("[data-structure-next]");
+        const prevButton = structureSlider.querySelector("[data-structure-prev]");
+        const pauseButton = structureSlider.querySelector("[data-structure-pause]");
+        const indexNode = structureSlider.querySelector("[data-structure-index]");
+        const progress = structureSlider.querySelector("[data-structure-progress]");
+
+        if (viewport && track && slides.length > 1) {
+          const firstClone = slides[0].cloneNode(true);
+          const lastClone = slides[slides.length - 1].cloneNode(true);
+          firstClone.dataset.clone = "true";
+          lastClone.dataset.clone = "true";
+          firstClone.setAttribute("aria-hidden", "true");
+          lastClone.setAttribute("aria-hidden", "true");
+          track.insertBefore(lastClone, track.firstChild);
+          track.appendChild(firstClone);
+
+          let cursor = 1;
+          let step = 0;
+          let tween = null;
+          let autoCall = null;
+          let progressTween = null;
+          let paused = false;
+          let inView = false;
+
+          const measure = () => {
+            step = slides[0].getBoundingClientRect().height;
+            return step;
+          };
+          const currentIndex = () => (cursor - 1 + slides.length) % slides.length;
+          const setActive = () => {
+            const activeIndex = currentIndex();
+            slides.forEach((slide, index) => {
+              const active = index === activeIndex;
+              slide.classList.toggle("is-current", active);
+              slide.setAttribute("aria-current", active ? "step" : "false");
+            });
+            if (indexNode) indexNode.textContent = String(activeIndex + 1).padStart(2, "0");
+          };
+          const stopProgress = () => {
+            progressTween?.kill();
+            progressTween = null;
+            if (progress) gsap.set(progress, { scaleX: 0 });
+          };
+          const startProgress = () => {
+            stopProgress();
+            if (!progress || paused || !inView) return;
+            progressTween = gsap.to(progress, { scaleX: 1, duration: 4.6, ease: "none" });
+          };
+          const schedule = () => {
+            autoCall?.kill();
+            autoCall = null;
+            if (paused || !inView) return;
+            autoCall = gsap.delayedCall(4.6, () => move(1));
+          };
+          const normalizeEdge = () => {
+            if (cursor === 0) cursor = slides.length;
+            if (cursor === slides.length + 1) cursor = 1;
+            measure();
+            gsap.set(track, { y: -cursor * step });
+          };
+          const move = direction => {
+            if (tween?.isActive()) return;
+            measure();
+            cursor += direction;
+            setActive();
+            stopProgress();
+            if (!motion) {
+              normalizeEdge();
+              return;
+            }
+            tween = gsap.to(track, {
+              y: -cursor * step,
+              duration: .95,
+              ease: "power3.inOut",
+              overwrite: true,
+              onComplete: () => {
+                normalizeEdge();
+                tween = null;
+                setActive();
+                startProgress();
+                schedule();
+              }
+            });
+            startProgress();
+          };
+          const hold = () => {
+            if (paused) return;
+            autoCall?.kill();
+            autoCall = null;
+            progressTween?.pause();
+          };
+          const resume = () => {
+            if (paused) return;
+            if (progressTween?.isActive()) progressTween.play();
+            else startProgress();
+            schedule();
+          };
+
+          measure();
+          gsap.set(track, { y: -cursor * step });
+          setActive();
+
+          listen(nextButton, "click", () => move(1));
+          listen(prevButton, "click", () => move(-1));
+          listen(pauseButton, "click", () => {
+            paused = !paused;
+            pauseButton.setAttribute("aria-pressed", String(paused));
+            pauseButton.textContent = paused ? "继续" : "暂停";
+            if (paused) {
+              autoCall?.kill();
+              autoCall = null;
+              progressTween?.kill();
+              progressTween = null;
+            } else {
+              startProgress();
+              schedule();
+            }
+          });
+          listen(structureSlider, "pointerenter", hold);
+          listen(structureSlider, "pointerleave", resume);
+          listen(structureSlider, "focusin", hold);
+          listen(structureSlider, "focusout", event => {
+            if (!structureSlider.contains(event.relatedTarget)) resume();
+          });
+          listen(structureSlider, "keydown", event => {
+            if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+            event.preventDefault();
+            move(event.key === "ArrowDown" ? 1 : -1);
+          });
+
+          const resizeObserver = typeof ResizeObserver === "function" ? new ResizeObserver(() => {
+            measure();
+            gsap.set(track, { y: -cursor * step });
+          }) : null;
+          resizeObserver?.observe(viewport);
+          cleanup.push(() => resizeObserver?.disconnect());
+          cleanup.push(() => { firstClone.remove(); lastClone.remove(); });
+          cleanup.push(() => { autoCall?.kill(); progressTween?.kill(); tween?.kill(); });
+
+          const visibility = ScrollTrigger.create({
+            trigger: structureSlider,
+            start: "top bottom",
+            end: "bottom top",
+            onEnter: () => { inView = true; startProgress(); schedule(); },
+            onEnterBack: () => { inView = true; startProgress(); schedule(); },
+            onLeave: () => { inView = false; autoCall?.kill(); progressTween?.kill(); tween?.kill(); },
+            onLeaveBack: () => { inView = false; autoCall?.kill(); progressTween?.kill(); tween?.kill(); }
+          });
+          cleanup.push(() => visibility.kill());
+          window.requestAnimationFrame(() => {
+            const rect = structureSlider.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              inView = true;
+              startProgress();
+              schedule();
+            }
+          });
+        }
+      }
       // Character cards lead with a single readable pose. On hover or focus,
       // the same card opens its complete turnaround as a calm, secondary
       // layer; the existing click action still opens the full dossier dialog.

@@ -133,3 +133,144 @@
     box-shadow: none;
   }
 }
+
+/* Structure slider: a slow, interruptible exhibition rail. The content stays
+   readable while GSAP only moves the compositor-friendly track transform. */
+.structure-slider {
+  display: block;
+  min-width: 0;
+  padding: clamp(56px, 7vw, 92px) clamp(24px, 6vw, 86px) clamp(48px, 6vw, 76px) 0;
+  overflow: hidden;
+}
+.structure-slider-viewport {
+  position: relative;
+  height: clamp(430px, 54vh, 560px);
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+.structure-slider-viewport::before,
+.structure-slider-viewport::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  height: 42px;
+  pointer-events: none;
+}
+.structure-slider-viewport::before { top: 0; background: linear-gradient(#0c0f0e, transparent); }
+.structure-slider-viewport::after { bottom: 0; background: linear-gradient(transparent, #0c0f0e); }
+.structure-flow-track {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  will-change: transform;
+}
+.structure-flow-track article {
+  flex: 0 0 auto;
+  min-height: 176px;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--v3-line);
+  opacity: .42;
+  transform-origin: left center;
+  transition: opacity .35s ease, border-color .35s ease;
+}
+.structure-flow-track article.is-current {
+  opacity: 1;
+  border-color: rgb(228 64 52 / .68);
+}
+.structure-flow-track article.is-current > span {
+  box-shadow: 0 0 0 7px rgb(228 64 52 / .1), 0 0 28px rgb(228 64 52 / .18);
+}
+.structure-slider-footer {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) auto auto;
+  align-items: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+.structure-slider-progress {
+  height: 1px;
+  overflow: hidden;
+  background: rgb(255 255 255 / .16);
+}
+.structure-slider-progress i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--v3-red);
+}
+.structure-slider-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  color: var(--v3-red);
+  font: 600 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.structure-slider-meta b { color: rgb(255 255 255 / .25); font-weight: 400; }
+.structure-slider-meta small {
+  margin-left: 10px;
+  color: rgb(255 255 255 / .4);
+  font: 11px/1.2 var(--sans);
+  letter-spacing: .04em;
+}
+.structure-slider-controls { display: flex; gap: 7px; }
+.structure-slider-controls button {
+  min-width: 38px;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgb(255 255 255 / .2);
+  border-radius: 999px;
+  background: transparent;
+  color: rgb(255 255 255 / .72);
+  font: 12px/1 var(--sans);
+  cursor: pointer;
+  transition: color .25s ease, background-color .25s ease, border-color .25s ease, transform .25s ease;
+}
+.structure-slider-controls button:hover,
+.structure-slider-controls button:focus-visible {
+  border-color: var(--v3-red);
+  background: var(--v3-red);
+  color: #fff;
+  outline: none;
+}
+.structure-slider-controls button:active { transform: scale(.94); }
+.structure-slider-controls button[data-structure-pause] { min-width: 48px; }
+
+@media (max-width: 900px) {
+  .structure-slider { padding: 0 24px 70px; }
+  .structure-slider-viewport { height: 470px; }
+  .structure-slider-footer { grid-template-columns: 1fr auto; }
+  .structure-slider-progress { grid-column: 1 / -1; }
+}
+
+@media (max-width: 560px) {
+  .structure-slider-viewport { height: 450px; }
+  .structure-flow-track article { min-height: 188px; padding-top: 28px; padding-bottom: 28px; }
+  .structure-slider-footer { gap: 12px; }
+  .structure-slider-meta small { display: none; }
+  .structure-slider-controls button[data-structure-pause] { min-width: 42px; padding-inline: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .structure-slider-viewport {
+    height: auto;
+    overflow: visible;
+    mask-image: none;
+  }
+  .structure-slider-viewport::before,
+  .structure-slider-viewport::after,
+  .structure-slider-progress { display: none; }
+  .structure-flow-track { transform: none !important; }
+  .structure-flow-track article,
+  .structure-flow-track article.is-current {
+    opacity: 1;
+    transform: none !important;
+  }
+  .structure-flow-track article[data-clone="true"] { display: none; }
+  .structure-slider-controls button[data-structure-pause] { display: none; }
+}

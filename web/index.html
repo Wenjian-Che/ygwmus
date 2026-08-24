@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="./site-v3.css?v=20260812-5">
   <link rel="stylesheet" href="./site-v6.css?v=20260814-1">
     <link rel="stylesheet" href="./site-v7.css?v=20260822-10">
-    <link rel="stylesheet" href="./site-v8.css?v=20260824-1">
+    <link rel="stylesheet" href="./site-v8.css?v=20260824-2">
 </head>
 <body>
   <div class="reading-progress" aria-hidden="true"><i></i></div>
@@ -506,23 +506,36 @@
         <p>国家非遗资料常用“前棚、后棚”概括传统结构。现代巡游、舞台和短视频会对它重新剪裁，因此不能把高潮片段当作完整英歌。</p>
         <button class="outline-action" data-query="英歌的前棚和后棚分别是什么？">详细了解前棚与后棚</button>
       </div>
-      <div class="structure-flow">
-        <article>
-          <span>起</span>
-          <div><h3>集合与起鼓</h3><p>队员完成角色、站位和器材确认。部分社区存在祭拜或出队程序，但并非所有队伍都有。</p></div>
-        </article>
-        <article>
-          <span>行</span>
-          <div><h3>前棚主体</h3><p>锣鼓与持槌群舞构成核心。队伍通过步法、击槌和变阵向前行进或定点表演。</p></div>
-        </article>
-        <article>
-          <span>演</span>
-          <div><h3>后棚节目</h3><p>传统描述中可包含小戏、武术或其他拿手节目。具体内容需要回到当地和队伍资料。</p></div>
-        </article>
-        <article>
-          <span>收</span>
-          <div><h3>收势与收队</h3><p>现代活动可能在定点收势后转场；社区巡游还涉及回程、器材归还与当地程序。</p></div>
-        </article>
+      <div class="structure-flow structure-slider" data-structure-slider tabindex="0" aria-label="英歌表演结构无限滑块">
+        <div class="structure-slider-viewport" data-structure-viewport>
+          <div class="structure-flow-track" data-structure-track>
+            <article data-structure-slide="0">
+              <span>起</span>
+              <div><h3>集合与起鼓</h3><p>队员完成角色、站位和器材确认。部分社区存在祭拜或出队程序，但并非所有队伍都有。</p></div>
+            </article>
+            <article data-structure-slide="1">
+              <span>行</span>
+              <div><h3>前棚主体</h3><p>锣鼓与持槌群舞构成核心。队伍通过步法、击槌和变阵向前行进或定点表演。</p></div>
+            </article>
+            <article data-structure-slide="2">
+              <span>演</span>
+              <div><h3>后棚节目</h3><p>传统描述中可包含小戏、武术或其他拿手节目。具体内容需要回到当地和队伍资料。</p></div>
+            </article>
+            <article data-structure-slide="3">
+              <span>收</span>
+              <div><h3>收势与收队</h3><p>现代活动可能在定点收势后转场；社区巡游还涉及回程、器材归还与当地程序。</p></div>
+            </article>
+          </div>
+        </div>
+        <div class="structure-slider-footer">
+          <div class="structure-slider-progress" aria-hidden="true"><i data-structure-progress></i></div>
+          <div class="structure-slider-meta"><span data-structure-index>01</span><b>/</b><span>04</span><small>结构观察</small></div>
+          <div class="structure-slider-controls" role="group" aria-label="表演结构滑块控制">
+            <button type="button" data-structure-prev aria-label="上一段">←</button>
+            <button type="button" data-structure-next aria-label="下一段">→</button>
+            <button type="button" data-structure-pause aria-pressed="false">暂停</button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -712,7 +725,7 @@
   <script src="./site-v3.js?v=20260812-5" defer></script>
   <script src="./site-v6.js?v=20260814-1" defer></script>
     <script src="./site-v7.js?v=20260822-6" defer></script>
-    <script src="./site-v8.js?v=20260824-1" defer></script>
+    <script src="./site-v8.js?v=20260824-2" defer></script>
   <script type="module" src="./three-scenes.js?v=20260813-3"></script>
 </body>
 </html>
