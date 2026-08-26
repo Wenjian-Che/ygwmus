@@ -25,11 +25,11 @@
       </header>
       <div class="assistant-grid">
         <section class="chat-panel">
-          <div class="chat-toolbar"><div class="agent-identity"><div class="agent-mark">槌</div><div><strong>英歌小槌</strong><span>灵动的英歌舞项目顾问</span></div></div><label class="mode-picker"><span>能力</span><select id="modeSelect"><option>展览策划</option><option>研学活动</option><option>市场洞察</option><option>内容选题</option></select></label></div>
+          <div class="chat-toolbar"><div class="agent-identity"><div class="agent-mark">槌</div><div><strong>英歌小槌</strong><span>直接说你的问题，我会自动判断如何协助</span></div></div><span class="chat-status"><i></i>知识库在线</span></div>
           <div class="chat-stream" id="chatStream" aria-live="polite">
             <div class="welcome-block"><p class="eyebrow">从问题到行动</p><h2>你想把英歌舞带到哪里？</h2><p>我可以把一个想法拆成目标、受众、内容结构、执行步骤和风险清单，也会把需要人工核实的地方标出来。</p><div class="suggestion-row"><button type="button" data-prompt="为潮汕地区的英歌舞数字特展做一份面向公众的策划方案，预算有限，希望突出动作与声音体验。">数字特展方案</button><button type="button" data-prompt="设计一场面向初中生的45分钟英歌舞研学活动，要包含动作观察、鼓点体验和安全提示。">研学活动脚本</button><button type="button" data-prompt="根据访客常问问题，给出英歌舞博物馆下季度的内容选题与传播节奏。">季度内容选题</button></div></div>
           </div>
-          <form class="composer" id="assistantForm"><div class="composer-context"><label><span>服务对象</span><select id="audience"><option>文化机构管理人员</option><option>学校与研学团队</option><option>文旅项目团队</option><option>研究与策展团队</option></select></label><label><span>输出深度</span><select id="detail"><option value="deep">深度方案</option><option value="standard">标准建议</option><option value="brief">快速提纲</option></select></label><button type="button" id="clearInput">清空</button></div><textarea id="assistantInput" rows="3" placeholder="描述你的目标、受众、预算或限制条件……" required></textarea><div class="composer-footer"><span>回答会附带证据引用与边界提示</span><button class="send-button" type="submit">发送 <span>↗</span></button></div></form>
+          <form class="composer" id="assistantForm"><div class="composer-context"><span>英歌小槌会自动理解问题类型</span><button type="button" id="clearInput">清空</button></div><textarea id="assistantInput" rows="3" placeholder="直接输入问题或想法……" required></textarea><div class="composer-footer"><span>需要方案时直接说目标、受众或限制条件即可</span><button class="send-button" type="submit">发送 <span>↗</span></button></div></form>
         </section>
       </div>
     </main>
