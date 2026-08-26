@@ -19,13 +19,29 @@ if(canvas){
   scene.add(keyLight);
 
   const count=innerWidth<700?48:72;
-  const geometry=new THREE.CapsuleGeometry(.16,.38,4,10);
-  const material=new THREE.MeshStandardMaterial({color:0xf04a3a,roughness:.32,metalness:.08,emissive:0x5b110c,emissiveIntensity:.38});
-  const nodes=new THREE.InstancedMesh(geometry,material,count);
-  nodes.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  const red=new THREE.Color(0xf04a3a),gold=new THREE.Color(0xde7622);
-  for(let i=0;i<count;i++)nodes.setColorAt(i,i%12===0?gold:red);
-  nodes.instanceColor.needsUpdate=true;
+  function createPlayerTexture(){
+    const textureCanvas=document.createElement('canvas');
+    textureCanvas.width=512;textureCanvas.height=512;
+    const ctx=textureCanvas.getContext('2d');
+    ctx.clearRect(0,0,512,512);
+    ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.strokeStyle='#26352b';ctx.lineWidth=10;
+    ctx.fillStyle='rgba(242,241,234,.12)';ctx.beginPath();ctx.arc(256,258,150,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#de7622';ctx.lineWidth=7;ctx.beginPath();ctx.arc(256,258,145,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='#f2e8dc';ctx.strokeStyle='#26352b';ctx.lineWidth=8;ctx.beginPath();ctx.arc(256,172,53,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#de7622';ctx.strokeStyle='#26352b';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(200,130);ctx.quadraticCurveTo(256,66,312,130);ctx.lineTo(292,153);ctx.lineTo(256,122);ctx.lineTo(220,153);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='#f0b36f';ctx.strokeStyle='#26352b';ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(256,64);ctx.lineTo(239,99);ctx.lineTo(273,99);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='#26352b';ctx.beginPath();ctx.arc(236,174,8,0,Math.PI*2);ctx.arc(276,174,8,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#26352b';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(231,196);ctx.lineTo(242,208);ctx.moveTo(281,196);ctx.lineTo(270,208);ctx.stroke();
+    ctx.fillStyle='#f04a3a';ctx.strokeStyle='#26352b';ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(184,236);ctx.quadraticCurveTo(256,207,328,236);ctx.lineTo(309,362);ctx.quadraticCurveTo(256,388,203,362);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='#de7622';ctx.strokeStyle='#26352b';ctx.lineWidth=5;ctx.fillRect(204,260,104,18);ctx.strokeRect(204,260,104,18);ctx.fillRect(217,340,78,15);ctx.strokeRect(217,340,78,15);
+    ctx.strokeStyle='#f04a3a';ctx.lineWidth=28;ctx.beginPath();ctx.moveTo(198,253);ctx.lineTo(147,312);ctx.moveTo(314,253);ctx.lineTo(365,312);ctx.stroke();
+    ctx.strokeStyle='#f2e8dc';ctx.lineWidth=18;ctx.beginPath();ctx.moveTo(225,370);ctx.lineTo(210,434);ctx.moveTo(287,370);ctx.lineTo(302,434);ctx.stroke();
+    ctx.fillStyle='#26352b';ctx.beginPath();ctx.ellipse(207,445,30,12,0,0,Math.PI*2);ctx.ellipse(305,445,30,12,0,0,Math.PI*2);ctx.fill();
+    const texture=new THREE.CanvasTexture(textureCanvas);texture.colorSpace=THREE.SRGBColorSpace;texture.minFilter=THREE.LinearFilter;texture.magFilter=THREE.LinearFilter;return texture;
+  }
+  const playerMaterial=new THREE.SpriteMaterial({map:createPlayerTexture(),transparent:true,alphaTest:.02,depthTest:true,depthWrite:false,opacity:.98,sizeAttenuation:true});
+  const players=Array.from({length:count},()=>{const sprite=new THREE.Sprite(playerMaterial);sprite.center.set(.5,.08);sprite.renderOrder=2;return sprite});
   const stickGeometry=new THREE.BoxGeometry(.045,.045,.72);
   const stickMaterial=new THREE.MeshStandardMaterial({color:0xf4efe5,roughness:.25,metalness:.16,emissive:0xde7622,emissiveIntensity:.16});
   const leftSticks=new THREE.InstancedMesh(stickGeometry,stickMaterial,count);
@@ -34,7 +50,8 @@ if(canvas){
   rightSticks.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 
   const group=new THREE.Group();
-  group.add(nodes,leftSticks,rightSticks);
+  players.forEach(player=>group.add(player));
+  group.add(leftSticks,rightSticks);
   scene.add(group);
 
   const trailArray=new Float32Array((count-1)*6);
@@ -99,7 +116,6 @@ if(canvas){
   let current=targetsFor(active,0);
   let starts=current.map(v=>v.clone());
   const transition={progress:1};
-  const dummy=new THREE.Object3D();
   const stickDummy=new THREE.Object3D();
   const phaseClock=new THREE.Clock();
   const modes=Object.keys(facts);
@@ -124,7 +140,7 @@ if(canvas){
     status.textContent='变阵中';
     window.gsap.to(transition,{progress:1,duration:motionReduced?0:1.08,ease:'power3.inOut',overwrite:true,onComplete:()=>{status.textContent='行进中'}});
     window.gsap.fromTo(selected,{scale:.94},{scale:1,duration:.48,ease:'back.out(2)',overwrite:true});
-    window.gsap.fromTo(material,{emissiveIntensity:1.35},{emissiveIntensity:.38,duration:.9,ease:'power2.out',overwrite:true});
+    window.gsap.fromTo(playerMaterial,{opacity:.68},{opacity:.98,duration:.9,ease:'power2.out',overwrite:true});
     const cameraZ=camera.position.z;
     window.gsap.timeline({defaults:{ease:'power2.inOut'}}).to(camera.position,{z:cameraZ-.65,duration:.34}).to(camera.position,{z:cameraZ,duration:.58});
     updateCopy(mode);
@@ -174,15 +190,14 @@ if(canvas){
       if(transition.progress<1)current[i].lerpVectors(starts[i],targets[i],transition.progress);
       else current[i].lerp(targets[i],motionReduced?1:.16);
       const step=motionReduced?0:Math.abs(Math.sin(phase*4.2+i*.48))*.18;
-      dummy.position.copy(current[i]);
-      dummy.position.y=.31+step;
-      dummy.rotation.set(0,Math.sin(phase*.8+i*.17)*.16,0);
-      dummy.scale.setScalar(i%12===0?1.32:1);
-      dummy.updateMatrix();
-      nodes.setMatrixAt(i,dummy.matrix);
+      const player=players[i];
+      const playerScale=i%12===0?1.12:1;
+      player.position.set(current[i].x,.1+step,current[i].z);
+      const breathing=playerScale*(.98+Math.sin(phase*1.6+i*.22)*.02);
+      player.scale.set(playerScale,breathing,playerScale);
 
       const swing=motionReduced?0:Math.sin(phase*5.4+i*.62)*.72;
-      stickDummy.position.set(current[i].x-.19,.55+step,current[i].z);
+      stickDummy.position.set(current[i].x-.19,.12+step,current[i].z);
       stickDummy.rotation.set(.42,swing,.18);
       stickDummy.scale.setScalar(i%12===0?1.18:1);
       stickDummy.updateMatrix();
@@ -197,7 +212,6 @@ if(canvas){
         trailArray[offset+3]=next.x;trailArray[offset+4]=.02;trailArray[offset+5]=next.z;
       }
     }
-    nodes.instanceMatrix.needsUpdate=true;
     leftSticks.instanceMatrix.needsUpdate=true;
     rightSticks.instanceMatrix.needsUpdate=true;
     trailGeometry.attributes.position.needsUpdate=true;
