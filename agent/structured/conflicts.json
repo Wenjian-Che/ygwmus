@@ -1,0 +1,38 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "conflicts",
+  "records": [
+    {
+      "conflict_id": "ximen-establishment-timeline",
+      "field": "潮阳西门女子英歌成立时间",
+      "status": "resolved_by_event_chain",
+      "observations": ["公开材料记载早期起源可追溯至1952年", "2011年有重组或恢复活动记录"],
+      "resolution": "同时保留“早期起源”和“2011年重组”两个时间节点，不压缩成单一成立年份。",
+      "source_refs": [{"source_id": "ihchina_ximen_rebuild", "support": "direct"}, {"source_id": "shantou_youth_women", "support": "direct"}]
+    },
+    {
+      "conflict_id": "jiazi-protection-unit-timeline",
+      "field": "甲子英歌保护单位",
+      "status": "time_scoped",
+      "observations": ["不同时间文件出现不同机构名称", "当前项目记录使用陆丰市甲子英歌文化艺术服务中心"],
+      "resolution": "保护单位必须绑定来源时间，不能把旧名称和当前名称混写成同一时点。",
+      "source_refs": [{"source_id": "ihchina_jiazi_project", "support": "direct"}, {"source_id": "shanwei_jiazi_unit_change", "support": "direct"}]
+    },
+    {
+      "conflict_id": "lin-zhongcheng-serial-missing",
+      "field": "林忠诚（林松）官方个人档案序号",
+      "status": "unresolved_missing_field",
+      "observations": ["正式名录和广东省名录确认其第六批代表性传承人身份", "当前个人详情页未公开可复核序号"],
+      "resolution": "结构化记录保留 official_serial=null，并在 field_notes 明示缺口，不推测编号。",
+      "source_refs": [{"source_id": "ihchina_linzongcheng", "support": "partial"}, {"source_id": "mct_sixth_inheritors", "support": "direct"}, {"source_id": "gd_sixth_inheritors", "support": "direct"}]
+    },
+    {
+      "conflict_id": "same-form-name-different-team",
+      "field": "同名槌法与阵形",
+      "status": "unresolved_team_variation",
+      "observations": ["不同队伍可能使用相同名称", "公开材料未必提供相同空间结构或逐拍动作"],
+      "resolution": "阵形结构必须带 scope；信号记录默认 exact_sequence_status=not_published。",
+      "source_refs": [{"source_id": "shantou_teams", "support": "partial"}, {"source_id": "shanwei_jiazi", "support": "partial"}]
+    }
+  ]
+}

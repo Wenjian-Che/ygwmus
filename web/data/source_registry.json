@@ -1,0 +1,414 @@
+{
+  "version": "2026.08.08.1",
+  "description": "面向用户展示的外部来源注册表。内部Markdown文件只用于检索，不作为公开引用标题。",
+  "sources": {
+    "npc_yingge": {
+      "grade": "A",
+      "publisher": "中国人大网转载中国非物质文化遗产网",
+      "title": "英歌（普宁英歌、潮阳英歌）",
+      "url": "https://www.npc.gov.cn/WZWSREL3pncmR3L2h1aXlpL2xmenQvZnd6d2h5Y2JoZi8yMDA4LTExLzMwL2NvbnRlbnRfMTQ2MDI0MC5odG0%3D",
+      "supports": ["项目名称", "2006年", "项目编号", "人数范围", "前棚后棚", "潮阳板式", "基本形态"]
+    },
+    "mct_puning": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "英歌（普宁英歌）",
+      "url": "https://zhuanti.mct.gov.cn/hhxxgdn2024_wdzgl_detail/6176.html",
+      "supports": ["国家级项目属性", "舞蹈、戏剧与武术融合"]
+    },
+    "shanwei_jiazi": {
+      "grade": "A",
+      "publisher": "汕尾市人民政府",
+      "title": "国家级非遗之甲子英歌",
+      "url": "https://www.shanwei.gov.cn/slhwz/zjsw/content/post_1104466.html",
+      "supports": ["甲子英歌", "107人结构", "武畔文畔", "乐器配置", "八拍吆喝", "脸谱服饰", "队形变化"]
+    },
+    "gd_protection_units": {
+      "grade": "A",
+      "publisher": "广东省文化和旅游厅",
+      "title": "国家级非遗保护单位履职评估表",
+      "url": "https://whly.gd.gov.cn/attachment/0/497/497983/3997856.pdf",
+      "supports": ["普宁英歌保护单位", "潮阳英歌保护单位"]
+    },
+    "ihchina_chen": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "代表性传承人陈来发",
+      "url": "https://www.ihchina.cn/ccr_detail/1243.html",
+      "supports": ["国家级代表性传承人身份", "官方序号", "第六代传人"]
+    },
+    "ihchina_chaoyang_project": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "英歌（潮阳英歌）",
+      "url": "https://www.ihchina.cn/project_details/12901.html",
+      "supports": ["项目序号111", "项目编号Ⅲ—8", "2006第一批", "保护单位", "板式与动作", "相关传承人"]
+    },
+    "ihchina_puning_project": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "英歌（普宁英歌）",
+      "url": "https://www.ihchina.cn/project_details/12902.html",
+      "supports": ["项目序号111", "项目编号Ⅲ—8", "2006第一批", "保护单位", "人数", "队形与动作"]
+    },
+    "ihchina_jiazi_project": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "英歌（甲子英歌）",
+      "url": "https://www.ihchina.cn/project_details/12903.html",
+      "supports": ["2011第三批扩展项目", "甲子保护单位", "四大行列", "动作与后部小戏", "相关传承人"]
+    },
+    "ihchina_yangwei": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "代表性传承人杨卫",
+      "url": "https://www.ihchina.cn/ccr_detail/1244.html",
+      "supports": ["第二批国家级代表性传承人", "序号02-0356", "家族传承", "1991年编创七下槌"]
+    },
+    "ihchina_linbingguang": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "代表性传承人林炳光",
+      "url": "https://www.ihchina.cn/ccr_detail/1427.html",
+      "supports": ["第五批国家级代表性传承人", "序号05-2213", "甲子英歌", "学艺与授徒"]
+    },
+    "ihchina_linzongcheng": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "林忠诚（林松）个人页",
+      "url": "https://www.ihchina.cn/ccr_detail/30001.html",
+      "supports": ["关联英歌（潮阳英歌）", "项目编号Ⅲ—8", "公开字段缺口"]
+    },
+    "mct_sixth_inheritors": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "关于公布第六批国家级非物质文化遗产代表性传承人的通知",
+      "url": "https://zwgk.mct.gov.cn/zfxxgkml/fwzwhyc/202503/t20250314_958832.html",
+      "supports": ["第六批正式公布", "文旅非遗发〔2025〕23号", "最终名单", "认定程序"]
+    },
+    "gd_sixth_inheritors": {
+      "grade": "A",
+      "publisher": "广东省文化和旅游厅",
+      "title": "广东省新增58位国家级非遗代表性传承人",
+      "url": "https://whly.gd.gov.cn/news_newzwhd/content/post_4682736.html",
+      "supports": ["林忠诚（林松）", "第六批国家级代表性传承人", "英歌（潮阳英歌）", "广东省汕头市"]
+    },
+    "mct_inheritor_rules": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "国家级非物质文化遗产代表性传承人认定与管理办法",
+      "url": "https://zwgk.mct.gov.cn/zfxxgkml/zcfg/bmgz/202012/t20201214_919516.html",
+      "supports": ["认定条件", "申报评审公示程序", "传承人支持措施", "传承义务", "年度报告与评估"]
+    },
+    "mct_protection_rules": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "国家级非物质文化遗产保护与管理暂行办法",
+      "url": "https://zwgk.mct.gov.cn/zfxxgkml/zcfg/bmgz/202012/t20201204_905294.html",
+      "supports": ["保护单位条件", "保护单位职责", "文化场所保护", "项目展示", "监督与调整"]
+    },
+    "mct_protection_evaluation": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "国家级非遗代表性项目保护单位履职评估通知",
+      "url": "https://zwgk.mct.gov.cn/zfxxgkml/fwzwhyc/202207/t20220720_934797.html",
+      "supports": ["保护单位检查内容", "合格不合格与整改", "重新推荐", "公开监督"]
+    },
+    "shanwei_jiazi_unit_change": {
+      "grade": "A",
+      "publisher": "汕尾市文化广电旅游体育局",
+      "title": "汕尾市国家级非遗项目保护单位评估和调整公示",
+      "url": "https://www.shanwei.gov.cn/swwgltj/yaowen/tzgg/content/post_845163.html",
+      "supports": ["甲子原保护单位撤销", "重新推荐甲子英歌文化艺术服务中心", "机构改革"]
+    },
+    "ihchina_vocational_yingge": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网",
+      "title": "非遗正青春：汕头职业技术学院英歌舞传承",
+      "url": "https://www.ihchina.cn/project_details/30992.html",
+      "supports": ["英歌舞数字艺术馆", "高校研究平台", "专业课程", "108脸谱与服装设计", "校园英歌队"]
+    },
+    "shantou_teams": {
+      "grade": "A",
+      "publisher": "汕头市直党建网",
+      "title": "2024英歌舞展演队伍介绍",
+      "url": "https://stszgw.shantou.gov.cn/stszdj/yaowen/202402/eee3e4d18bc84d32837339a823667eb6.shtml",
+      "supports": ["西门女子", "文光岭东", "城南忠精", "濠江联兴", "泥沟", "华市等队伍个案"]
+    },
+    "ihchina_ximen_rebuild": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网转载人民日报",
+      "title": "一曲英歌乘风舞",
+      "url": "https://www.ihchina.cn/art/detail/id/26638.html",
+      "supports": ["西门女子英歌队1952年成立", "长期停滞", "2011年社区帮助下重新组建", "女子英歌当代传承"]
+    },
+    "ihchina_yingge_energy": {
+      "grade": "A",
+      "publisher": "中国非物质文化遗产网转载人民日报",
+      "title": "英歌舞何以燃出圈？",
+      "url": "https://www.ihchina.cn/news_1_details/29777.html",
+      "supports": ["长蛇挺进", "双龙出海", "四虎并驱", "多角色动作统一于节拍和鼓点", "当代传播观察"]
+    },
+    "openai_model_guidance": {
+      "grade": "A",
+      "publisher": "OpenAI",
+      "title": "Model guidance | OpenAI API",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "supports": ["Responses API", "模型选择", "多轮流程", "推理与工具调用"]
+    },
+    "openai_models": {
+      "grade": "A",
+      "publisher": "OpenAI",
+      "title": "Models | OpenAI API",
+      "url": "https://developers.openai.com/api/docs/models",
+      "supports": ["模型能力", "File Search", "函数调用", "Responses API"]
+    },
+    "deepseek_v4_flash": {
+      "grade": "A",
+      "publisher": "DeepSeek API Docs",
+      "title": "Models & Pricing | DeepSeek API Docs",
+      "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+      "supports": ["deepseek-v4-flash", "OpenAI兼容Base URL", "Thinking模式", "上下文长度"]
+    },
+    "deepseek_chat_completion": {
+      "grade": "A",
+      "publisher": "DeepSeek API Docs",
+      "title": "Create Chat Completion | DeepSeek API Docs",
+      "url": "https://api-docs.deepseek.com/api/create-chat-completion",
+      "supports": ["POST /chat/completions", "stream", "thinking", "JSON Output", "工具调用"]
+    },
+    "shantou_event": {
+      "grade": "A",
+      "publisher": "汕头市人民政府",
+      "title": "2024年春节英歌舞展演巡游",
+      "url": "https://www.shantou.gov.cn/cnst/ywdt/styw/content/post_2307732.html",
+      "supports": ["当代集中展演与巡游场景"]
+    },
+    "gd_overseas": {
+      "grade": "A",
+      "publisher": "广东省人民政府侨务办公室",
+      "title": "英歌舞：绵延不绝的文化火种",
+      "url": "https://www.qb.gd.gov.cn/whjy/content/post_1279580.html",
+      "supports": ["英歌文化概述", "南山英歌", "海外传播"]
+    },
+    "chaoan_wenli": {
+      "grade": "A",
+      "publisher": "潮州市归国华侨联合会、潮安区文化馆",
+      "title": "潮安文里英歌舞",
+      "url": "https://www.czql.gov.cn/news_view.asp?id=432",
+      "supports": ["潮安文里项目", "阵形名称"]
+    },
+    "jieyang_shenquan": {
+      "grade": "A",
+      "publisher": "揭阳市人民政府",
+      "title": "汕汕高铁惠来站开通运营",
+      "url": "https://www.jieyang.gov.cn/xwdt/jyxw/content/post_821685.html",
+      "supports": ["惠来神泉英歌舞活动记录"]
+    },
+    "jieyang_tourism_pdf": {
+      "grade": "A",
+      "publisher": "揭阳市人民政府",
+      "title": "揭阳市全域旅游发展总体规划：非遗项目名录",
+      "url": "https://www.jieyang.gov.cn/attachment/0/118/118541/401445.pdf",
+      "supports": ["神泉英歌项目级别"]
+    },
+    "shantou_youth_women": {
+      "grade": "A",
+      "publisher": "共青团汕头市委",
+      "title": "女子英歌“不如男”？",
+      "url": "https://youth.shantou.gov.cn/youth/tqkd/202401/ec24b71d5c89465caf0e654d162eb2fa.shtml",
+      "supports": ["西门女子英歌", "女子参与", "队伍交流"]
+    },
+    "mct_yingge_drama": {
+      "grade": "A",
+      "publisher": "中华人民共和国文化和旅游部",
+      "title": "国家艺术基金资助项目舞剧《英歌》在深圳首演",
+      "url": "https://www.mct.gov.cn/whzx/zsdw/gjysjj/202502/t20250228_958628.html",
+      "supports": ["舞剧《英歌》", "以传统民俗英歌舞为蓝本", "现代舞台创作", "舞台导赏"]
+    },
+    "gdct_yingge_musical": {
+      "grade": "A",
+      "publisher": "广东省文化和旅游厅",
+      "title": "相约广州塔：春节定制版音乐剧《英歌》",
+      "url": "https://whly.gd.gov.cn/news_newzwhd/content/post_4660728.html",
+      "supports": ["音乐剧《英歌》", "英歌舞与音乐剧融合", "定制服装与面具", "现代改编"]
+    },
+    "gdszx_campus": {
+      "grade": "A",
+      "publisher": "广东政协网",
+      "title": "咏春、太极、英歌舞：让体育“非遗”之花在校园绽放",
+      "url": "https://www.gdszx.gov.cn/zxhy/qthy/2025/wytd/content/post_38076.html",
+      "supports": ["英歌进校园", "学校与传承人协作", "文化内涵教育", "第二课堂"]
+    },
+    "puning_nanshan_base": {
+      "grade": "A",
+      "publisher": "普宁市人民政府",
+      "title": "传承英歌风采，普宁多了一处文旅打卡点",
+      "url": "https://www.puning.gov.cn/zjpn/lytd/lyjd/content/post_835250.html",
+      "supports": ["南山英歌快板代表", "传承基地新馆", "1100平方米与功能空间", "女性队员加入", "中国民间文化艺术之乡"]
+    },
+    "shantou_cppcc_teams": {
+      "grade": "A",
+      "publisher": "政协汕头市委员会",
+      "title": "助力推动英歌舞传承创新",
+      "url": "https://stzx.shantou.gov.cn/stzx/tawyh/202408/4b13ddd3de2b4c1fab135b2302f8e452.shtml",
+      "supports": ["金浦青年训练基地", "桃园传承基地", "男女混合训练", "混合对打", "非遗节活动"]
+    },
+    "shantou_overseas_archive": {
+      "grade": "A",
+      "publisher": "汕头经济文化合作试验区管委会转载参考消息",
+      "title": "从海外潮汕文化看中华文明向心力",
+      "url": "https://www.shantou.gov.cn/hqsyq/hqxx/content/post_2388466.html",
+      "supports": ["后溪英歌2012马来西亚交流", "海外学员来汕学习", "古帅青年教学支持", "潮阳影像记录线索"]
+    },
+    "shantou_zhongjing_base": {
+      "grade": "A",
+      "publisher": "汕头市直党建网",
+      "title": "探寻非遗魅力 守护文化传承",
+      "url": "https://stszgw.shantou.gov.cn/stszdj/jiceng/202504/cf69e95a78b744ff9f3cdbad95de4b6e.shtml",
+      "supports": ["城南忠精英歌基地", "马步与弓步", "外转槌与内转槌", "道具与训练"]
+    },
+    "shantou_houxi_beijing": {
+      "grade": "A",
+      "publisher": "中共汕头市委外事工作委员会办公室",
+      "title": "汕头潮阳英歌舞赴京为诗琳通公主献演取得圆满成功",
+      "url": "https://swwb.shantou.gov.cn/wsqwj/0500/202504/d04326ef8122454d8c8aacb515a22ee9.shtml",
+      "supports": ["后溪英歌队", "2025年4月8日北京演出", "中泰友好交流"]
+    },
+    "shantou_taoyuan_dubai": {
+      "grade": "A",
+      "publisher": "中共汕头市委外事工作委员会办公室",
+      "title": "中国（汕头）-阿联酋（迪拜）经贸文旅交流会在迪拜举办",
+      "url": "https://swwb.shantou.gov.cn/wsqwj/0500/202504/c61d6d5114634b83bb9cd80e7fd58c57.shtml",
+      "supports": ["文光桃园英歌队", "2025年4月11日迪拜演出", "经贸文旅交流"]
+    },
+    "puning_culture_2026": {
+      "grade": "A",
+      "publisher": "普宁市文化广电旅游体育局/普宁发布",
+      "title": "普宁英歌出海展演与文化体验中心动态",
+      "url": "https://pnjcy.gov.cn/index.php/cms/item-view-id-3181.shtml",
+      "supports": ["2026年普宁英歌出海展演", "春节巡游", "英歌文化体验中心"]
+    },
+    "jieyang_puning_tourism_2026": {
+      "grade": "A",
+      "publisher": "揭阳市人民政府",
+      "title": "普宁新春文旅与英歌巡游动态",
+      "url": "https://www.jieyang.gov.cn/xwdt/qxbmdt/content/post_1009335.html",
+      "supports": ["普宁英歌巡游", "文旅活动点位", "女子英歌"]
+    },
+    "shantou_chaoyang_ip_2026": {
+      "grade": "A",
+      "publisher": "汕头市工商业联合会",
+      "title": "潮阳英歌主题IP和口号征集大赛成果展",
+      "url": "https://stgsl.shantou.gov.cn/stgsl/qxhwxx/202601/82480e19f707447ab5423394abdc47f3.shtml",
+      "supports": ["潮阳英歌IP", "传承发展活动", "2026年动态"]
+    },
+    "shanwei_heritage_education_2026": {
+      "grade": "A",
+      "publisher": "汕尾市人民政府",
+      "title": "汕尾技师学院英歌非遗教学与展演动态",
+      "url": "https://www.shanwei.gov.cn/slhwz/zjsw/content/post_1256426.html",
+      "supports": ["甲子英歌", "非遗课程", "展演活动"]
+    },
+    "shenzhen_futian_community_2025": {
+      "grade": "A",
+      "publisher": "深圳市福田区福田街道办事处",
+      "title": "“英歌舞”赋能社区治理，文化巡游点燃商圈活力",
+      "url": "https://www.szft.gov.cn/ftqftjdbsc/gkmlpt/content/12/12150/post_12150828.html",
+      "supports": ["城市社区巡游", "公共活动协作", "交通与秩序保障", "当代传播场景"]
+    },
+    "puning_yinggeqing_route_2025": {
+      "grade": "A",
+      "publisher": "普宁市人民政府",
+      "title": "《英歌情》剧场入选省级非遗特色旅游线路",
+      "url": "https://www.puning.gov.cn/zjpn/lytd/lylx/content/post_964219.html",
+      "supports": ["剧场化呈现", "非遗旅游线路", "当代传播场景"]
+    },
+    "lyon_ximen_yingge_2025": {
+      "grade": "A",
+      "publisher": "中华人民共和国驻里昂总领事馆",
+      "title": "里昂第一个“非遗”春节，这次与潮汕非遗一起过",
+      "url": "https://lyon.china-consulate.gov.cn/zlghd/202506/t20250617_11651237.htm",
+      "supports": ["潮阳西门英歌队", "里昂行进式表演", "海外传播"]
+    },
+    "shantou_yingge_standard_2025": {
+      "grade": "A",
+      "publisher": "汕头市地方标准",
+      "title": "DB4405/T 315—2025 非物质文化遗产 潮阳英歌",
+      "url": "https://www.stpt.edu.cn/_upload/article/files/53/40/58838af7487794853b6cb93946b9/4d483414-a74c-4fc9-a1c4-839762c52e07.pdf",
+      "supports": ["队伍构成", "角色职责", "常见人数", "脸谱色调", "地方适用边界", "双列队形", "方形阵", "双龙出海", "田螺阵", "麦穗花阵", "四海升平", "八卦阵"]
+    }
+  },
+  "file_map": {
+    "00_英歌舞总纲.md": ["npc_yingge", "mct_puning"],
+    "01_历史渊源.md": ["npc_yingge", "gd_overseas"],
+    "03_表演形式.md": ["npc_yingge", "mct_puning"],
+    "04_角色与脸谱.md": ["shanwei_jiazi", "npc_yingge"],
+    "05_道具与服饰.md": ["shanwei_jiazi", "npc_yingge"],
+    "06_流派与传承.md": ["npc_yingge", "shantou_teams"],
+    "07_节庆与仪式.md": ["shantou_event", "npc_yingge"],
+    "08_非遗保护.md": ["npc_yingge", "gd_protection_units", "ihchina_jiazi_project", "mct_protection_rules", "shanwei_jiazi_unit_change"],
+    "12_女子英歌.md": ["shantou_youth_women", "shantou_teams", "ihchina_ximen_rebuild"],
+    "14_快板中板慢板详解.md": ["npc_yingge", "shantou_teams"],
+    "15_阵法与队形详解.md": ["npc_yingge", "shanwei_jiazi", "chaoan_wenli"],
+    "16_核心角色详解.md": ["shanwei_jiazi", "npc_yingge"],
+    "17_脸谱绘制技法详解.md": ["shanwei_jiazi"],
+    "18_普宁各村特色详解.md": ["shantou_teams", "gd_overseas", "puning_nanshan_base"],
+    "19_英歌槌制作工艺详解.md": ["npc_yingge", "shanwei_jiazi"],
+    "21_傩文化渊源详解.md": ["npc_yingge"],
+    "22_锣鼓乐器与曲牌详解.md": ["shanwei_jiazi"],
+    "23_演出结构详解.md": ["npc_yingge", "shantou_event"],
+    "25_地域谱系与代表队伍.md": ["npc_yingge", "shantou_teams"],
+    "26_训练体系与安全规范.md": ["mct_puning"],
+    "28_校园课程与公众教育.md": ["mct_puning", "gd_overseas"],
+    "30_常见争议与事实辨析.md": ["npc_yingge", "shanwei_jiazi"],
+    "31_权威来源与参考书目.md": ["npc_yingge", "mct_puning", "gd_protection_units", "mct_sixth_inheritors", "gd_sixth_inheritors"],
+    "35_代表队伍档案.md": ["shantou_teams", "ihchina_ximen_rebuild", "shanwei_jiazi", "gd_overseas", "puning_nanshan_base", "shantou_cppcc_teams"],
+    "36_动作与步法词典.md": ["shanwei_jiazi", "npc_yingge"],
+    "37_潮南惠来及周边地区档案.md": ["jieyang_shenquan", "jieyang_tourism_pdf", "shanwei_jiazi"],
+    "38_脸谱服饰视觉辨识指南.md": ["shanwei_jiazi"],
+    "39_锣鼓节奏与声音档案.md": ["shanwei_jiazi"],
+    "40_历史年表与证据分层.md": ["npc_yingge", "gd_overseas"],
+    "41_传承人与保护单位档案.md": ["ihchina_chen", "ihchina_yangwei", "ihchina_linbingguang", "ihchina_linzongcheng", "mct_sixth_inheritors", "gd_sixth_inheritors", "gd_protection_units", "shanwei_jiazi_unit_change"],
+    "43_仪式流程与巡游空间.md": ["shantou_event", "npc_yingge"],
+    "45_侨乡网络与海外传播类型.md": ["gd_overseas"],
+    "47_英歌与相关表演形态比较.md": ["npc_yingge", "mct_puning"],
+    "50_核心事实注册表.md": ["npc_yingge", "gd_protection_units", "ihchina_chen", "ihchina_yangwei", "ihchina_linbingguang", "ihchina_linzongcheng", "mct_sixth_inheritors", "gd_sixth_inheritors", "ihchina_jiazi_project", "shanwei_jiazi", "ihchina_ximen_rebuild"],
+    "52_角色功能与辨识关系表.md": ["shanwei_jiazi", "npc_yingge"],
+    "53_地区板式队伍比较矩阵.md": ["npc_yingge", "shantou_teams", "shanwei_jiazi"],
+    "54_多模态识别与问答边界.md": ["shanwei_jiazi", "shantou_teams"],
+    "55_实时活动问答与数据接口规范.md": ["shantou_event"],
+    "56_锣鼓动作队形协同机制.md": ["shanwei_jiazi", "npc_yingge"],
+    "57_现场观演导览与礼仪.md": ["shantou_event", "npc_yingge"],
+    "58_表演质量观察与评价框架.md": ["npc_yingge", "shanwei_jiazi"],
+    "59_智能体长答案组织与追问策略.md": ["npc_yingge"]
+    ,"60_完整表演生命周期与段落观察.md": ["npc_yingge", "shantou_event"]
+    ,"61_动作动力链与常见错误.md": ["npc_yingge", "shanwei_jiazi"]
+    ,"62_传统巡游舞台改编与媒介差异.md": ["mct_yingge_drama", "gdct_yingge_musical", "shantou_event"]
+    ,"63_校园教学与分龄研学设计.md": ["gdszx_campus", "shantou_youth_women"]
+    ,"64_服饰头饰脸谱与道具协同观察.md": ["shanwei_jiazi", "npc_yingge"]
+    ,"65_高频称谓传播话语与事实边界.md": ["npc_yingge", "shantou_youth_women"]
+    ,"66_代表队伍证据档案扩充.md": ["shantou_teams", "ihchina_ximen_rebuild", "puning_nanshan_base", "shantou_cppcc_teams", "shantou_zhongjing_base", "shanwei_jiazi"]
+    ,"67_队伍动作锣鼓阵法证据矩阵.md": ["shantou_teams", "shantou_zhongjing_base", "shanwei_jiazi"]
+    ,"68_队伍资料冲突与时效性审计.md": ["shantou_teams", "shantou_youth_women", "ihchina_ximen_rebuild", "puning_nanshan_base", "shanwei_jiazi"]
+    ,"69_代表队伍活动与海外传播年表.md": ["shantou_teams", "puning_nanshan_base", "shantou_cppcc_teams", "shantou_overseas_archive", "shantou_zhongjing_base", "shantou_houxi_beijing", "shantou_taoyuan_dubai"]
+    ,"70_国家级项目保护单位与制度档案.md": ["ihchina_chaoyang_project", "ihchina_puning_project", "ihchina_jiazi_project", "mct_protection_rules", "mct_protection_evaluation", "gd_protection_units", "shanwei_jiazi_unit_change"]
+    ,"71_国家级代表性传承人证据档案.md": ["ihchina_chen", "ihchina_yangwei", "ihchina_linbingguang", "ihchina_linzongcheng", "mct_sixth_inheritors", "gd_sixth_inheritors", "mct_inheritor_rules"]
+    ,"72_保护单位传承人队伍职责辨析.md": ["mct_protection_rules", "mct_inheritor_rules", "mct_protection_evaluation", "ihchina_chaoyang_project", "ihchina_puning_project", "ihchina_jiazi_project"]
+    ,"73_高校职业教育与数字传习档案.md": ["ihchina_vocational_yingge", "mct_inheritor_rules"]
+    ,"74_英歌代表性传承人名录时效审计.md": ["mct_sixth_inheritors", "gd_sixth_inheritors", "ihchina_chaoyang_project", "ihchina_linzongcheng", "ihchina_chen", "ihchina_yangwei", "ihchina_linbingguang"]
+    ,"75_英歌传承人物队伍师承关系矩阵.md": ["ihchina_chen", "ihchina_yangwei", "ihchina_linbingguang", "ihchina_linzongcheng", "ihchina_vocational_yingge", "shantou_overseas_archive", "puning_nanshan_base"]
+    ,"76_英歌传艺角色与隐性知识档案.md": ["ihchina_chaoyang_project", "shanwei_jiazi", "ihchina_vocational_yingge", "mct_inheritor_rules"]
+    ,"77_人物资料隐私授权与智能体称谓规范.md": ["mct_inheritor_rules", "mct_sixth_inheritors", "gd_sixth_inheritors"]
+    ,"78_动作节拍信号时间码标注规范.md": ["shanwei_jiazi", "ihchina_chaoyang_project"]
+    ,"79_队伍动作鼓点阵形同步个案.md": ["shanwei_jiazi", "ihchina_chaoyang_project", "shantou_teams"]
+    ,"80_鼓语吆喝哨声与听觉信号词典.md": ["shanwei_jiazi", "shantou_teams"]
+    ,"81_阵形空间语法与路线观察.md": ["shanwei_jiazi", "shantou_teams", "ihchina_yingge_energy"]
+    ,"82_表演视频证据与镜头可靠性审计.md": ["ihchina_ximen_rebuild", "shanwei_jiazi", "shantou_teams"]
+    ,"83_大模型API接入与RAG编排方案.md": ["deepseek_v4_flash", "deepseek_chat_completion", "openai_model_guidance", "openai_models"]
+    ,"85_当代传播场景与社区实践.md": ["shenzhen_futian_community_2025", "puning_yinggeqing_route_2025", "lyon_ximen_yingge_2025"]
+    ,"86_地方标准中的角色人数与表演边界.md": ["shantou_yingge_standard_2025", "ihchina_chaoyang_project", "ihchina_puning_project"]
+    ,"87_数字展陈视觉证据与AI素材规范.md": ["shantou_yingge_standard_2025", "npc_yingge"]
+    ,"88_潮阳英歌七种基础队形地方标准档案.md": ["shantou_yingge_standard_2025"]
+  }
+}

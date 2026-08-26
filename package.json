@@ -1,0 +1,15 @@
+{
+  "name": "yingge-digital-museum",
+  "private": true,
+  "version": "1.0.0",
+  "description": "英歌舞数字博物馆前台、互动展馆与英歌小槌知识服务",
+  "scripts": {
+    "start:agent": "node backend/server.mjs",
+    "test:agent": "node agent/scripts/test_agent_runtime.mjs",
+    "validate:knowledge": "node agent/scripts/validate_structured.mjs"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "three": "^0.180.0"
+  }
+}

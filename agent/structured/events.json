@@ -1,0 +1,66 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "events",
+  "records": [
+    {
+      "event_id": "shantou-spring-yingge-2024",
+      "title": "2024年春节英歌舞展演巡游",
+      "event_date": "2024-02",
+      "location": "汕头市",
+      "participants": ["汕头市英歌队伍"],
+      "event_type": "festival_performance",
+      "status": "historical",
+      "freshness_until": null,
+      "source_refs": [{"source_id": "shantou_event", "support": "direct"}],
+      "status_note": "历史活动记录；不能回答为当前正在举办。"
+    },
+    {
+      "event_id": "puning-nanshan-base-opening-2024",
+      "title": "普宁南山英歌文化旅游打卡点建设与开放动态",
+      "event_date": "2024-01-15",
+      "location": "揭阳市普宁市南山",
+      "participants": ["普宁英歌相关传承与文旅主体"],
+      "event_type": "heritage_base",
+      "status": "historical",
+      "freshness_until": null,
+      "source_refs": [{"source_id": "puning_nanshan_base", "support": "direct"}],
+      "status_note": "来源用于记录建设与文旅展示节点，不代表当前开放状态。"
+    },
+    {
+      "event_id": "houxi-beijing-performance-2025-04-08",
+      "title": "潮阳英歌舞赴京献演",
+      "event_date": "2025-04-08",
+      "location": "北京市",
+      "participants": ["潮阳棉北后溪英歌队"],
+      "event_type": "cultural_exchange",
+      "status": "historical",
+      "freshness_until": null,
+      "source_refs": [{"source_id": "shantou_houxi_beijing", "support": "direct"}],
+      "status_note": "已结束的对外交流活动；不要据此推断当前演出安排。"
+    },
+    {
+      "event_id": "taoyuan-dubai-exchange-2025-04-11",
+      "title": "中国（汕头）—阿联酋（迪拜）经贸文旅交流会英歌展示",
+      "event_date": "2025-04-11",
+      "location": "阿联酋迪拜",
+      "participants": ["汕头英歌文化交流团队"],
+      "event_type": "overseas_exchange",
+      "status": "historical",
+      "freshness_until": null,
+      "source_refs": [{"source_id": "shantou_taoyuan_dubai", "support": "direct"}],
+      "status_note": "历史海外交流记录；如询问近期海外活动，必须重新检索实时来源。"
+    },
+    {
+      "event_id": "shantou-zhongjing-base-2025",
+      "title": "潮阳忠精英歌传承基地活动记录",
+      "event_date": "2025-04",
+      "location": "汕头市潮阳区",
+      "participants": ["潮阳城南忠精英歌队", "英歌传承与研学参与者"],
+      "event_type": "heritage_education",
+      "status": "historical",
+      "freshness_until": null,
+      "source_refs": [{"source_id": "shantou_zhongjing_base", "support": "direct"}],
+      "status_note": "按来源公开月份记录；具体活动场次和当前开放情况未在本记录中推断。"
+    }
+  ]
+}
