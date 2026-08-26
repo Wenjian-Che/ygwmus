@@ -1,5 +1,6 @@
 (() => {
   const refinement = document.createElement('link'); refinement.rel = 'stylesheet'; refinement.href = 'assistant-overrides.css'; document.head.appendChild(refinement);
+  const polish = document.createElement('link'); polish.rel = 'stylesheet'; polish.href = 'assistant-polish.css'; document.head.appendChild(polish);
   const API = 'http://127.0.0.1:8787';
   const historyKey = 'yingge-admin-assistant-history';
   const stream = document.querySelector('#chatStream');
