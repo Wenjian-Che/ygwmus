@@ -56,6 +56,12 @@ Logo 开场是已确认资产，不要替换成简化版：SVG 描边与显影�
 - `web/data/`：运行时 chunks、词法索引和来源注册表
 - `agent/`：RAG 配置、黄金答案、结构化知识、测试与维护说明
 
+后台管理边界：
+
+- 已迁入：`/api/admin/*` 管理 API，包含配置、应用、反馈、问题聚类、答案修订、逐句证据审计、黄金答案晋级、知识任务、版本恢复和评测接口。
+- 未迁入：旧工作区的 `admin.html`、`admin-feedback.html`、`admin-evaluation.html` 等管理页面。它们属于旧站工作区，不应直接复制进来；后续应依据当前 API 契约单独实现新的管理前端。
+- 安全：设置 `backend/.env` 的 `ADMIN_TOKEN` 后，所有管理 API（健康检查除外）要求 `Authorization: Bearer` 或 `X-Admin-Token`。
+
 前台目前用 `http://127.0.0.1:8787/api/agent` 和 `/api/health`。部署前应改为环境可配置的同源 API 地址。
 
 ## 5. 已知问题与禁止回退
