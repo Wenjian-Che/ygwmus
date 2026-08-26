@@ -27,6 +27,16 @@
     stream.scrollTop = stream.scrollHeight;
     saveHistory();
   };
+  const archivePlan = async (request, answer, citations) => {
+    const payload = {title: `${mode} · ${request.slice(0, 28)}`, mode, request, answer, citations};
+    try {
+      const response = await fetch(`${API}/api/admin/plans`, {method: 'POST', headers: {'Content-Type': 'application/json', ...tokenHeaders()}, body: JSON.stringify(payload)});
+      if (!response.ok) throw new Error('archive failed');
+    } catch {
+      const queue = JSON.parse(localStorage.getItem('yingge-admin-plan-queue') || '[]');
+      localStorage.setItem('yingge-admin-plan-queue', JSON.stringify([payload, ...queue].slice(0, 20)));
+    }
+  };
   const restoreHistory = () => {
     try {
       const items = JSON.parse(sessionStorage.getItem(historyKey) || '[]');
@@ -66,6 +76,7 @@
         ? `\n\n来源：\n${data.citations.map((item, index) => `[证据${index + 1}] ${item.title || item.name || item.url || '馆内资料'}`).join('\n')}`
         : '';
       addMessage('assistant', `${data.answer || '已收到需求，但暂时没有生成内容。'}${citations}`);
+      archivePlan(text, data.answer || '', data.citations || []);
     } catch (error) {
       addMessage('assistant', `${error.message}\n\n如果是首次使用，请在后台配置 DEEPSEEK_API_KEY，或在管理台保存有效 Token。`, true);
     } finally { button.disabled = false; }

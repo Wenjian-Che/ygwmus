@@ -62,6 +62,7 @@ const answerQualityHistoryPath = path.join(projectRoot, "agent", "generated", "a
 const dailyQualityRunsPath = path.join(projectRoot, "agent", "generated", "daily_quality_runs.jsonl");
 const questionClustersPath = path.join(projectRoot, "agent", "generated", "question_clusters.json");
 const siteContentPath = path.join(backendDir, "site-content.json");
+const plansPath = path.join(backendDir, "plans.json");
 const defaultSiteContent = {
   version: 1,
   hero: { eyebrow: "国家级非物质文化遗产 英歌", titleLine1: "看见英歌，", titleLine2: "也看懂英歌。", body: "影像、互动与知识档案，共同解释动作、阵法、人物和地方传承。", primaryCta: "进入数字展馆" },
@@ -69,6 +70,8 @@ const defaultSiteContent = {
 };
 let siteContent = structuredClone(defaultSiteContent);
 try { if (fs.existsSync(siteContentPath)) siteContent = { ...defaultSiteContent, ...JSON.parse(fs.readFileSync(siteContentPath, "utf8")) }; } catch (error) { console.error("Site content load failed:", error.message); }
+let plans = [];
+try { if (fs.existsSync(plansPath)) plans = JSON.parse(fs.readFileSync(plansPath, "utf8")); } catch (error) { console.error("Plans load failed:", error.message); }
 const appsPath = path.join(backendDir, "apps.json");
 let chunks = [];
 let sourceRegistry = { sources: {} };
@@ -1060,6 +1063,16 @@ const server = http.createServer(async (request, response) => {
       siteContent = { ...defaultSiteContent, ...body, version: Number(siteContent.version || 0) + 1, updated_at: new Date().toISOString() };
       fs.writeFileSync(siteContentPath, JSON.stringify(siteContent, null, 2), "utf8");
       return sendJson(response, 200, siteContent);
+    }
+    if (request.method === "GET" && url.pathname === "/api/admin/plans") return sendJson(response, 200, { items: plans.slice(0, 100) });
+    if (request.method === "POST" && url.pathname === "/api/admin/plans") {
+      const body = await readJson(request);
+      const answer = String(body.answer || "").trim();
+      if (!answer) return sendJson(response, 400, { code: "INVALID_PLAN", message: "方案内容不能为空" });
+      const item = { id: crypto.randomUUID(), title: String(body.title || "未命名方案").trim().slice(0, 100), mode: String(body.mode || "项目策划").trim().slice(0, 30), request: String(body.request || "").trim().slice(0, 1000), answer: answer.slice(0, 30000), citations: Array.isArray(body.citations) ? body.citations.slice(0, 8) : [], created_at: new Date().toISOString(), status: "draft" };
+      plans = [item, ...plans].slice(0, 100);
+      fs.writeFileSync(plansPath, JSON.stringify(plans, null, 2), "utf8");
+      return sendJson(response, 201, { item, items: plans });
     }
     if (request.method === "GET" && url.pathname === "/api/admin/golden-answers") return sendJson(response, 200, { version: goldenAnswersVersion, count: goldenAnswers.length, items: goldenAnswers });
     if (request.method === "GET" && url.pathname === "/api/admin/golden-match") {
