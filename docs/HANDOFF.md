@@ -58,7 +58,7 @@ Logo 开场是已确认资产，不要替换成简化版：SVG 描边与显影�
 
 后台管理边界：
 
-- 已迁入：`web/admin/` 独立可视化运营台，以及 `/api/admin/*` 管理 API。运营台包含总览、访客洞察、内容审核、项目策划和知识评测五个管理模块；另有独立入口 `web/admin/assistant.html`（侧栏“英歌小槌”），用于类似豆包/DeepSeek 的 B 端对话式策划，不替代管理台。
+- 已迁入：`web/admin/` 独立可视化运营台，以及 `/api/admin/*` 管理 API。运营台包含总览、访客洞察、内容审核、项目策划和知识评测五个管理模块；`web/admin/content.html` 是前台内容编辑工作区；另有独立入口 `web/admin/assistant.html`（侧栏“英歌小槌”），用于类似豆包/DeepSeek 的 B 端对话式策划，不替代管理台。
 - 未迁入：旧工作区的 `admin.html`、`admin-feedback.html`、`admin-evaluation.html` 等管理页面。它们属于旧站工作区，不应直接复制进来。
 - 安全：设置 `backend/.env` 的 `ADMIN_TOKEN` 后，所有管理 API（健康检查除外）要求 `Authorization: Bearer` 或 `X-Admin-Token`。
 

@@ -1,3 +1,11 @@
+const ADMIN_CONTENT_API='http://127.0.0.1:8787/api/site-content';
+const applyManagedContent=(content={})=>{
+  const set=(selector,value)=>{const node=document.querySelector(selector);if(node&&typeof value==='string'&&value.trim())node.textContent=value};
+  set('.hero-label',content.hero?.eyebrow);set('.hero h1 span:nth-child(1)',content.hero?.titleLine1);set('.hero h1 span:nth-child(2)',content.hero?.titleLine2);set('.hero-body',content.hero?.body);set('.hero-actions .button-primary',content.hero?.primaryCta);set('#experiences .section-title h2',content.experiences?.title);set('#experiences .section-title p',content.experiences?.intro);
+  const cards=content.experiences?.cards||{};set('.experience-main h3',cards.video?.title);set('.experience-main p',cards.video?.description);set('.experience-h5 h3',cards.h5?.title);set('.experience-h5 p',cards.h5?.description);set('.experience-guide h3',cards.agent?.title);set('.experience-guide p',cards.agent?.description);
+};
+try{const cached=JSON.parse(localStorage.getItem('yingge-site-content')||'null');if(cached)applyManagedContent(cached)}catch{}
+fetch(ADMIN_CONTENT_API).then(response=>response.ok?response.json():null).then(content=>{if(content){applyManagedContent(content);localStorage.setItem('yingge-site-content',JSON.stringify(content))}}).catch(()=>{});
 gsap.registerPlugin(ScrollTrigger);
 const opening=document.querySelector('#opening'),openingLogo=document.querySelector('.opening-logo'),navLogo=document.querySelector('#navLogo'),guide=document.querySelector('#guidePanel');
 function revealPage(){document.body.classList.add('page-ready');if(opening)opening.classList.add('is-done')}

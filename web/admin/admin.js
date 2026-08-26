@@ -5,6 +5,9 @@
   document.querySelectorAll('img[src="../web/assets/museum-logo.png"]').forEach(image => { image.src = '../assets/museum-logo.png'; });
   // Keep the operations console intact, while exposing the assistant as a separate product entry.
   const nav = document.querySelector('.rail-nav');
+  if (nav && !nav.querySelector('[href="content.html"]')) {
+    nav.insertAdjacentHTML('beforeend', '<a class="rail-link content-link" href="content.html"><span>06</span>前台内容</a>');
+  }
   if (nav && !nav.querySelector('[href="assistant.html"]')) {
     nav.insertAdjacentHTML('beforeend', '<a class="rail-link assistant-link" href="assistant.html"><span>AI</span>英歌小槌</a>');
   }

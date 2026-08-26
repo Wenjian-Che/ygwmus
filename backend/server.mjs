@@ -61,6 +61,14 @@ const evaluationHistoryPath = path.join(projectRoot, "agent", "generated", "eval
 const answerQualityHistoryPath = path.join(projectRoot, "agent", "generated", "answer_quality_history.jsonl");
 const dailyQualityRunsPath = path.join(projectRoot, "agent", "generated", "daily_quality_runs.jsonl");
 const questionClustersPath = path.join(projectRoot, "agent", "generated", "question_clusters.json");
+const siteContentPath = path.join(backendDir, "site-content.json");
+const defaultSiteContent = {
+  version: 1,
+  hero: { eyebrow: "国家级非物质文化遗产 英歌", titleLine1: "看见英歌，", titleLine2: "也看懂英歌。", body: "影像、互动与知识档案，共同解释动作、阵法、人物和地方传承。", primaryCta: "进入数字展馆" },
+  experiences: { title: "三件核心展项", intro: "先看真实表演，再进互动叙事；遇到不懂的内容，随时问英歌小槌。", cards: { video: { title: "看英歌", description: "从完整表演进入动作、阵形、人物与地方现场。" }, h5: { title: "互动特展", description: "沿着互动叙事认识英歌，并随时返回博物馆继续参观。" }, agent: { title: "问小槌", description: "围绕当前展品回答，并说明资料来源和适用范围。" } } }
+};
+let siteContent = structuredClone(defaultSiteContent);
+try { if (fs.existsSync(siteContentPath)) siteContent = { ...defaultSiteContent, ...JSON.parse(fs.readFileSync(siteContentPath, "utf8")) }; } catch (error) { console.error("Site content load failed:", error.message); }
 const appsPath = path.join(backendDir, "apps.json");
 let chunks = [];
 let sourceRegistry = { sources: {} };
@@ -1022,7 +1030,7 @@ const server = http.createServer(async (request, response) => {
   if (originAllowed(requestOrigin)) response.setHeader("access-control-allow-origin", requestOrigin || "*");
   response.setHeader("vary", "Origin");
   response.setHeader("access-control-allow-headers", "content-type, authorization, x-app-id, x-admin-token");
-  response.setHeader("access-control-allow-methods", "GET, POST, OPTIONS");
+  response.setHeader("access-control-allow-methods", "GET, POST, PUT, OPTIONS");
   if (request.method === "OPTIONS") return response.end();
   const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
   const startedAt = Date.now();
@@ -1033,6 +1041,7 @@ const server = http.createServer(async (request, response) => {
   });
   try {
     if (request.method === "GET" && url.pathname === "/api/health") return sendJson(response, 200, { ok: true, model: config.model, base_url: config.baseUrl, api_key_configured: Boolean(process.env.DEEPSEEK_API_KEY), chunks: chunks.length, golden_answers: goldenAnswers.length, golden_answers_version: goldenAnswersVersion, dynamic_items: dynamicEntries.length, apps: apps.filter((app) => app.enabled !== false).length, storage: store.mode, knowledge_version: knowledgeVersion, retrieval: retrievalEngine.diagnostics() });
+    if (request.method === "GET" && url.pathname === "/api/site-content") return sendJson(response, 200, siteContent);
     if (request.method === "POST" && url.pathname === "/api/agent/feedback") {
       const body = await readJson(request);
       const appId = appIdFrom(request, body);
@@ -1044,6 +1053,14 @@ const server = http.createServer(async (request, response) => {
     }
     if (url.pathname.startsWith("/api/admin/") && !adminAuthorized(request)) return sendJson(response, 401, { code: "ADMIN_AUTH_REQUIRED", message: "需要管理 Token" });
     if (request.method === "GET" && url.pathname === "/api/admin/config") return sendJson(response, 200, { model: config.model, base_url: config.baseUrl, thinking: config.thinking, model_timeout_ms: config.modelTimeoutMs, max_body_bytes: config.maxBodyBytes, api_key_configured: Boolean(process.env.DEEPSEEK_API_KEY), admin_auth_enabled: Boolean(config.adminToken), knowledge_version: knowledgeVersion, retrieval: retrievalEngine.diagnostics() });
+    if (request.method === "GET" && url.pathname === "/api/admin/site-content") return sendJson(response, 200, siteContent);
+    if ((request.method === "PUT" || request.method === "POST") && url.pathname === "/api/admin/site-content") {
+      const body = await readJson(request);
+      if (!body || typeof body !== "object" || !body.hero || !body.experiences) return sendJson(response, 400, { code: "INVALID_SITE_CONTENT", message: "前台内容结构无效" });
+      siteContent = { ...defaultSiteContent, ...body, version: Number(siteContent.version || 0) + 1, updated_at: new Date().toISOString() };
+      fs.writeFileSync(siteContentPath, JSON.stringify(siteContent, null, 2), "utf8");
+      return sendJson(response, 200, siteContent);
+    }
     if (request.method === "GET" && url.pathname === "/api/admin/golden-answers") return sendJson(response, 200, { version: goldenAnswersVersion, count: goldenAnswers.length, items: goldenAnswers });
     if (request.method === "GET" && url.pathname === "/api/admin/golden-match") {
       const query = String(url.searchParams.get("q") || "");
