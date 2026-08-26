@@ -15,4 +15,7 @@
 .admin-actions b{font-size:12px}
 .admin-actions span{font-size:10px;color:var(--muted)}
 .admin-actions i{grid-column:2;grid-row:1/3;align-self:center;font-size:10px;font-style:normal;color:var(--green)}
+.assistant-link{text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px}
+.assistant-link span{color:var(--coral);font-size:10px;letter-spacing:.08em}
+.assistant-link:hover{border-color:var(--coral);color:#fff}
 @media(max-width:760px){.admin-data-grid{grid-template-columns:1fr}.overview-lead h2{font-size:25px}}

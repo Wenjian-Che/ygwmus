@@ -1,5 +1,13 @@
 (() => {
   const API = 'http://127.0.0.1:8787';
+  // The static server exposes `web/` as its root; normalize legacy links kept in the compact admin markup.
+  document.querySelectorAll('a[href="../web/index.html"]').forEach(link => { link.href = '../index.html'; });
+  document.querySelectorAll('img[src="../web/assets/museum-logo.png"]').forEach(image => { image.src = '../assets/museum-logo.png'; });
+  // Keep the operations console intact, while exposing the assistant as a separate product entry.
+  const nav = document.querySelector('.rail-nav');
+  if (nav && !nav.querySelector('[href="assistant.html"]')) {
+    nav.insertAdjacentHTML('beforeend', '<a class="rail-link assistant-link" href="assistant.html"><span>AI</span>英歌小槌</a>');
+  }
   const base = document.createElement('script');
   base.src = 'admin-base.js';
   base.onload = async () => {
