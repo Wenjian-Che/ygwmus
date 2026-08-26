@@ -16,13 +16,6 @@
       <button class="new-chat" id="newChat" type="button"><span>＋</span>新建对话</button>
       <p class="side-label">最近对话</p>
       <div class="conversation-list" id="conversationList"><button type="button" class="conversation is-current"><span></span><b>新的策划对话</b><small>刚刚</small></button><button type="button" class="conversation"><span></span><b>潮汕英歌特展方案</b><small>昨天</small></button><button type="button" class="conversation"><span></span><b>研学活动流程</b><small>周一</small></button></div>
-      <p class="side-label capability-label">助手能力</p>
-      <div class="capability-list">
-        <button class="capability is-active" data-mode="展览策划" type="button"><b>展览策划</b><span>主题、动线与展项结构</span></button>
-        <button class="capability" data-mode="研学活动" type="button"><b>研学活动</b><span>分龄目标与活动流程</span></button>
-        <button class="capability" data-mode="市场洞察" type="button"><b>市场洞察</b><span>访客信号与传播机会</span></button>
-        <button class="capability" data-mode="内容选题" type="button"><b>内容选题</b><span>栏目、短视频与文章方向</span></button>
-      </div>
       <div class="sidebar-note"><span class="status-dot"></span><div><strong>知识库在线</strong><small>回答优先引用馆内资料</small></div></div>
     </aside>
     <main class="assistant-main">
@@ -32,20 +25,12 @@
       </header>
       <div class="assistant-grid">
         <section class="chat-panel">
-          <div class="chat-toolbar"><div class="agent-identity"><div class="agent-mark">槌</div><div><strong>英歌小槌</strong><span>灵动的英歌舞项目顾问</span></div></div><span class="mode-badge" id="modeBadge">展览策划</span></div>
+          <div class="chat-toolbar"><div class="agent-identity"><div class="agent-mark">槌</div><div><strong>英歌小槌</strong><span>灵动的英歌舞项目顾问</span></div></div><label class="mode-picker"><span>能力</span><select id="modeSelect"><option>展览策划</option><option>研学活动</option><option>市场洞察</option><option>内容选题</option></select></label></div>
           <div class="chat-stream" id="chatStream" aria-live="polite">
             <div class="welcome-block"><p class="eyebrow">从问题到行动</p><h2>你想把英歌舞带到哪里？</h2><p>我可以把一个想法拆成目标、受众、内容结构、执行步骤和风险清单，也会把需要人工核实的地方标出来。</p><div class="suggestion-row"><button type="button" data-prompt="为潮汕地区的英歌舞数字特展做一份面向公众的策划方案，预算有限，希望突出动作与声音体验。">数字特展方案</button><button type="button" data-prompt="设计一场面向初中生的45分钟英歌舞研学活动，要包含动作观察、鼓点体验和安全提示。">研学活动脚本</button><button type="button" data-prompt="根据访客常问问题，给出英歌舞博物馆下季度的内容选题与传播节奏。">季度内容选题</button></div></div>
           </div>
-          <form class="composer" id="assistantForm"><div class="composer-context"><span>当前模式</span><strong id="composerMode">展览策划</strong><button type="button" id="clearInput">清空</button></div><textarea id="assistantInput" rows="3" placeholder="描述你的目标、受众、预算或限制条件……" required></textarea><div class="composer-footer"><span>回答会附带证据引用与边界提示</span><button class="send-button" type="submit">发送 <span>↗</span></button></div></form>
+          <form class="composer" id="assistantForm"><div class="composer-context"><label><span>服务对象</span><select id="audience"><option>文化机构管理人员</option><option>学校与研学团队</option><option>文旅项目团队</option><option>研究与策展团队</option></select></label><label><span>输出深度</span><select id="detail"><option value="deep">深度方案</option><option value="standard">标准建议</option><option value="brief">快速提纲</option></select></label><button type="button" id="clearInput">清空</button></div><textarea id="assistantInput" rows="3" placeholder="描述你的目标、受众、预算或限制条件……" required></textarea><div class="composer-footer"><span>回答会附带证据引用与边界提示</span><button class="send-button" type="submit">发送 <span>↗</span></button></div></form>
         </section>
-        <aside class="context-panel">
-          <div class="context-head"><p class="eyebrow">工作上下文</p><h3>让方案更接近真实项目</h3></div>
-          <label>服务对象<select id="audience"><option>文化机构管理人员</option><option>学校与研学团队</option><option>文旅项目团队</option><option>研究与策展团队</option></select></label>
-          <label>输出深度<select id="detail"><option value="deep">深度方案</option><option value="standard">标准建议</option><option value="brief">快速提纲</option></select></label>
-          <div class="context-card"><span class="context-icon">01</span><div><strong>证据优先</strong><p>馆内事实将尽量附带来源；没有证据的内容会标注为建议或待核实。</p></div></div>
-          <div class="context-card"><span class="context-icon">02</span><div><strong>方案可落地</strong><p>默认拆出负责人、阶段、资源、风险与验收指标，便于继续交给团队执行。</p></div></div>
-          <div class="context-card caution"><span class="context-icon">!</span><div><strong>人工复核</strong><p>预算、版权、活动安全、地区与队伍差异不能由助手替代审批。</p></div></div>
-        </aside>
       </div>
     </main>
   </div>

@@ -1,13 +1,13 @@
 (() => {
   const refinement = document.createElement('link'); refinement.rel = 'stylesheet'; refinement.href = 'assistant-overrides.css'; document.head.appendChild(refinement);
   const polish = document.createElement('link'); polish.rel = 'stylesheet'; polish.href = 'assistant-polish.css'; document.head.appendChild(polish);
+  const dialog = document.createElement('link'); dialog.rel = 'stylesheet'; dialog.href = 'assistant-dialog.css'; document.head.appendChild(dialog);
   const API = 'http://127.0.0.1:8787';
   const historyKey = 'yingge-admin-assistant-history';
   const stream = document.querySelector('#chatStream');
   const form = document.querySelector('#assistantForm');
   const input = document.querySelector('#assistantInput');
   const modeBadge = document.querySelector('#modeBadge');
-  const composerMode = document.querySelector('#composerMode');
   let mode = '展览策划';
 
   const tokenHeaders = () => {
@@ -47,10 +47,12 @@
   };
   const setMode = next => {
     mode = next;
-    modeBadge.textContent = next;
-    composerMode.textContent = next;
+    if (modeBadge) modeBadge.textContent = next;
+    const inlineMode = document.querySelector('#composerMode');
+    if (inlineMode) inlineMode.textContent = next;
     document.querySelectorAll('.capability').forEach(button => button.classList.toggle('is-active', button.dataset.mode === next));
   };
+  document.querySelector('#modeSelect')?.addEventListener('change', event => setMode(event.target.value));
   document.querySelectorAll('.capability').forEach(button => button.addEventListener('click', () => setMode(button.dataset.mode)));
   document.querySelectorAll('[data-prompt]').forEach(button => button.addEventListener('click', () => { input.value = button.dataset.prompt; input.focus(); }));
   document.querySelector('#clearInput')?.addEventListener('click', () => { input.value = ''; input.focus(); });
