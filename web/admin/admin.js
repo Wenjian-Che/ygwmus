@@ -8,6 +8,20 @@
   if (nav && !nav.querySelector('[href="assistant.html"]')) {
     nav.insertAdjacentHTML('beforeend', '<a class="rail-link assistant-link" href="assistant.html"><span>AI</span>英歌小槌</a>');
   }
+  if (nav && !nav.previousElementSibling?.classList.contains('rail-section-label')) {
+    nav.insertAdjacentHTML('beforebegin', '<p class="rail-section-label">运营模块</p>');
+  }
+  const topActions = document.querySelector('.top-actions');
+  if (topActions && !topActions.querySelector('.frontstage-link')) {
+    topActions.insertAdjacentHTML('afterbegin', '<a class="frontstage-link" href="../index.html">打开公众前台 <span>↗</span></a>');
+  }
+  document.querySelector('.admin-brand small')?.replaceChildren(document.createTextNode('可视化管理台'));
+  document.querySelector('.admin-topbar .eyebrow')?.replaceChildren(document.createTextNode('B 端可视化管理'));
+  const overview = document.querySelector('[data-panel="overview"]');
+  if (overview && !overview.querySelector('.admin-orientation')) {
+    const lead = overview.querySelector('.overview-lead');
+    lead?.insertAdjacentHTML('afterend', '<section class="admin-orientation" aria-label="管理台导览"><div class="orientation-intro"><p class="eyebrow">怎么使用这套后台</p><h3>先看信号，再做动作</h3><p>这里不是公众展馆，而是团队用来判断问题、管理内容、制定项目和校验答案的工作台。</p></div><div class="orientation-steps"><div><span>01</span><strong>观察</strong><small>访客洞察<br>看大家正在问什么</small></div><div><span>02</span><strong>管理</strong><small>内容审核<br>把知识缺口变成任务</small></div><div><span>03</span><strong>策划</strong><small>项目策划<br>把信号整理成方案</small></div><div><span>04</span><strong>校验</strong><small>知识评测<br>确认回答是否可靠</small></div></div></section>');
+  }
   const base = document.createElement('script');
   base.src = 'admin-base.js';
   base.onload = async () => {

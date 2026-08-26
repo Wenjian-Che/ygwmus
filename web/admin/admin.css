@@ -15,7 +15,18 @@
 .admin-actions b{font-size:12px}
 .admin-actions span{font-size:10px;color:var(--muted)}
 .admin-actions i{grid-column:2;grid-row:1/3;align-self:center;font-size:10px;font-style:normal;color:var(--green)}
-.assistant-link{text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px}
+.assistant-link{text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px;margin-top:10px;border-top:1px solid rgba(231,236,228,.13);border-radius:0;padding-top:16px}
 .assistant-link span{color:var(--coral);font-size:10px;letter-spacing:.08em}
 .assistant-link:hover{border-color:var(--coral);color:#fff}
+.rail-section-label{margin:0 9px 7px;color:#718774;font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.frontstage-link{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:11px;text-decoration:none;border-bottom:1px solid #a7b8a8;padding:3px 0;white-space:nowrap}
+.frontstage-link:hover{color:var(--coral);border-color:var(--coral)}
+.frontstage-link span{font-size:13px;line-height:1}
+.admin-orientation{display:grid;grid-template-columns:245px 1fr;gap:24px;padding:18px 0 21px;border-bottom:1px solid var(--line)}
+.orientation-intro h3{font-size:17px;margin:0 0 6px}.orientation-intro p:last-child{font-size:12px;color:var(--muted);line-height:1.7;margin:0;max-width:220px}
+.orientation-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.orientation-steps>div{min-height:86px;border-left:1px solid var(--line);padding:2px 13px 0 15px;display:grid;grid-template-columns:auto 1fr;align-content:start;gap:0 8px}
+.orientation-steps span{grid-row:1/3;color:var(--coral);font-size:10px;letter-spacing:.08em}.orientation-steps strong{font-size:13px}.orientation-steps small{font-size:10px;color:var(--muted);line-height:1.55;margin-top:4px}
 @media(max-width:760px){.admin-data-grid{grid-template-columns:1fr}.overview-lead h2{font-size:25px}}
+@media(max-width:1080px){.admin-orientation{grid-template-columns:1fr;gap:14px}.orientation-intro p:last-child{max-width:620px}}
+@media(max-width:760px){.rail-section-label{display:none}.frontstage-link{font-size:10px}.admin-orientation{padding:16px 0}.orientation-steps{grid-template-columns:1fr 1fr;gap:10px}.orientation-steps>div{min-height:70px}}
