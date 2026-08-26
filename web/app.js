@@ -1,4 +1,11 @@
+const frontierStyles=document.createElement('link');frontierStyles.rel='stylesheet';frontierStyles.href='frontier.css';document.head.appendChild(frontierStyles);
 const ADMIN_CONTENT_API='http://127.0.0.1:8787/api/site-content';
+const homeLearning=`<section class="learning-section museum-section" id="what-is-yingge"><div class="learning-intro"><p class="section-kicker">先回答一个问题</p><h2>英歌，究竟是什么？</h2><p>英歌是流传于潮汕等地的民间广场舞蹈。国家级非物质文化遗产名录将它归入传统舞蹈。一次表演不是静态图案，而是身体、英歌槌、锣鼓、队形和角色共同完成的集体行动。</p><p class="source-note">事实层参考<a href="https://www.ihchina.cn/project_details/12902.html" target="_blank" rel="noreferrer">中国非物质文化遗产网</a>与<a href="https://www.stpt.edu.cn/yinggewu/ygwlsbjzl/list.htm" target="_blank" rel="noreferrer">汕头市英歌数字艺术馆</a>。不同地区和队伍仍有差异。</p></div><div class="definition-stage"><div class="definition-orbit" aria-hidden="true"></div><div class="definition-core">英歌<small>集体表演</small></div><div class="definition-lenses"><button class="definition-lens is-active" type="button" data-lens="body"><strong>身体</strong><small>跳、转、落</small></button><button class="definition-lens" type="button" data-lens="sound"><strong>声音</strong><small>鼓、锣钹、吆喝</small></button><button class="definition-lens" type="button" data-lens="space"><strong>空间</strong><small>站位与变阵</small></button><button class="definition-lens" type="button" data-lens="role"><strong>角色</strong><small>功能与叙事</small></button></div><div class="definition-readout"><strong id="definitionReadoutTitle">身体</strong><p id="definitionReadoutText">先看重心、步法和槌路，英歌的力量从身体传到队伍。</p></div></div></section><section class="origin-section museum-section" id="origin"><div class="origin-heading"><p class="section-kicker">历史与研究</p><h2>起源不是一个答案</h2><p>关于英歌由来，公开资料保留了多种解释。它更像是在傩仪、戏曲故事、民间习武和地方节庆的长期交汇中形成，而不是由一个瞬间、一个人物或一个地点单独创造。</p></div><div class="origin-timeline"><div class="origin-line" aria-hidden="true"></div><article class="origin-node"><span>可考线索</span><h3>明代中期以后</h3><p>地方志与研究资料提供了英歌在潮汕民间活动中逐渐成形的历史线索，具体年代仍要注明来源。</p></article><article class="origin-node"><span>流传与演变</span><h3>仪式、故事与武艺</h3><p>傩舞说、戏曲说、练武习艺说等假说解释了不同侧面，不能互相替代，也不能写成唯一结论。</p></article><article class="origin-node"><span>当代传承</span><h3>进入名录与校园</h3><p>2006年英歌相关项目进入首批国家级非物质文化遗产代表性项目名录，今天也在校园和跨地区交流中继续变化。</p></article></div><div class="origin-hypotheses"><button class="origin-hypothesis is-active" type="button" data-origin="ritual"><strong>傩舞说</strong><span>强调驱邪逐疫与仪式性动作的延续</span></button><button class="origin-hypothesis" type="button" data-origin="opera"><strong>戏曲说</strong><span>关联《梁山泊攻打大名府》等民间演剧叙事</span></button><button class="origin-hypothesis" type="button" data-origin="martial"><strong>练武习艺说</strong><span>从地方尚武习俗与群体训练解释其力量感</span></button><button class="origin-hypothesis" type="button" data-origin="festival"><strong>节庆演变说</strong><span>关注游神、赛会和社区生活中的持续改造</span></button></div><div class="origin-detail" id="originDetail"><strong>如何理解：</strong>这是一组研究假说，不是已经被单一证据完全证明的起源结论。进入具体地区和队伍档案时，我们会说明采用了哪一种来源。</div></section><section class="performance-section museum-section" id="how-yingge-works"><div class="performance-heading"><p class="section-kicker">观看方法</p><h2>一场英歌，怎样把几十个人变成一个节拍？</h2><p>不要只看挥槌的瞬间。先听共同时间，再看身体如何回应，最后观察队伍怎样改变空间，这样才能从热闹进入结构。</p></div><div class="performance-sequence"><article class="performance-step"><span>听见</span><h3>鼓点建立共同时间</h3><p>鼓、锣钹和吆喝给出速度、重音与段落信号。</p></article><article class="performance-step"><span>看见</span><h3>身体把信号变成动作</h3><p>步法、身法和槌路把节奏传到每一个人。</p></article><article class="performance-step"><span>跟随</span><h3>队形把动作变成空间</h3><p>分行、合拢、穿插和回旋让集体关系可见。</p></article><article class="performance-step"><span>核对</span><h3>档案说明它属于谁</h3><p>地区、队伍、板式和年代决定这次表演的具体含义。</p></article></div></section>`;
+/* Keep the home page focused on the three entry experiences. The learning layer belongs to the collection overview. */
+if(document.querySelector('#coreExhibits')&&!document.querySelector('#what-is-yingge'))document.querySelector('#coreExhibits').insertAdjacentHTML('beforebegin',homeLearning.replace('2006年英歌相关项目','2006年，潮阳英歌'));
+if(document.querySelector('#coreExhibits')&&!document.querySelector('.museum-subnav'))document.querySelector('.museum-hero')?.insertAdjacentHTML('afterend','<nav class="museum-subnav glass" aria-label="馆藏总览分区"><a href="#what-is-yingge">英歌是什么</a><a href="#origin">起源与流变</a><a href="#how-yingge-works">观看方法</a><a href="#coreExhibits">三件核心展项</a><a href="#collectionLogic">馆藏结构</a></nav>');
+document.querySelector('#how-yingge-works .performance-heading')?.insertAdjacentHTML('beforeend','<p class="museum-method-note"><strong>本馆方法</strong> 同一件内容同时保留现场感、结构解释与证据边界，让你看得见、听得懂，也知道这句话依据什么。</p>');
+document.querySelector('.museum-menu summary')?.replaceChildren(document.createTextNode('在线展馆'));
 const applyManagedContent=(content={})=>{
   const set=(selector,value)=>{const node=document.querySelector(selector);if(node&&typeof value==='string'&&value.trim())node.textContent=value};
   set('.hero-label',content.hero?.eyebrow);set('.hero h1 span:nth-child(1)',content.hero?.titleLine1);set('.hero h1 span:nth-child(2)',content.hero?.titleLine2);set('.hero-body',content.hero?.body);set('.hero-actions .button-primary',content.hero?.primaryCta);set('#experiences .section-title h2',content.experiences?.title);set('#experiences .section-title p',content.experiences?.intro);
@@ -31,6 +38,47 @@ contentMotion.add('(prefers-reduced-motion:no-preference)',()=>{
     if(!items.length)return;
     gsap.from(items,{autoAlpha:0,y:26,stagger:.055,duration:.64,ease:'power3.out',scrollTrigger:{trigger:section,start:'top 78%',once:true}});
   });
+});
+const lensCopy={
+  body:{title:'身体',text:'先看重心、步法和槌路，英歌的力量从身体传到队伍。'},
+  sound:{title:'声音',text:'鼓、锣钹和吆喝给出共同时间，让动作在同一拍点发生。'},
+  space:{title:'空间',text:'站位、间距和路线把一群人的关系变成可以观察的图形。'},
+  role:{title:'角色',text:'人物功能、脸谱和器物要回到具体队伍与场景里辨认。'}
+};
+document.querySelectorAll('.definition-lens').forEach(button=>button.addEventListener('click',()=>{
+  const item=lensCopy[button.dataset.lens];
+  if(!item)return;
+  document.querySelectorAll('.definition-lens').forEach(node=>{const active=node===button;node.classList.toggle('is-active',active);node.setAttribute('aria-pressed',String(active))});
+  const title=document.querySelector('#definitionReadoutTitle'),text=document.querySelector('#definitionReadoutText');
+  if(title)title.textContent=item.title;
+  if(text)text.textContent=item.text;
+  const orbit=document.querySelector('.definition-orbit');
+  if(orbit&&window.gsap&&!matchMedia('(prefers-reduced-motion: reduce)').matches)gsap.to(orbit,{rotation:-20+(Object.keys(lensCopy).indexOf(button.dataset.lens)*90),duration:.72,ease:'power3.out'});
+}));
+document.querySelectorAll('.definition-lens').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('is-active'))));
+const originCopy={
+  ritual:'傩舞说关注驱邪逐疫与仪式性动作的延续。它能解释部分动作和仪式语境，但不能单独证明英歌只有这一条来源。',
+  opera:'戏曲说把英歌与《梁山泊攻打大名府》等民间演剧叙事联系起来，强调故事、角色和表演程式之间的关系。',
+  martial:'练武习艺说从地方尚武、集体训练和身体技艺解释英歌的力量感，提醒我们关注日常训练而不只看舞台。',
+  festival:'节庆演变说关注游神、赛会和社区生活中的持续改造，说明英歌会在不同地方和时代不断长出新形式。'
+};
+document.querySelectorAll('.origin-hypothesis').forEach(button=>button.addEventListener('click',()=>{
+  const detail=document.querySelector('#originDetail'),copy=originCopy[button.dataset.origin];
+  document.querySelectorAll('.origin-hypothesis').forEach(node=>{const active=node===button;node.classList.toggle('is-active',active);node.setAttribute('aria-pressed',String(active))});
+  if(detail&&copy)detail.innerHTML='<strong>如何理解：</strong>'+copy;
+}));
+document.querySelectorAll('.origin-hypothesis').forEach(button=>button.setAttribute('aria-pressed',String(button.classList.contains('is-active'))));
+const learningMotion=gsap.matchMedia();
+learningMotion.add('(prefers-reduced-motion: no-preference)',()=>{
+  const reveal=(targets,trigger,start='top 78%')=>{if(!document.querySelector(targets))return;gsap.from(targets,{autoAlpha:0,y:28,stagger:.08,duration:.7,ease:'power3.out',scrollTrigger:{trigger,start,once:true}})};
+  reveal('.learning-intro > *','.learning-section','top 76%');
+  reveal('.definition-stage','.definition-stage','top 82%');
+  reveal('.origin-heading > *','.origin-section','top 78%');
+  reveal('.origin-node','.origin-timeline','top 74%');
+  reveal('.origin-hypothesis,.origin-detail','.origin-hypotheses','top 82%');
+  reveal('.performance-heading > *','.performance-section','top 78%');
+  reveal('.performance-step','.performance-sequence','top 82%');
+  if(document.querySelector('.origin-line'))gsap.to('.origin-line',{scaleX:1,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'.origin-timeline',start:'top 74%',once:true}});
 });
 const transitionRoot=document.createElement('div');
 transitionRoot.className='page-transition';
@@ -136,4 +184,4 @@ if(guide){
   agentForm.addEventListener('submit',event=>{event.preventDefault();askAgent(agentInput.value)});
   document.querySelectorAll('[data-agent-question]').forEach(button=>button.addEventListener('click',()=>askAgent(button.dataset.agentQuestion)));
 }
-window.addEventListener('load',()=>ScrollTrigger.refresh(),{once:true});window.addEventListener('pagehide',()=>{mm.revert();ScrollTrigger.getAll().forEach(t=>t.kill())},{once:true});
+window.addEventListener('load',()=>ScrollTrigger.refresh(),{once:true});window.addEventListener('pagehide',()=>{mm.revert();contentMotion.revert();learningMotion.revert();ScrollTrigger.getAll().forEach(t=>t.kill())},{once:true});
