@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "generator_version": "fixture-1",
+  "generated_at": "2026-08-30T00:00:00.000Z",
+  "nodes": [
+    {"id":"concept:yingge","version":1,"reviewed_version":1,"published_version":1,"label":"英歌","type":"concept","summary":"以群体表演为核心的传统舞蹈实践。","region":"潮汕","evidence_grade":"A","review_status":"verified","rights_status":"not_applicable","privacy_risk":"none","contains_minors":false,"workflow_status":"published","updated_at":"2026-08-30T00:00:00.000Z","source_ids":["source:official"],"tags":["总览"],"editor_target":"content","conflict_status":"none"},
+    {"id":"event:pending","version":1,"reviewed_version":0,"published_version":0,"label":"待核活动","type":"event","summary":"尚待核验。","region":"新加坡","evidence_grade":"C","review_status":"pending_review","rights_status":"pending_authorization","privacy_risk":"high","contains_minors":true,"workflow_status":"pending_review","updated_at":"2026-08-30T00:00:00.000Z","source_ids":["source:pending"],"tags":["未成年人"],"editor_target":"materials","conflict_status":"gap"},
+    {"id":"claim:formation","version":1,"reviewed_version":1,"published_version":1,"label":"队形是空间组织方式","type":"claim","summary":"具体做法需按地区与队伍核对。","region":"潮阳","evidence_grade":"B","review_status":"verified","rights_status":"not_applicable","privacy_risk":"low","contains_minors":false,"workflow_status":"published","updated_at":"2026-08-30T00:00:00.000Z","source_ids":["source:official"],"tags":["队形"],"editor_target":"materials","conflict_status":"none"}
+  ],
+  "edges": [
+    {"id":"edge:1","version":1,"reviewed_version":1,"source":"concept:yingge","target":"claim:formation","relation":"包含观察维度","label":"表演结构","evidence_grade":"B","review_status":"verified","source_ids":["source:official"],"updated_at":"2026-08-30T00:00:00.000Z","conflict_status":"none"},
+    {"id":"edge:2","version":1,"reviewed_version":0,"source":"concept:yingge","target":"event:pending","relation":"相关活动","label":"待核","evidence_grade":"C","review_status":"pending_review","source_ids":["source:pending"],"updated_at":"2026-08-30T00:00:00.000Z","conflict_status":"gap"}
+  ],
+  "sources": [
+    {"id":"source:official","version":1,"reviewed_version":1,"label":"官方项目资料","url":"https://www.ihchina.cn/","source_type":"government_institution","evidence_grade":"A","publication":"中国非物质文化遗产网","published_at":"2026-01-01","accessed_at":"2026-08-30","source_document":"documents/official.docx","source_locator":"第 3 段","rights_status":"not_applicable","review_status":"verified","privacy_risk":"none","contains_minors":false},
+    {"id":"source:pending","version":1,"reviewed_version":0,"label":"合作候选材料","url":"https://example.org/pending","source_type":"first_party_material","evidence_grade":"C","publication":"合作方","published_at":"2026-01-02","accessed_at":"2026-08-30","source_document":"documents/pending.docx","source_locator":"第 8 段","rights_status":"pending_authorization","review_status":"pending_review","privacy_risk":"high","contains_minors":true}
+  ]
+}

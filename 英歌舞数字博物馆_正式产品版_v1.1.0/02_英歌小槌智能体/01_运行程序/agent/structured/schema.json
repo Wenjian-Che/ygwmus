@@ -1,0 +1,17 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_types": {
+    "projects": {"required": ["project_id", "official_name", "project_no", "project_code", "inclusion", "region", "protection_unit", "source_refs", "status"]},
+    "inheritors": {"required": ["person_id", "name", "project_id", "recognition_level", "batch", "official_serial", "verified_as_of", "public_display", "field_notes", "source_refs", "status"]},
+    "teams": {"required": ["team_id", "official_name", "region", "scope", "established", "style", "named_forms", "evidence_boundary", "source_refs", "status"]},
+    "formations": {"required": ["formation_id", "name", "scope", "spatial_summary", "movement_summary", "identification_boundary", "source_refs", "status"]},
+    "signals": {"required": ["signal_id", "name", "scope", "known_role", "exact_sequence_status", "boundary", "source_refs", "status"]},
+    "events": {"required": ["event_id", "title", "event_date", "location", "participants", "event_type", "status", "freshness_until", "source_refs", "status_note"]}
+  },
+  "enums": {
+    "status": ["verified", "partial", "needs_review", "historical", "expired"],
+    "support": ["direct", "partial", "conflict", "none"],
+    "risk": ["high", "critical", "realtime"],
+    "event_status": ["historical", "expired", "confirmed", "upcoming", "unknown"]
+  }
+}

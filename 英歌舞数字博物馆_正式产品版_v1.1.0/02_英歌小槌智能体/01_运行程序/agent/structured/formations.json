@@ -1,0 +1,76 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "formations",
+  "records": [
+    {
+      "formation_id": "chaoyang-standard-double-column",
+      "name": "双列队形",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "两列平行排列，前后保持队距并沿行进方向推进。",
+      "movement_summary": "适合巡游推进和队列整齐展示；具体步法、槌路和口令需按队伍个案核验。",
+      "identification_boundary": "这是潮阳地方标准中的队形名称，不代表所有地区或所有队伍的唯一结构。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-square",
+      "name": "方形阵",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "队员沿方形边界分布，形成四边相对清晰的空间结构。",
+      "movement_summary": "可用于展示队形边界和转向关系；标准未替每支队伍规定同一套槌路。",
+      "identification_boundary": "不得把名称直接等同于某一队伍的固定人数、固定鼓点或固定口令。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-double-dragon",
+      "name": "双龙出海",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "队列由中心或相邻通道分成两股，向前展开，形成两条具有方向性的队列。",
+      "movement_summary": "重点观察分流、并行和再汇合；具体转场时机须结合队伍视频或谱本。",
+      "identification_boundary": "“双龙出海”是标准中的空间名称，不能仅凭名称推断所有队伍的动作顺序。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-snail",
+      "name": "田螺阵",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "队列沿螺旋路线逐步收拢或展开，形成由外向内、由内向外的层次。",
+      "movement_summary": "需观察螺旋半径、入口和出口；不把图示路线当作逐拍动作谱。",
+      "identification_boundary": "标准只支撑空间识别，不能单独支撑某个队伍的精确槌法和鼓点。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-wheat-spike",
+      "name": "麦穗花阵",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "多股队列由中心向两侧或前后分展，形成具有尖端和分枝感的麦穗状结构。",
+      "movement_summary": "观察中心轴、分枝方向和队距变化；具体路径要以队伍个案证据补充。",
+      "identification_boundary": "这是地方标准的空间类型，不等于全国通用阵法或固定人数模板。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-four-seas",
+      "name": "四海升平",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "队员分布为多个相对独立又相互呼应的圆环或环形单元，形成四向展开的视觉结构。",
+      "movement_summary": "可观察环形单元的旋转、开合和相互转换；不能由名称推导口令。",
+      "identification_boundary": "仅可作为潮阳地方标准的识别标签，其他地区同名结构需分别建档。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "formation_id": "chaoyang-standard-bagua",
+      "name": "八卦阵",
+      "scope": "潮阳英歌地方标准 DB4405/T 315—2025",
+      "spatial_summary": "由外圈、内圈及具有折线或曲线方向变化的队列构成，呈现层次化的八卦式空间组织。",
+      "movement_summary": "重点观察内外圈转换和交错路线；精确节拍、角色分工和出入口待队伍证据。",
+      "identification_boundary": "不能因为名称带有八卦而补写固定八人、八拍或统一口诀；这些字段均需另有来源。",
+      "source_refs": [{"source_id": "shantou_yingge_standard_2025", "support": "direct"}],
+      "status": "verified"
+    }
+  ]
+}

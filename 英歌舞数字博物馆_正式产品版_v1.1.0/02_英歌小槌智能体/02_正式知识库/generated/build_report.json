@@ -1,0 +1,11 @@
+{
+  "knowledge_version": "2026.08.16.2",
+  "files": 94,
+  "chunks": 370,
+  "characters": 212191,
+  "min_chunk_chars": 95,
+  "max_chunk_chars": 960,
+  "average_chunk_chars": 573.5,
+  "chunks_with_urls": 56,
+  "chunks_with_wikilinks": 80
+}

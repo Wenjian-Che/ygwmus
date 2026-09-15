@@ -1,0 +1,66 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "inheritors",
+  "records": [
+    {
+      "person_id": "inheritor-chen-laifa",
+      "name": "陈来发",
+      "aliases": [],
+      "project_id": "yingge-puning",
+      "recognition_level": "国家级代表性传承人",
+      "batch": "第二批",
+      "official_serial": "02-0355",
+      "verified_as_of": "2026-07-30",
+      "public_display": true,
+      "field_notes": "国家非遗个人页称其为普宁英歌第六代传人；队伍职务与国家级认定身份分开记录。",
+      "source_refs": [{"source_id": "ihchina_chen", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "person_id": "inheritor-yang-wei",
+      "name": "杨卫",
+      "aliases": [],
+      "project_id": "yingge-chaoyang",
+      "recognition_level": "国家级代表性传承人",
+      "batch": "第二批",
+      "official_serial": "02-0356",
+      "verified_as_of": "2026-07-30",
+      "public_display": true,
+      "field_notes": "官方档案记载其1991年编创“七下槌”；名称相同不证明不同队伍动作完全相同。",
+      "source_refs": [{"source_id": "ihchina_yangwei", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "person_id": "inheritor-lin-bingguang",
+      "name": "林炳光",
+      "aliases": [],
+      "project_id": "yingge-jiazi",
+      "recognition_level": "国家级代表性传承人",
+      "batch": "第五批",
+      "official_serial": "05-2213",
+      "verified_as_of": "2026-07-30",
+      "public_display": true,
+      "field_notes": "官方档案记载其2001年开始授徒；“五十多名”是档案形成时的累计描述，不是实时人数。",
+      "source_refs": [{"source_id": "ihchina_linbingguang", "support": "direct"}],
+      "status": "verified"
+    },
+    {
+      "person_id": "inheritor-lin-zhongcheng",
+      "name": "林忠诚",
+      "aliases": ["林松"],
+      "project_id": "yingge-chaoyang",
+      "recognition_level": "国家级代表性传承人",
+      "batch": "第六批",
+      "official_serial": null,
+      "verified_as_of": "2026-07-30",
+      "public_display": true,
+      "field_notes": "文化和旅游部正式名单及广东省名单确认第六批身份；国家非遗个人页当前未公开官方序号、出生日期和详细经历，不能补造。",
+      "source_refs": [
+        {"source_id": "mct_sixth_inheritors", "support": "direct"},
+        {"source_id": "gd_sixth_inheritors", "support": "direct"},
+        {"source_id": "ihchina_linzongcheng", "support": "partial"}
+      ],
+      "status": "partial"
+    }
+  ]
+}

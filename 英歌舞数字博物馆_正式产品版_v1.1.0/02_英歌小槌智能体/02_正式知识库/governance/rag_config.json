@@ -1,0 +1,25 @@
+{
+  "version": "2026.08.24.1",
+  "chunking": {
+    "target_chars": 520,
+    "max_chars": 850,
+    "min_chars": 120,
+    "overlap_chars": 80,
+    "keep_tables_together": true
+  },
+  "retrieval": {
+    "top_k": 6,
+    "candidate_k": 48,
+    "title_weight": 2.4,
+    "heading_weight": 1.8,
+    "body_weight": 1.0,
+    "manifest_boost_enabled": true
+  },
+  "answer_policy": {
+    "minimum_citations": 1,
+    "high_risk_minimum_citations": 2,
+    "require_region_scope": true,
+    "realtime_topics_use_static_kb": false,
+    "unknown_answer_action": "clarify_or_abstain"
+  }
+}

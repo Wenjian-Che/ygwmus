@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /mugeda-agent-test.html
+
+Sitemap: https://yinggemus.cn/sitemap.xml

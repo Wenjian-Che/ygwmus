@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "generated_at": "2026-08-28T23:00:14.856Z",
+  "interaction_count": 5,
+  "cluster_count": 4,
+  "priority_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1,
+    "P3": 3
+  },
+  "clusters": [
+    {
+      "cluster_id": "qcl-12393709158e",
+      "title": "锣鼓信号",
+      "representative": "潮阳中板英歌常见的动作组合和锣鼓组织有什么特点？",
+      "intent": "team",
+      "request_type": "list",
+      "volume": 2,
+      "unique_questions": 1,
+      "downvotes": 0,
+      "low_confidence": 0,
+      "priority": "P2",
+      "priority_score": 31,
+      "last_seen": "2026-08-28T10:43:35.008Z",
+      "questions": [
+        "潮阳中板英歌常见的动作组合和锣鼓组织有什么特点？"
+      ],
+      "message_ids": [
+        "61c6015b-b1f0-4239-8279-810b9e128171",
+        "461f8af8-b35e-4ecd-a50d-46da9d5afc56"
+      ],
+      "suggested_action": "继续观察，累计更多真实问法"
+    },
+    {
+      "cluster_id": "qcl-110b78d13131",
+      "title": "用一句话说明什么是英歌",
+      "representative": "用一句话说明什么是英歌",
+      "intent": "general",
+      "request_type": "fact",
+      "volume": 1,
+      "unique_questions": 1,
+      "downvotes": 0,
+      "low_confidence": 0,
+      "priority": "P3",
+      "priority_score": 23,
+      "last_seen": "2026-08-28T15:41:41.973Z",
+      "questions": [
+        "用一句话说明什么是英歌"
+      ],
+      "message_ids": [
+        "56e36f7a-3782-4c5e-8f18-c8600e83e4c7"
+      ],
+      "suggested_action": "继续观察，累计更多真实问法"
+    },
+    {
+      "cluster_id": "qcl-71c4be83a26a",
+      "title": "槌击作用",
+      "representative": "英歌为什么持双槌？双槌在表演中起什么作用？",
+      "intent": "movement",
+      "request_type": "why",
+      "volume": 1,
+      "unique_questions": 1,
+      "downvotes": 0,
+      "low_confidence": 0,
+      "priority": "P3",
+      "priority_score": 23,
+      "last_seen": "2026-08-28T11:34:00.108Z",
+      "questions": [
+        "英歌为什么持双槌？双槌在表演中起什么作用？"
+      ],
+      "message_ids": [
+        "e82a3cd6-4cb3-4ce9-9b6b-62094d31e1fd"
+      ],
+      "suggested_action": "继续观察，累计更多真实问法"
+    },
+    {
+      "cluster_id": "qcl-d4e28eabf815",
+      "title": "英歌舞是什么",
+      "representative": "英歌舞是什么",
+      "intent": "general",
+      "request_type": "fact",
+      "volume": 1,
+      "unique_questions": 1,
+      "downvotes": 0,
+      "low_confidence": 0,
+      "priority": "P3",
+      "priority_score": 23,
+      "last_seen": "2026-08-28T05:17:44.934Z",
+      "questions": [
+        "英歌舞是什么"
+      ],
+      "message_ids": [
+        "4c73a02c-ca22-4237-aae2-47b256d49b2a"
+      ],
+      "suggested_action": "继续观察，累计更多真实问法"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "英歌舞数字博物馆",
+  "short_name": "英歌博物馆",
+  "description": "以影像、互动展陈与英歌小槌智能导览认识英歌舞。",
+  "lang": "zh-CN",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f3e9",
+  "theme_color": "#26352b",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
