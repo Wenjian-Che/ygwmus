@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14231b">
+  <title>运营工作台｜英歌舞数字博物馆</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="admin-shell.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="workspace.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="knowledge-graph.css?v=graph-1">
+</head>
+<body data-admin-page="workspace" class="admin-workspace-page">
+  <div class="admin-app-shell" data-admin-shell>
+    <aside class="admin-unified-rail" data-admin-sidebar aria-label="后台主导航"></aside>
+    <main class="workspace-main admin-page" data-admin-main>
+      <header class="workspace-header">
+        <div><p class="workspace-kicker">英歌舞数字博物馆</p><h1 id="workspaceTitle">运营总览</h1></div>
+        <div class="workspace-header-actions">
+          <span id="workspaceActor">尚未登录</span>
+          <button class="workspace-button is-quiet" id="logoutButton" type="button" hidden>退出登录</button>
+          <a class="workspace-button is-primary" href="../index.html" target="_blank" rel="noopener">查看公众前台</a>
+        </div>
+      </header>
+      <div class="workspace-notice" id="workspaceNotice" role="status" hidden></div>
+
+      <section class="workspace-panel is-active" data-workspace-panel="overview" aria-labelledby="overviewTitle">
+        <div class="workspace-section-heading">
+          <div><h2 id="overviewTitle">今天从这里开始</h2><p>先确认服务和发布状态，再进入需要处理的工作区。</p></div>
+          <button class="workspace-button is-quiet" id="refreshWorkspace" type="button">刷新状态</button>
+        </div>
+        <div class="workspace-status-grid" id="workspaceStatusGrid" aria-live="polite">
+          <article><span>网站内容</span><strong id="contentWorkflowStatus">正在读取</strong><small>草稿、预览与公众版本</small></article>
+          <article><span>真实素材</span><strong id="materialWorkflowStatus">正在读取</strong><small>来源、权利与发布门禁</small></article>
+          <article><span>知识服务</span><strong id="knowledgeWorkflowStatus">正在读取</strong><small>馆内知识检索与回答</small></article>
+          <article><span>DeepSeek</span><strong id="modelWorkflowStatus">正在读取</strong><small>小槌的模型回答连接</small></article>
+        </div>
+        <div class="workspace-action-list">
+          <button type="button" data-open-workspace="content"><span>编辑网站内容</span><strong>修改首页文字，保存草稿并预览</strong><em>进入</em></button>
+          <button type="button" data-open-workspace="materials"><span>审核真实素材</span><strong>核对来源、授权、隐私和发布状态</strong><em>进入</em></button>
+          <button type="button" data-open-workspace="assistant"><span>让小槌协助</span><strong>讨论改写、策展说明或运营方案</strong><em>进入</em></button>
+          <button type="button" data-open-workspace="settings"><span>检查系统连接</span><strong>登录、模型设置和知识库诊断</strong><em>进入</em></button>
+        </div>
+        <section class="workspace-diagnostics" aria-labelledby="diagnosticTitle">
+          <div><h3 id="diagnosticTitle">连接诊断</h3><p>检查公众网页、知识运行时、来源映射与模型配置，不会自动调用付费模型。</p></div>
+          <button class="workspace-button is-quiet" id="runWorkspaceDiagnostics" type="button">运行诊断</button>
+          <div id="workspaceDiagnosticResult" class="workspace-diagnostic-result">尚未运行</div>
+        </section>
+      </section>
+
+      <section class="workspace-panel workspace-embedded-panel" data-workspace-panel="content" aria-labelledby="contentPanelTitle">
+        <div class="workspace-section-heading is-compact"><div><h2 id="contentPanelTitle">网站内容</h2><p>编辑、校验预览并保存草稿。发布仍执行角色分离与版本检查。</p></div><button class="workspace-button is-quiet" data-assistant-context="网站内容" type="button">问小槌怎么改</button></div>
+        <iframe id="contentWorkspace" src="content.html?embedded=1" title="网站内容编辑工作区"></iframe>
+      </section>
+
+      <section class="workspace-panel workspace-embedded-panel" data-workspace-panel="materials" aria-labelledby="materialsPanelTitle">
+        <div class="workspace-section-heading is-compact"><div><h2 id="materialsPanelTitle">真实素材</h2><p>把活动、来源、候选媒体、版权隐私和发布预览放在同一条审阅流程里。</p></div><button class="workspace-button is-quiet" data-assistant-context="真实素材审核" type="button">问小槌怎么审</button></div>
+        <div class="workspace-view-switch" role="tablist" aria-label="真实素材工作视图">
+          <button type="button" role="tab" aria-selected="true" aria-controls="materialsRecordsPane" id="materialsRecordsTab" data-materials-view="records">素材治理</button>
+          <button type="button" role="tab" aria-selected="false" aria-controls="materialsGraphPane" id="materialsGraphTab" data-materials-view="graph">证据图谱</button>
+        </div>
+        <div id="materialsRecordsPane" role="tabpanel" aria-labelledby="materialsRecordsTab" data-materials-pane="records">
+          <iframe id="materialsWorkspace" src="curation.html?embedded=1" title="真实素材与策展工作区"></iframe>
+        </div>
+        <div id="materialsGraphPane" role="tabpanel" aria-labelledby="materialsGraphTab" data-materials-pane="graph" hidden>
+          <section class="knowledge-graph-shell" data-knowledge-graph data-graph-mode="relations" aria-label="英歌知识证据图谱">
+            <div class="knowledge-graph-toolbar">
+              <div class="graph-tool-group">
+                <span class="graph-tool-label">查看方式</span>
+                <div class="graph-mode-switch" aria-label="图谱治理模式">
+                  <button type="button" class="is-active" data-mode="relations" aria-pressed="true">知识全景</button>
+                  <button type="button" data-mode="provenance" aria-pressed="false">来源治理</button>
+                  <button type="button" data-mode="governance" aria-pressed="false">冲突与缺口</button>
+                </div>
+              </div>
+              <div class="graph-filter-group">
+                <label class="graph-search-field" for="knowledgeGraphSearch"><span>搜索证据图谱</span><input id="knowledgeGraphSearch" type="search" autocomplete="off" placeholder="搜索人物、队伍、地区或来源" data-graph-search></label>
+                <label for="knowledgeGraphType"><span>节点类型</span><select id="knowledgeGraphType" data-graph-filter="type"><option value="all">全部类型</option></select></label>
+                <label for="knowledgeGraphRegion"><span>地区筛选</span><select id="knowledgeGraphRegion" data-graph-filter="region"><option value="all">全部地区</option></select></label>
+                <label for="knowledgeGraphEvidence"><span>证据等级</span><select id="knowledgeGraphEvidence" data-graph-filter="evidence"><option value="all">全部等级</option></select></label>
+                <label for="knowledgeGraphReview"><span>审核状态</span><select id="knowledgeGraphReview" data-graph-filter="review"><option value="all">全部状态</option></select></label>
+              </div>
+              <div class="graph-toolbar-actions">
+                <label for="knowledgeGraphDepth" class="graph-tool-label">展开层级</label>
+                <select id="knowledgeGraphDepth" class="graph-control-button" data-graph-depth><option value="1">一层</option><option value="2">两层</option></select>
+                <button type="button" class="graph-control-button" data-graph-reset>重置视图</button>
+                <span class="graph-toolbar-summary" data-graph-summary><strong>0</strong> 个节点</span>
+              </div>
+            </div>
+            <div class="graph-active-filters" data-graph-active-filters aria-live="polite"></div>
+            <div class="knowledge-graph-stage">
+              <div class="knowledge-graph-canvas" data-graph-canvas data-performance="standard">
+                <svg class="graph-svg" role="img" aria-label="可缩放和拖动的英歌知识证据关系图">
+                  <g class="graph-viewport" data-graph-viewport>
+                    <g class="graph-edge-layer" data-graph-layer="edges"></g>
+                    <g class="graph-edge-label-layer" data-graph-layer="edge-labels"></g>
+                    <g class="graph-node-layer" data-graph-layer="nodes"></g>
+                  </g>
+                </svg>
+              </div>
+              <aside class="graph-legend" data-graph-legend>
+                <button type="button" aria-expanded="true"><span>图例</span><span aria-hidden="true">−</span></button>
+                <div class="graph-legend-body">
+                  <span class="graph-legend-item"><i class="graph-legend-swatch" data-kind="claim"></i>知识主张</span>
+                  <span class="graph-legend-item"><i class="graph-legend-swatch" data-kind="source"></i>资料来源</span>
+                  <span class="graph-legend-item"><i class="graph-legend-swatch" data-kind="event"></i>活动与实践</span>
+                  <span class="graph-legend-item"><i class="graph-legend-swatch" data-kind="media"></i>候选媒体</span>
+                </div>
+              </aside>
+              <div class="graph-zoom-controls" aria-label="图谱缩放">
+                <button type="button" data-graph-zoom="in" aria-label="放大图谱">＋</button>
+                <span class="graph-scale-readout" data-graph-scale>100%</span>
+                <button type="button" data-graph-zoom="out" aria-label="缩小图谱">−</button>
+                <button type="button" data-graph-zoom="fit" aria-label="适应画布">⌂</button>
+              </div>
+              <div class="graph-performance-notice" data-graph-performance hidden><p>图谱较大，首屏仅展示最相关节点。可搜索或点击节点逐步展开。</p><button type="button">知道了</button></div>
+              <div class="graph-state-overlay is-loading" data-graph-state data-state="loading" role="status">
+                <div class="graph-state-panel"><h3>正在读取证据关系</h3><p>只读取已经进入治理目录的确定性图谱，不会在此重新抽取或生成事实。</p><div class="graph-loading-lines" aria-hidden="true"><i class="graph-loading-line"></i><i class="graph-loading-line"></i><i class="graph-loading-line"></i></div><div class="graph-state-actions" hidden></div></div>
+              </div>
+              <button class="graph-drawer-backdrop" type="button" data-graph-drawer-backdrop aria-label="关闭节点详情" hidden></button>
+              <aside class="graph-detail-drawer" data-graph-detail aria-hidden="true" aria-labelledby="knowledgeGraphDetailTitle">
+                <header class="graph-drawer-head"><div><h3 id="knowledgeGraphDetailTitle" data-graph-detail-title>节点详情</h3><p data-graph-detail-meta>选择节点查看证据与治理状态</p></div><button class="graph-drawer-close" type="button" data-graph-detail-close aria-label="关闭详情">×</button></header>
+                <div class="graph-drawer-body" data-graph-detail-body></div>
+                <footer class="graph-drawer-footer"><a class="graph-drawer-action is-primary" data-graph-editor-link href="workspace.html#materials">前往真实素材编辑器</a></footer>
+              </aside>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="workspace-panel" data-workspace-panel="assistant" aria-labelledby="assistantTitle">
+        <div class="workspace-section-heading">
+          <div><h2 id="assistantTitle">英歌小槌辅助工作区</h2><p>小槌负责提供修改建议和证据提示，最终保存与发布仍由管理人员确认。</p></div>
+          <label class="workspace-context-select"><span>当前任务</span><select id="assistantTarget"><option>网站内容</option><option>真实素材审核</option><option>展览策划</option><option>知识库维护</option></select></label>
+        </div>
+        <div class="assistant-operations-grid">
+          <section class="workspace-chat" aria-label="小槌对话">
+            <div class="workspace-chat-stream" id="workspaceChatStream" aria-live="polite"><div class="workspace-chat-intro"><strong>直接告诉我你想修改什么</strong><p>例如：把首页的英歌介绍改得更准确、自然，并指出每条事实需要什么来源。</p></div></div>
+            <form id="workspaceAssistantForm" class="workspace-composer">
+              <label for="workspaceAssistantInput">问题或修改目标</label>
+              <textarea id="workspaceAssistantInput" rows="4" required placeholder="说明页面、目标读者和希望解决的问题"></textarea>
+              <div><span>回答会优先使用馆内知识，并明确不能确认的内容。</span><button class="workspace-button is-primary" type="submit">询问小槌</button></div>
+            </form>
+          </section>
+          <aside class="plan-history-panel" aria-labelledby="planHistoryTitle">
+            <div class="plan-history-head"><div><h3 id="planHistoryTitle">方案历史</h3><p>生成结果在这里继续查看，不再跳转到另一个页面。</p></div><button class="workspace-button is-quiet" id="refreshPlanHistory" type="button">刷新</button></div>
+            <div id="planHistory" class="plan-history-list"><p>登录后读取方案记录。</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="workspace-panel" data-workspace-panel="settings" aria-labelledby="settingsTitle">
+        <div class="workspace-section-heading"><div><h2 id="settingsTitle">连接与设置</h2><p>模型密钥只提交给本机服务端。页面只显示是否已配置，不会读取或回显明文。</p></div></div>
+        <div class="settings-layout">
+          <form id="modelSettingsForm" class="settings-form">
+            <div class="settings-form-head"><h3>DeepSeek AI</h3><span id="modelConnectionState">正在读取</span></div>
+            <label for="deepseekApiKey"><span>API Key</span><input id="deepseekApiKey" name="api_key" type="password" autocomplete="new-password" placeholder="输入新的 DeepSeek API Key"><small>保存后立即清空输入框，服务端也不会返回密钥。</small></label>
+            <label for="deepseekModel"><span>模型</span><select id="deepseekModel" name="model"><option value="deepseek-v4-flash">DeepSeek V4 Flash</option><option value="deepseek-v4-pro">DeepSeek V4 Pro</option></select><small>Flash 速度更快，Pro 更适合复杂策展与长文推理。</small></label>
+            <label class="settings-check"><input id="deepseekThinking" name="thinking" type="checkbox" checked><span><strong>启用思考模式</strong><small>复杂问题更稳，但响应时间和消耗会增加。</small></span></label>
+            <div class="settings-actions"><button class="workspace-button is-primary" type="submit">保存模型设置</button><button class="workspace-button is-quiet" id="testModelConnection" type="button">测试连接</button></div>
+            <p class="settings-result" id="modelSettingsResult" role="status"></p>
+          </form>
+          <section class="account-settings" aria-labelledby="accountTitle">
+            <h3 id="accountTitle">管理员账户</h3>
+            <dl><div><dt>当前用户</dt><dd id="settingsActor">尚未登录</dd></div><div><dt>会话方式</dt><dd>本机安全 Cookie</dd></div><div><dt>发布保护</dt><dd>自己提交的修改仍需另一发布身份确认</dd></div></dl>
+            <p>首次创建的管理员可以编辑内容、配置模型和查看全站状态。审核与发布仍保留责任分离。</p>
+            <button class="workspace-button is-quiet" id="settingsLogout" type="button">退出当前账户</button>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+    <div class="auth-panel">
+      <div class="auth-brand"><img src="../assets/museum-mark-v3.svg" alt=""><div><strong>英歌舞数字博物馆</strong><span>管理工作台</span></div></div>
+      <section id="setupSection" hidden>
+        <h2 id="authTitle">首次连接管理工作台</h2><p>创建本机管理员。密码只保存为不可逆哈希，之后直接用账号和密码登录。</p>
+        <form id="setupForm" class="auth-form">
+          <label for="setupDisplayName"><span>记录名称</span><input id="setupDisplayName" name="display_name" value="全栈工程师" maxlength="40" required></label>
+          <label for="setupUsername"><span>登录账号</span><input id="setupUsername" name="username" autocomplete="username" value="museum-admin" pattern="[A-Za-z0-9._-]{3,32}" required></label>
+          <label for="setupPassword"><span>登录密码</span><input id="setupPassword" name="password" type="password" autocomplete="new-password" minlength="10" required><small>至少 10 位，不会写入网页或公众数据。</small></label>
+          <label for="setupPasswordConfirm"><span>确认密码</span><input id="setupPasswordConfirm" type="password" autocomplete="new-password" minlength="10" required></label>
+          <button class="workspace-button is-primary" type="submit">创建并进入工作台</button>
+        </form>
+      </section>
+      <section id="loginSection" hidden>
+        <h2 id="authTitleLogin">登录管理工作台</h2><p>登录后即可编辑内容、审核素材并使用英歌小槌。</p>
+        <form id="loginForm" class="auth-form">
+          <label for="loginUsername"><span>账号</span><input id="loginUsername" name="username" autocomplete="username" required></label>
+          <label for="loginPassword"><span>密码</span><input id="loginPassword" name="password" type="password" autocomplete="current-password" required></label>
+          <button class="workspace-button is-primary" type="submit">登录</button>
+        </form>
+      </section>
+      <p class="auth-message" id="authMessage" role="alert"></p>
+    </div>
+  </div>
+  <script src="admin-shell.js?v=20260831-mobile2"></script>
+  <script src="knowledge-graph.js?v=graph-1"></script>
+  <script src="workspace.js?v=20260831-mobile2"></script>
+</body>
+</html>

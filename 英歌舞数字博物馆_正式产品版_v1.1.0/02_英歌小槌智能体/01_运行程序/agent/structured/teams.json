@@ -1,0 +1,94 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "teams",
+  "records": [
+    {
+      "team_id": "team-chaoyang-houxi-mianbei",
+      "official_name": "潮阳棉北后溪英歌队",
+      "aliases": ["棉北后溪"],
+      "region": {"province": "广东省", "city": "汕头市", "district": "潮阳区棉北街道"},
+      "scope": "2024年汕头官方英歌舞展演队伍介绍",
+      "established": {"year": 1948, "precision": "year"},
+      "style": {"label": "潮阳中快板英歌代表之一", "status": "named_in_source"},
+      "named_forms": ["双龙出海", "天罡朝圣", "四打中街", "双圈互逆", "双金钱阵", "四海欢腾", "十字阵", "八卦阵", "满天星阵", "众星拱月", "群英欢庆"],
+      "evidence_boundary": "公开资料证明活动资料曾这样介绍该队；具体阵图结构、当前仍用的套路和逐拍动作需图谱或视频核验。",
+      "source_refs": [{"source_id": "shantou_teams", "support": "direct"}],
+      "status": "partial"
+    },
+    {
+      "team_id": "team-chaoyang-ximen-women",
+      "official_name": "潮阳西门女子英歌队",
+      "aliases": ["西门女子英歌队"],
+      "region": {"province": "广东省", "city": "汕头市", "district": "潮阳区文光街道西门社区"},
+      "scope": "西门女子英歌队公开队史与传播资料",
+      "established": {"year": 1952, "precision": "initial_establishment"},
+      "style": {"label": "女子英歌队；传统打法老五下套，公开资料还提到对打、单打等当代变化", "status": "named_in_sources"},
+      "named_forms": ["老五下套", "对打", "单打"],
+      "evidence_boundary": "1952年是初建，长期停滞后2011年重新组建；不能把2011年写成首次成立，也不能把女子队个案泛化为所有队伍。",
+      "source_refs": [
+        {"source_id": "shantou_teams", "support": "direct"},
+        {"source_id": "ihchina_ximen_rebuild", "support": "direct"},
+        {"source_id": "shantou_youth_women", "support": "partial"}
+      ],
+      "status": "verified"
+    },
+    {
+      "team_id": "team-chaoyang-zhongjing-chengnan",
+      "official_name": "潮阳城南忠精英歌队",
+      "aliases": ["城南忠精"],
+      "region": {"province": "广东省", "city": "汕头市", "district": "潮阳区城南街道"},
+      "scope": "2024年队伍介绍与2025年基地调研",
+      "established": {"year": 1996, "precision": "year"},
+      "style": {"label": "公开资料称包含慢、中、快三种表演风格", "status": "named_in_source"},
+      "named_forms": ["马步", "弓步", "外转槌", "内转槌"],
+      "evidence_boundary": "这是该队公开个案；训练基地调研记录动作体验，不足以构成完整谱本或逐拍教程。",
+      "source_refs": [
+        {"source_id": "shantou_teams", "support": "direct"},
+        {"source_id": "shantou_zhongjing_base", "support": "direct"}
+      ],
+      "status": "partial"
+    },
+    {
+      "team_id": "team-chaoyang-xilu",
+      "official_name": "潮阳西胪英歌队",
+      "aliases": ["西胪英歌"],
+      "region": {"province": "广东省", "city": "汕头市", "district": "潮阳区西胪镇"},
+      "scope": "2024年汕头官方英歌舞展演队伍介绍",
+      "established": {"year": 2007, "precision": "year"},
+      "style": {"label": "中快板", "status": "named_in_source"},
+      "named_forms": ["七下槌", "三十六槌", "对打"],
+      "evidence_boundary": "2022年后增加的套式、槌长和鼓点描述绑定于公开资料时点；同名七下槌不自动等于杨卫编创套路。",
+      "source_refs": [{"source_id": "shantou_teams", "support": "direct"}],
+      "status": "partial"
+    },
+    {
+      "team_id": "team-puning-nanshan",
+      "official_name": "普宁南山英歌队",
+      "aliases": ["南山英歌"],
+      "region": {"province": "广东省", "city": "揭阳市", "district": "普宁市南山村"},
+      "scope": "普宁市政府公开传承基地资料",
+      "established": {"year": null, "precision": "not_published"},
+      "style": {"label": "普宁快板英歌代表队伍", "status": "named_in_source"},
+      "named_forms": [],
+      "evidence_boundary": "来源支持快板代表和传承基地，不足以填写成立年份、完整阵法或固定人数。",
+      "source_refs": [{"source_id": "puning_nanshan_base", "support": "direct"}],
+      "status": "partial"
+    },
+    {
+      "team_id": "team-lufeng-jiazi",
+      "official_name": "陆丰甲子英歌",
+      "aliases": ["甲子英歌"],
+      "region": {"province": "广东省", "city": "汕尾市", "district": "陆丰市甲子镇"},
+      "scope": "甲子英歌国家级项目与地方政府公开资料",
+      "established": {"year": null, "precision": "not_published"},
+      "style": {"label": "公开资料记载武畔、文畔和乐器配置等项目级结构", "status": "named_in_source"},
+      "named_forms": [],
+      "evidence_boundary": "甲子项目级资料不能替代某支甲子队伍的动作、阵形或逐拍信号谱本。",
+      "source_refs": [
+        {"source_id": "shanwei_jiazi", "support": "direct"},
+        {"source_id": "ihchina_jiazi_project", "support": "direct"}
+      ],
+      "status": "partial"
+    }
+  ]
+}

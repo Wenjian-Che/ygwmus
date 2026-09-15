@@ -1,0 +1,103 @@
+{
+  "version": "2026.07.28.3",
+  "default_intent": "knowledge.general",
+  "intents": [
+    {
+      "id": "knowledge.history",
+      "examples": ["英歌有多久历史", "英歌起源于哪里", "和水浒传有什么关系"],
+      "sources": ["01_历史渊源.md", "21_傩文化渊源详解.md", "30_常见争议与事实辨析.md"],
+      "required_entities": [],
+      "risk": "medium"
+    },
+    {
+      "id": "performance.explain",
+      "examples": ["怎么看懂英歌", "他们为什么敲木棒", "前棚后棚是什么"],
+      "sources": ["03_表演形式.md", "15_阵法与队形详解.md", "23_演出结构详解.md", "56_锣鼓动作队形协同机制.md", "57_现场观演导览与礼仪.md"],
+      "required_entities": [],
+      "risk": "low"
+    },
+    {
+      "id": "performance.props",
+      "examples": ["英歌槌是什么", "手里的木棒叫什么", "英歌有哪些道具和服饰"],
+      "sources": ["05_道具与服饰.md", "19_英歌槌制作工艺详解.md", "24_术语表与概念辨析.md"],
+      "required_entities": [],
+      "risk": "low"
+    },
+    {
+      "id": "performance.role",
+      "examples": ["这个角色是谁", "时迁是做什么的", "头槌和二槌有什么区别"],
+      "sources": ["04_角色与脸谱.md", "16_核心角色详解.md", "52_角色功能与辨识关系表.md", "24_术语表与概念辨析.md"],
+      "required_entities": [],
+      "risk": "medium",
+      "rule": "没有队伍或地点时，不强判具体角色。"
+    },
+    {
+      "id": "performance.style",
+      "examples": ["快板和慢板区别", "普宁英歌是什么流派", "这是什么板式"],
+      "sources": ["06_流派与传承.md", "14_快板中板慢板详解.md", "25_地域谱系与代表队伍.md", "53_地区板式队伍比较矩阵.md"],
+      "required_entities": [],
+      "risk": "medium"
+    },
+    {
+      "id": "region.compare",
+      "examples": ["普宁和潮阳有什么区别", "哪里有英歌", "哪个村最正宗"],
+      "sources": ["18_普宁各村特色详解.md", "25_地域谱系与代表队伍.md", "53_地区板式队伍比较矩阵.md", "30_常见争议与事实辨析.md"],
+      "required_entities": ["region"],
+      "risk": "high"
+    },
+    {
+      "id": "heritage.status",
+      "examples": ["英歌是国家级非遗吗", "非遗编号是什么", "是不是世界非遗"],
+      "sources": ["08_非遗保护.md", "31_权威来源与参考书目.md"],
+      "required_entities": [],
+      "risk": "high"
+    },
+    {
+      "id": "learning.training",
+      "examples": ["怎么学英歌", "儿童可以学吗", "训练会受伤吗"],
+      "sources": ["26_训练体系与安全规范.md", "28_校园课程与公众教育.md", "58_表演质量观察与评价框架.md"],
+      "required_entities": ["age_group"],
+      "risk": "high"
+    },
+    {
+      "id": "research.support",
+      "examples": ["我要写论文", "怎么采访传承人", "给我参考资料"],
+      "sources": ["10_学术研究.md", "27_田野调查方法与访谈提纲.md", "31_权威来源与参考书目.md"],
+      "required_entities": [],
+      "risk": "medium"
+    },
+    {
+      "id": "fact.check",
+      "examples": ["这是真的吗", "是不是必须107人", "播放量真的过百亿吗"],
+      "sources": ["30_常见争议与事实辨析.md", "31_权威来源与参考书目.md"],
+      "required_entities": [],
+      "risk": "high"
+    },
+    {
+      "id": "event.realtime",
+      "examples": ["今天哪里有英歌", "春节巡游几点开始", "怎么买票"],
+      "sources": ["55_实时活动问答与数据接口规范.md"],
+      "required_entities": ["date", "region"],
+      "risk": "high",
+      "rule": "必须调用实时数据源并显示数据截至时间。"
+    },
+    {
+      "id": "media.identify",
+      "examples": ["这张照片是谁", "这段视频是哪一村", "能看脸谱判断队伍吗", "帮我识别海报"],
+      "sources": ["54_多模态识别与问答边界.md", "38_脸谱服饰视觉辨识指南.md", "52_角色功能与辨识关系表.md"],
+      "required_entities": ["media_type"],
+      "risk": "high",
+      "rule": "先输出可观察事实；没有队伍、地点或官方标注时，不强判人物、村落或流派。"
+    }
+  ],
+  "entities": {
+    "region": ["普宁", "潮阳", "潮南", "惠来", "揭阳", "潮州", "汕头", "汕尾", "海外"],
+    "performance_element": ["脸谱", "英歌槌", "锣鼓", "阵法", "服饰", "前棚", "后棚"],
+    "role": ["时迁", "宋江", "头槌", "二槌", "司鼓", "李逵", "关胜", "林冲", "武松", "鲁智深"],
+    "style": ["快板", "中板", "慢板", "醉槌"],
+    "audience": ["游客", "学生", "教师", "研究者", "队员"],
+    "age_group": ["儿童", "青少年", "成人"],
+    "date": ["今天", "明天", "春节", "元宵", "具体日期"],
+    "media_type": ["照片", "图片", "视频", "音频", "海报", "老照片"]
+  }
+}

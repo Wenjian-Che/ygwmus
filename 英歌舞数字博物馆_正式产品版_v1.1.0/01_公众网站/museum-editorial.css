@@ -1,0 +1,592 @@
+@font-face {
+  font-family: "Yingge Source Han Serif";
+  src: url("assets/fonts/source-han-serif/SourceHanSerifCN-VF.otf.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 250 900;
+  font-display: swap;
+}
+
+:root {
+  --font-ui: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-reading: "Yingge Source Han Serif", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --museum-reading: 40em;
+  --museum-wide: 1280px;
+}
+
+body.secondary-page,
+body.museum-page,
+body.spread-page,
+body.framework-museum-page {
+  font-family: var(--font-ui);
+  font-synthesis: none;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+body.secondary-page p,
+body.museum-page p,
+body.spread-page p,
+body.framework-museum-page p,
+body.secondary-page dd,
+body.museum-page dd {
+  line-break: strict;
+  word-break: normal;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+/* One museum header language across knowledge pages and standalone shells. */
+.secondary-page .site-header,
+.museum-page .site-header,
+.spread-nav,
+.museum-shell-nav {
+  position: fixed;
+  z-index: 30;
+  top: 12px;
+  left: 50%;
+  right: auto;
+  width: min(calc(100% - 32px), 1280px);
+  max-width: 1280px;
+  height: 64px;
+  margin: 0;
+  padding: 0 12px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(238, 242, 235, .18);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(73, 91, 76, .94), rgba(36, 50, 41, .9));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .13), 0 18px 54px rgba(8, 15, 10, .2);
+  backdrop-filter: blur(22px) saturate(130%);
+  -webkit-backdrop-filter: blur(22px) saturate(130%);
+}
+
+.secondary-page .site-header .brand,
+.museum-page .site-header .brand,
+.spread-brand,
+.shell-brand {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  color: #f4f2eb;
+  text-decoration: none;
+}
+
+.secondary-page .site-header .brand img,
+.museum-page .site-header .brand img,
+.spread-brand img,
+.shell-brand img {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  object-fit: contain;
+  border-radius: 50%;
+  opacity: 1;
+}
+
+.secondary-page .site-header .brand strong,
+.museum-page .site-header .brand strong,
+.spread-brand strong,
+.shell-brand strong {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.secondary-page .site-header > nav,
+.museum-page .site-header > nav,
+.spread-nav > nav,
+.museum-shell-nav > nav {
+  min-width: 0;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.secondary-page .site-header > nav > a,
+.museum-page .site-header > nav > a,
+.spread-nav > nav > a,
+.museum-shell-nav > nav > a,
+.museum-menu > summary {
+  min-height: 40px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  border-radius: 11px;
+  color: rgba(244, 242, 235, .78);
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 1;
+  transition: color .2s, background .2s;
+}
+
+.secondary-page .site-header > nav > a:hover,
+.museum-page .site-header > nav > a:hover,
+.spread-nav > nav > a:hover,
+.museum-shell-nav > nav > a:hover,
+.museum-menu > summary:hover,
+.secondary-page .site-header > nav > a:focus-visible,
+.museum-page .site-header > nav > a:focus-visible,
+.spread-nav > nav > a:focus-visible,
+.museum-shell-nav > nav > a:focus-visible,
+.museum-menu > summary:focus-visible {
+  color: #fff;
+  background: rgba(255, 255, 255, .09);
+}
+
+.secondary-page .site-header > nav > a[aria-current="page"],
+.museum-page .site-header > nav > a[aria-current="page"],
+.spread-nav > nav > a[aria-current="page"],
+.museum-shell-nav > nav > a[aria-current="page"] {
+  color: #fff;
+  background: rgba(255, 255, 255, .12);
+  box-shadow: inset 0 -2px #de7622;
+}
+
+.museum-menu {
+  position: relative;
+  margin: 0;
+}
+
+.museum-menu > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.museum-menu > summary::-webkit-details-marker {
+  display: none;
+}
+
+.museum-menu > summary::after {
+  content: "+";
+  margin-left: 6px;
+  color: #efae80;
+  font-size: 15px;
+}
+
+.museum-menu[open] > summary::after {
+  content: "−";
+}
+
+.museum-menu .museum-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(330px, calc(100vw - 32px));
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 16px;
+  background: rgba(28, 41, 32, .96);
+  box-shadow: 0 24px 70px rgba(4, 9, 6, .32);
+}
+
+.museum-menu .museum-menu-panel a {
+  min-height: 54px;
+  padding: 10px 11px;
+  display: grid;
+  grid-template-columns: 23px 1fr;
+  align-items: center;
+  border-radius: 10px;
+  color: #eef1ea;
+  text-decoration: none;
+}
+
+.museum-menu .museum-menu-panel a:hover,
+.museum-menu .museum-menu-panel a:focus-visible {
+  background: rgba(255, 255, 255, .08);
+}
+
+.museum-menu .museum-menu-panel span {
+  color: #e99760;
+  font-size: 10px;
+}
+
+.museum-menu .museum-menu-panel strong {
+  font-size: 13px;
+  font-weight: 560;
+}
+
+.secondary-page .site-header > .button,
+.museum-page .site-header > .button {
+  min-height: 42px;
+  margin-left: 0;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+/* Chinese editorial hierarchy. Serif is reserved for knowledge, not controls. */
+.museum-hero h1,
+.secondary-hero h1,
+.spread-intro h1,
+.museum-heading h2,
+.definition h2,
+.museum-lead,
+.spread-thesis,
+.archive-heading h2,
+.hero-claim blockquote {
+  font-family: var(--font-reading);
+  font-synthesis: none;
+}
+
+.museum-hero h1,
+.secondary-hero h1,
+.spread-intro h1 {
+  line-height: 1.12;
+  letter-spacing: -.012em;
+  text-wrap: balance;
+}
+
+.museum-heading h2,
+.definition h2,
+.archive-heading h2 {
+  line-height: 1.18;
+  letter-spacing: -.008em;
+  text-wrap: balance;
+}
+
+.museum-hero .deck,
+.secondary-hero > div > p:last-child,
+.museum-heading > p,
+.definition > p,
+.reading-copy > p,
+.museum-lead,
+.spread-deck,
+.spread-thesis,
+.archive-heading > p,
+.hero-claim p {
+  max-width: var(--museum-reading);
+  font-family: var(--font-reading);
+  font-size: clamp(16px, 1.2vw, 18px);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: 0;
+}
+
+.museum-hero .deck,
+.secondary-hero > div > p:last-child,
+.spread-deck,
+.spread-thesis {
+  color: rgba(239, 241, 235, .84);
+}
+
+.museum-lead {
+  max-width: 34em;
+  margin-inline: auto;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.65;
+}
+
+.museum-section p,
+.evidence p,
+.route-stage p,
+.spread-boundary p {
+  line-height: 1.82;
+}
+
+.museum-section .focus-row p,
+.museum-section .signal p,
+.museum-section .chapter-list p,
+.museum-section .fact-sequence p,
+.museum-section .detail-list dd,
+.museum-section .identification-flow p,
+.museum-section .review-flow p,
+.museum-section .listening-modes p {
+  max-width: 34em;
+  font-size: 15px;
+  line-height: 1.82;
+}
+
+/* Evidence and boundary notes are knowledge, never tiny production metadata. */
+.source-note,
+.museum-page .source-note,
+.secondary-page .source-note,
+.museum-page .museum-section .source-note,
+.museum-page p.source-note,
+.secondary-page p.source-note {
+  max-width: 46em;
+  padding: 22px 0 4px;
+  border: 0;
+  border-top: 1px solid rgba(238, 242, 235, .2);
+  border-radius: 0;
+  background: transparent;
+  color: #d9e1d7;
+  font-family: var(--font-reading);
+  font-size: clamp(15px, 1vw, 16px) !important;
+  line-height: 1.85 !important;
+}
+
+.source-note strong,
+.museum-page .source-note strong,
+.secondary-page .source-note strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #efae80;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: .04em;
+}
+
+.source-note p,
+.museum-page .source-note p,
+.secondary-page .source-note p {
+  margin: 0;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Replace box-on-box repetition with editorial rules and breathing room. */
+.museum-page .route-list,
+.museum-page .focus-rows,
+.museum-page .signal-stack,
+.museum-page .chapter-list,
+.museum-page .fact-sequence,
+.museum-page .evidence-levels {
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-top: 1px solid rgba(238, 242, 235, .16);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.museum-page .museum-heading {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.museum-page .museum-heading::before {
+  content: "";
+  display: block;
+  width: 42px;
+  height: 3px;
+  margin-bottom: 22px;
+  border-radius: 99px;
+  background: #f04a3a;
+}
+
+.museum-subnav,
+.archive-subnav {
+  min-height: 54px;
+  padding: 7px;
+  border: 1px solid rgba(238, 242, 235, .12);
+  border-radius: 15px;
+  background: rgba(30, 44, 35, .9);
+  box-shadow: 0 14px 40px rgba(5, 11, 7, .16);
+  backdrop-filter: blur(18px);
+}
+
+.museum-subnav a,
+.archive-subnav a {
+  min-height: 38px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9px;
+  color: rgba(239, 242, 235, .73);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.museum-subnav a:hover,
+.archive-subnav a:hover,
+.museum-subnav a:focus-visible,
+.archive-subnav a:focus-visible,
+.museum-subnav a[aria-current="location"],
+.archive-subnav a[aria-current="location"] {
+  color: #fff;
+  background: rgba(255, 255, 255, .08);
+}
+
+.media-identity {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(238, 242, 235, .16);
+  color: rgba(224, 231, 222, .72);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.media-identity strong {
+  color: #efae80;
+  font-weight: 620;
+}
+
+@media (max-width: 1040px) {
+  .secondary-page .site-header > nav > .museum-primary-link:nth-of-type(4),
+  .museum-page .site-header > nav > .museum-primary-link:nth-of-type(4),
+  .spread-nav > nav > .museum-primary-link:nth-of-type(4),
+  .museum-shell-nav > nav > .museum-primary-link:nth-of-type(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 820px) {
+  .secondary-page .site-header,
+  .museum-page .site-header,
+  .spread-nav,
+  .museum-shell-nav {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    width: calc(100% - 16px);
+    height: 60px;
+    padding-inline: 8px;
+    transform: none;
+    border-radius: 15px;
+  }
+
+  .secondary-page .site-header .brand img,
+  .museum-page .site-header .brand img,
+  .spread-brand img,
+  .shell-brand img {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .secondary-page .site-header .brand,
+  .museum-page .site-header .brand,
+  .spread-brand,
+  .shell-brand {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .secondary-page .site-header .brand strong,
+  .museum-page .site-header .brand strong,
+  .spread-brand strong,
+  .shell-brand strong {
+    display: none;
+  }
+
+  .secondary-page .site-header > nav,
+  .museum-page .site-header > nav,
+  .spread-nav > nav,
+  .museum-shell-nav > nav {
+    display: flex !important;
+    margin-left: auto;
+  }
+
+  .secondary-page .site-header > nav > .museum-primary-link,
+  .museum-page .site-header > nav > .museum-primary-link,
+  .spread-nav > nav > .museum-primary-link,
+  .museum-shell-nav > nav > .museum-primary-link {
+    display: none;
+  }
+
+  .secondary-page .site-header > .button,
+  .museum-page .site-header > .button {
+    min-height: 44px;
+    padding-inline: 13px;
+  }
+
+  .museum-menu > summary {
+    min-height: 44px;
+  }
+
+  .museum-subnav a,
+  .archive-subnav a {
+    min-height: 44px;
+  }
+
+  .spread-page .research-note > summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .spread-boundary a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .museum-menu {
+    position: static;
+  }
+
+  .museum-menu .museum-menu-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 8px;
+    right: 8px;
+    width: auto;
+    max-height: calc(100dvh - 84px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .spread-nav nav .museum-menu-panel a,
+  .museum-shell-nav nav .museum-menu-panel a {
+    display: grid;
+  }
+
+  .museum-hero h1,
+  .secondary-hero h1,
+  .spread-intro h1 {
+    line-height: 1.14;
+    letter-spacing: -.008em;
+  }
+
+  .museum-hero .deck,
+  .secondary-hero > div > p:last-child,
+  .museum-heading > p,
+  .definition > p,
+  .reading-copy > p,
+  .spread-deck,
+  .spread-thesis {
+    font-size: 16px;
+    line-height: 1.86;
+  }
+}
+
+@media (max-width: 480px) {
+  .secondary-page .site-header > .button,
+  .museum-page .site-header > .button {
+    padding-inline: 11px;
+    font-size: 12px;
+  }
+
+  .museum-menu > summary {
+    min-height: 44px;
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+
+  .museum-menu .museum-menu-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .museum-menu .museum-menu-panel a {
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .secondary-page .site-header *,
+  .museum-page .site-header *,
+  .spread-nav *,
+  .museum-shell-nav * {
+    scroll-behavior: auto;
+    transition-duration: .01ms !important;
+  }
+}

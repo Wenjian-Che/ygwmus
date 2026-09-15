@@ -1,0 +1,56 @@
+@media (max-width: 760px) {
+  .content-main .button {
+    min-height: 44px;
+  }
+
+  .content-main #contentForm input {
+    min-height: 44px;
+  }
+
+  .content-main .viewport-switch button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .ops-main .media-card > .media-evidence-layout {
+    display: grid;
+    justify-content: stretch;
+    gap: 16px;
+  }
+
+  .ops-main .media-card > .review-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+    gap: 9px;
+  }
+
+  .ops-main .media-card .media-evidence {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ops-main button,
+  .ops-main .button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .ops-main .form-grid input,
+  .ops-main .review-controls select,
+  .ops-main .review-controls input:not([type="checkbox"]),
+  .ops-main .compact select,
+  .record-dialog input {
+    min-height: 44px;
+  }
+
+  .ops-main .review-controls .check {
+    min-height: 44px;
+  }
+
+  .ops-main .event-card > details > summary,
+  .ops-main .media-card > details > summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}

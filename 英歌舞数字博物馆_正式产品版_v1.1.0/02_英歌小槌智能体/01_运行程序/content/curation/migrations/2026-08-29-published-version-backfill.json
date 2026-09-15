@@ -1,0 +1,26 @@
+{
+  "migration_id": "2026-08-29-published-version-backfill",
+  "applied_at": "2026-08-29T00:00:00+08:00",
+  "reason": "将发布确认版本与审核版本分离；仅回填迁移前已经公开且当前版本仍与审核版本一致的首个真实内容纵切面。",
+  "preconditions": {
+    "workflow_status": "published",
+    "ever_published": true,
+    "version_equals_reviewed_version": true
+  },
+  "objects": {
+    "exhibits": ["yingge-across-borders"],
+    "events": [
+      "thailand-2024-cultural-visit",
+      "johor-2024-yixing-team",
+      "singapore-2024-cultural-exchange"
+    ],
+    "sources": [
+      "source-th-embassy",
+      "source-th-mfa",
+      "source-johor-wao",
+      "source-singapore-nfnews"
+    ],
+    "media": []
+  },
+  "result": "以上对象 published_version 回填为当前 version；三项待授权媒体未回填且继续不可公开。"
+}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f2f3f1">
+  <title>专题展馆｜英歌舞数字博物馆</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="framework-shell.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="museum-editorial.css?v=20260831-mobile2">
+</head>
+<body class="framework-museum-page">
+  <a class="shell-skip" href="#frameworkAgentInput">跳至英歌小槌</a>
+  <iframe id="frameworkStage" class="framework-stage" src="framework.html?v=20260901-en2" title="英歌舞专题展馆视觉叙事"></iframe>
+
+  <header class="museum-shell-nav" id="museumShellNav">
+    <a class="shell-brand" href="index.html" aria-label="返回英歌舞数字博物馆首页">
+      <img src="assets/museum-mark-v3.svg" alt="">
+      <span><strong>英歌舞数字博物馆</strong><small>专题展馆</small></span>
+    </a>
+    <nav aria-label="数字博物馆导航">
+      <a class="museum-primary-link" href="index.html">首页</a>
+      <a class="museum-primary-link" href="content.html">馆藏总览</a>
+      <a class="museum-primary-link" href="learn.html">认识英歌</a>
+      <a class="museum-primary-link" href="spread.html">英歌出海</a>
+      <a class="museum-primary-link" href="framework-museum.html" aria-current="page">专题展馆</a>
+      <details class="museum-menu">
+        <summary>在线展馆</summary>
+        <div class="museum-menu-panel glass">
+          <a href="watch.html"><span>01</span><strong>看英歌</strong></a>
+          <a href="characters.html"><span>02</span><strong>识角色</strong></a>
+          <a href="formation.html"><span>03</span><strong>练阵形</strong></a>
+          <a href="sound.html"><span>04</span><strong>听锣鼓</strong></a>
+          <a href="regions.html"><span>05</span><strong>游地域</strong></a>
+          <a href="spread.html"><span>06</span><strong>英歌出海</strong></a>
+          <a href="archive.html"><span>07</span><strong>查档案</strong></a>
+        </div>
+      </details>
+    </nav>
+    <button class="shell-agent-open" type="button" data-framework-agent-open aria-controls="frameworkAgentPanel" aria-expanded="false">
+      <img src="assets/ygw-xiaochui.png" alt="">
+      <span>问英歌小槌</span>
+    </button>
+  </header>
+
+  <aside class="framework-agent" id="frameworkAgentPanel" aria-hidden="true">
+    <header>
+      <div class="framework-agent-identity">
+        <img src="assets/ygw-xiaochui.png" alt="英歌小槌">
+        <div><strong>英歌小槌</strong><span id="frameworkAgentStatus">专题展馆导览</span></div>
+      </div>
+      <button class="framework-agent-close" type="button" aria-label="关闭英歌小槌">关闭</button>
+    </header>
+    <div class="framework-agent-context"><span>正在参观</span><strong id="frameworkSectionName">视觉导入</strong></div>
+    <div class="framework-agent-messages" id="frameworkAgentMessages" role="log" aria-live="polite">
+      <div class="framework-message is-assistant">
+        <p>这里是一套专题视觉叙事，从英歌小槌、线下体验、线上探索、数字展项与合作实践等角度展开。你可以问我当前画面在讲什么，也可以继续追问英歌本身。</p>
+      </div>
+    </div>
+    <div class="framework-agent-prompts" id="frameworkAgentPrompts" aria-label="当前章节推荐问题"></div>
+    <form id="frameworkAgentForm">
+      <label for="frameworkAgentInput">向英歌小槌提问</label>
+      <div><input id="frameworkAgentInput" maxlength="500" autocomplete="off" placeholder="问问这一幕在讲什么"><button type="submit">发送</button></div>
+    </form>
+  </aside>
+
+  <script src="framework-shell.js"></script>
+  <script src="locale-shell.js?v=20260904-icp1"></script>
+</body>
+</html>

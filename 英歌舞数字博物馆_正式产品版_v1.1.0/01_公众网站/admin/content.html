@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14231b">
+  <title>内容运营｜英歌舞数字博物馆</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="content.css">
+  <link rel="stylesheet" href="admin-shell.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="admin-mobile.css?v=20260831-mobile2">
+</head>
+<body data-admin-page="content">
+  <div class="admin-app-shell" data-admin-shell>
+    <aside class="admin-unified-rail" data-admin-sidebar aria-label="后台主导航"></aside>
+    <main class="content-main admin-page" data-admin-main>
+      <header class="content-header">
+        <div>
+          <p class="section-kicker">页面内容 / 首页</p>
+          <h1>内容运营</h1>
+          <p>在同一个工作区完成文案修改、校验预览和分角色发布，同时检查英歌小槌的知识连接。</p>
+        </div>
+        <div class="header-actions">
+          <span id="saveState" class="save-state" aria-live="polite">正在读取内容</span>
+          <button id="previewContent" class="button button-secondary" type="button">校验预览</button>
+          <button id="saveDraft" class="button button-secondary" type="button">保存草稿</button>
+          <button id="publishContent" class="button button-primary" type="button">确认发布</button>
+        </div>
+      </header>
+
+      <section id="authNotice" class="notice" hidden aria-live="polite">
+        <strong>尚未连接管理服务</strong>
+        <span>请先回到运营总览填写管理凭据，再进入内容编辑。</span>
+        <a href="index.html">前往运营总览</a>
+      </section>
+
+      <div class="workspace-grid">
+        <section class="editor-panel" aria-labelledby="editorTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">首页内容</p>
+              <h2 id="editorTitle">编辑公众看到的文字</h2>
+              <p>页面结构、Logo 动画和开场视频不会在这里被改动。</p>
+            </div>
+            <span id="workflowState" class="workflow-state">读取中</span>
+          </div>
+
+          <ol class="workflow-steps" aria-label="内容发布流程">
+            <li><span>1</span><div><strong>编辑草稿</strong><small>内容编辑保存，不影响公众页面</small></div></li>
+            <li><span>2</span><div><strong>校验预览</strong><small>按正式字段规则检查并即时预览</small></div></li>
+            <li><span>3</span><div><strong>确认发布</strong><small>发布者复核后才更新公众内容</small></div></li>
+          </ol>
+
+          <form id="contentForm">
+            <fieldset>
+              <legend><span>01</span> 首页首屏</legend>
+              <p class="field-intro">这些文字会在 Logo 动画和开场视频之后出现，负责告诉访客“这里是什么、接下来能做什么”。</p>
+              <label>文化身份短句 <small>最多 50 字</small><input name="hero.eyebrow" maxlength="50" required></label>
+              <div class="field-pair">
+                <label>主标题第一行 <small>最多 30 字</small><input name="hero.titleLine1" maxlength="30" required></label>
+                <label>主标题第二行 <small>最多 30 字</small><input name="hero.titleLine2" maxlength="30" required></label>
+              </div>
+              <label>首屏说明 <small>说明馆内能获得什么，不写开发术语</small><textarea name="hero.body" rows="3" maxlength="140" required></textarea></label>
+              <label>主按钮文字 <small>最多 20 字</small><input name="hero.primaryCta" maxlength="20" required></label>
+            </fieldset>
+
+            <fieldset>
+              <legend><span>02</span> 首页参观入口</legend>
+              <p class="field-intro">先说明这一组入口的学习顺序，再分别介绍观看导览与英歌小槌。</p>
+              <label>区块标题 <small>最多 30 字</small><input name="experiences.title" maxlength="30" required></label>
+              <label>区块导语 <small>最多 120 字</small><textarea name="experiences.intro" rows="3" maxlength="120" required></textarea></label>
+              <div class="subsection-label"><span>观看导览</span><small>真实影像与观察方法入口</small></div>
+              <label>入口标题<input name="experiences.cards.video.title" maxlength="20" required></label>
+              <label>入口说明<textarea name="experiences.cards.video.description" rows="3" maxlength="100" required></textarea></label>
+              <div class="subsection-label"><span>英歌小槌</span><small>知识问答与参观陪伴入口</small></div>
+              <label>入口标题<input name="experiences.cards.agent.title" maxlength="20" required></label>
+              <label>入口说明<textarea name="experiences.cards.agent.description" rows="3" maxlength="100" required></textarea></label>
+            </fieldset>
+
+            <label class="change-reason">本次修改说明 <small>供发布者和审计记录查看</small><textarea id="changeReason" rows="2" maxlength="500" placeholder="例如：让首屏更早说明英歌是什么"></textarea></label>
+          </form>
+        </section>
+
+        <aside class="inspector-panel" aria-label="预览与诊断">
+          <div class="inspector-tabs" role="tablist" aria-label="检查工具">
+            <button class="is-active" type="button" role="tab" aria-selected="true" aria-controls="previewPanel" data-inspector="preview">实时预览</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="diagnosticsPanel" data-inspector="diagnostics">连接诊断</button>
+          </div>
+
+          <section id="previewPanel" class="inspector-content" role="tabpanel">
+            <div class="inspector-heading">
+              <div><h2>公众前台</h2><p>输入时即时预览；“校验预览”通过后才代表字段合规。</p></div>
+              <div class="viewport-switch" aria-label="预览尺寸">
+                <button class="is-active" type="button" data-viewport="desktop" aria-pressed="true">桌面</button>
+                <button type="button" data-viewport="mobile" aria-pressed="false">手机</button>
+              </div>
+            </div>
+            <div class="preview-frame" data-viewport-state="desktop">
+              <iframe id="previewFrame" title="首页公众预览" src="../index.html?admin-preview=1"></iframe>
+            </div>
+            <p id="previewState" class="preview-state" aria-live="polite">预览正在载入</p>
+          </section>
+
+          <section id="diagnosticsPanel" class="inspector-content" role="tabpanel" hidden>
+            <div class="diagnostic-intro">
+              <span class="diagnostic-mark" aria-hidden="true">⌁</span>
+              <div>
+                <h2>智能体与知识库连接</h2>
+                <p>一次检查网页入口、应用注册、知识运行时、知识源与重建、检索命中、来源映射和模型配置。</p>
+              </div>
+            </div>
+            <div class="safe-probe-note">
+              <strong>安全离线诊断</strong>
+              <span>不会调用计费模型，不发送测试内容到外网，也不会显示密钥或服务器路径。</span>
+            </div>
+            <button id="runDiagnostics" class="button diagnostic-button" type="button">一键检查整条连接</button>
+            <div id="diagnosticSummary" class="diagnostic-summary" data-status="idle" aria-live="polite">
+              <strong>尚未检查</strong>
+              <span>点击上方按钮后，会把“当前能否回答”和“以后能否重建知识库”分开说明。</span>
+            </div>
+            <div class="diagnostic-legend" aria-hidden="true"><span>网页入口</span><span>知识运行时</span><span>知识源与重建</span><span>模型配置</span></div>
+            <div id="diagnosticChecks" class="diagnostic-checks"></div>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script src="admin-shell.js?v=20260831-mobile2"></script>
+  <script src="content.js"></script>
+</body>
+</html>

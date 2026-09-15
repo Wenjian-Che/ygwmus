@@ -1,0 +1,8 @@
+[
+  {
+    "app_id": "yingge-h5",
+    "name": "英歌主 H5",
+    "enabled": true,
+    "note": "默认应用；可复制为 apps.json 后继续增加其他 H5。"
+  }
+]
