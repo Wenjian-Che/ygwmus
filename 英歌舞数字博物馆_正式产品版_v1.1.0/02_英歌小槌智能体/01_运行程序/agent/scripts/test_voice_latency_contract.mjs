@@ -18,10 +18,12 @@ assert.match(app, /const submitManualVoiceQuestion=/, "网站语音输入结束�
 assert.doesNotMatch(app, /已完成转写，请确认后发送|已识别，请确认后发送/, "网站不应在识别完成后停留等待手动发送");
 assert.match(mugeda, /function submitRecognizedVoice\(/, "木疙瘩语音输入结束后应自动提交");
 assert.doesNotMatch(mugeda, /识别完成，请确认文字后发送/, "木疙瘩不应在识别完成后停留等待手动发送");
+assert.doesNotMatch(app, /if\(event==='done'\)\{await typing\?\.complete\(\)/, "微信 WebView 的最终回答不得等待动画帧完成");
+assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/, "收到完成帧时应立即落下完整回答文字");
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.1\.3/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.1\.5/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");
