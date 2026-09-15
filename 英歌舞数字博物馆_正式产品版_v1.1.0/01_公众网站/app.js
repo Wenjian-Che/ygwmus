@@ -570,11 +570,12 @@ const createYinggeVoice=()=>{
     stopWakeAcknowledgement();
     wakeState='awake';updateWakeControls();
     document.querySelector('[data-guide-open]')?.click();
+    beginWakeQuestionWindow({followup});
     if(wakeUsesBrowser){
       const current=wakeBrowserRecognition;wakeBrowserRecognition=null;
       if(current){try{current.stop()}catch{}}
       if(token!==wakeFlowToken||wakeState!=='awake')return;
-      beginWakeQuestionWindow({followup});startBrowserWakeCycle();
+      startBrowserWakeCycle();
       return;
     }
     await closeWakeSession();
@@ -582,7 +583,6 @@ const createYinggeVoice=()=>{
     try{
       await createWakeSession('transcribe',token);
       if(token!==wakeFlowToken||wakeState!=='awake'){await closeWakeSession();return}
-      beginWakeQuestionWindow({followup});
     }catch(error){voiceStatus(error.message||'问题识别暂时不可用','error');wakeState='answering';rearmWakeStandby()}
   };
   const enterFollowupWindow=async()=>{
@@ -637,7 +637,7 @@ const createYinggeVoice=()=>{
       wakeConfirmTimer=0;wakeQuestionCandidate='';wakeState='answering';wakeChunks=[];wakeChunkLength=0;updateWakeControls();
       if(submitAwakeQuestion(clean))voiceStatus('问题已确认，正在发送并组织回答','thinking');
       else{wakeState='awake';updateWakeControls();voiceStatus('问题尚未发送，请再说一次','listening')}
-    },1100);
+    },250);
     return true;
   };
   const handleWakePayload=async payload=>{
@@ -741,7 +741,7 @@ const createYinggeVoice=()=>{
         const level=Math.sqrt(energy/Math.max(1,chunk.length));
         if(level>.012&&Date.now()-wakeSignalStatusAt>700){wakeSignalStatusAt=Date.now();voiceStatus(wakeState==='awake'?'正在聆听你的问题':wakeState==='speaking'?'检测到声音，正在判断是否需要打断':'已检测到语音，正在识别唤醒词',wakeState==='awake'?'listening':wakeState==='speaking'?'speaking':'recognizing')}
         event.outputBuffer?.getChannelData(0).fill(0);
-        if(wakeChunkLength>=context.sampleRate*.5){const batch=wakeChunks;wakeChunks=[];wakeChunkLength=0;sendWakeSamples(batch,context.sampleRate)}
+        if(wakeChunkLength>=context.sampleRate*.25){const batch=wakeChunks;wakeChunks=[];wakeChunkLength=0;sendWakeSamples(batch,context.sampleRate)}
       };
       source.connect(processor);processor.connect(context.destination);
       wakeRecorder={async close(){if(closed)return;closed=true;processor.disconnect();source.disconnect();stream.getTracks().forEach(track=>track.stop());await context.close()}};
@@ -774,6 +774,7 @@ const createYinggeVoice=()=>{
     if(session)await fetch(voiceApi+'/session/'+encodeURIComponent(session),{method:'DELETE',headers:{'x-app-id':'yingge-h5'}}).catch(()=>{});
   };
   const normalizeYinggeTranscript=text=>String(text||'')
+    .replace(/[应鹰莺][哥歌](?=舞|队|槌|文化|$)/g,'英歌')
     .replace(/英哥/g,'英歌')
     .replace(/小锤/g,'小槌')
     .replace(/锤法/g,'槌法')

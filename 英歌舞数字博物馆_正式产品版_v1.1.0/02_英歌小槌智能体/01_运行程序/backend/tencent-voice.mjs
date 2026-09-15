@@ -5,6 +5,18 @@ function clean(value) {
   return String(value || "").trim();
 }
 
+export function normalizeTencentTranscript(text = "") {
+  return String(text)
+    .replace(/[应鹰莺][哥歌](?=舞|队|槌|文化|$)/g, "英歌")
+    .replace(/英哥/g, "英歌")
+    .replace(/小[锤垂陲捶吹崔]/g, "小槌")
+    .replace(/锤法/g, "槌法")
+    .replace(/潮男/g, "潮南")
+    .replace(/朝阳(?=英歌|地区|队|$)/g, "潮阳")
+    .replace(/普林/g, "普宁")
+    .trim();
+}
+
 function positiveInteger(value, fallback) {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
@@ -159,7 +171,7 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
         return;
       }
       if (payload.result?.voice_text_str) {
-        segments.set(Number(payload.result.index || 0), String(payload.result.voice_text_str).trim());
+        segments.set(Number(payload.result.index || 0), normalizeTencentTranscript(payload.result.voice_text_str));
         latestText = [...segments.entries()].sort(([left], [right]) => left - right).map(([, text]) => text).join("");
       }
       if (Number(payload.final) === 1 && !settled) { settled = true; finalResolve({ text: latestText, final: true, engine: "tencent-realtime-asr" }); }
