@@ -150,6 +150,7 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
     const socket = new WebSocketImpl(asrSocketUrl(credentials, engineModelType, now(), { hotwordList, hotwordId }));
     let latestText = "";
     const segments = new Map();
+    let endpointPending = false;
     let finished = false;
     let settled = false;
     let finalResolve;
@@ -174,6 +175,7 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
         segments.set(Number(payload.result.index || 0), normalizeTencentTranscript(payload.result.voice_text_str));
         latestText = [...segments.entries()].sort(([left], [right]) => left - right).map(([, text]) => text).join("");
       }
+      if (Number(payload.result?.slice_type) === 2) endpointPending = true;
       if (Number(payload.final) === 1 && !settled) { settled = true; finalResolve({ text: latestText, final: true, engine: "tencent-realtime-asr" }); }
     };
     socket.onclose = () => {
@@ -183,9 +185,11 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
     return {
       async push(pcm, { finish = false } = {}) {
         if (finished) throw Object.assign(new Error("语音会话已结束"), { code: "TENCENT_ASR_SESSION_CLOSED" });
+        const endpoint = endpointPending;
+        endpointPending = false;
         const audio = Buffer.isBuffer(pcm) ? pcm : Buffer.from(pcm);
         if (audio.length) socket.send(audio);
-        if (!finish) return { text: latestText, final: false, engine: "tencent-realtime-asr" };
+        if (!finish) return { text: latestText, endpoint, final: endpoint, engine: "tencent-realtime-asr" };
         finished = true;
         socket.send('{"type":"end"}');
         return await new Promise((resolve, reject) => {

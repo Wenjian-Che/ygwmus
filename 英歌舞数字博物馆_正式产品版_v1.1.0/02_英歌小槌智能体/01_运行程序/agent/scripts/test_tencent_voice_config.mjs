@@ -107,4 +107,18 @@ const standardSession = await standardAsr.createRecognitionSession();
 assert.equal(new URL(socketLog.url).searchParams.has("input_sample_rate"), false, "16k 实时引擎应直接接收 16k PCM，不声明 8k 兼容参数");
 standardSession.close();
 
+class EndpointSocket extends FakeSocket {
+  send(message) {
+    socketLog.messages.push(message);
+    if (message !== '{"type":"end"}') this.onmessage?.({ data: JSON.stringify({ code: 0, result: { index: 0, slice_type: 2, voice_text_str: "英歌舞是什么" } }) });
+  }
+}
+const endpointAsr = createTencentVoiceClient({ TENCENT_SECRET_ID: "AKIDexample", TENCENT_SECRET_KEY: "example-secret-key", TENCENT_APP_ID: "1234567890" }, { WebSocketImpl: EndpointSocket });
+const endpointSession = await endpointAsr.createRecognitionSession();
+await endpointSession.push(Buffer.from([0, 0]));
+const endpointResult = await endpointSession.push(Buffer.from([0, 0]));
+assert.equal(endpointResult.text, "英歌舞是什么");
+assert.equal(endpointResult.endpoint, true, "腾讯云分句结束 slice_type=2 必须传为前端 endpoint");
+endpointSession.close();
+
 console.log("tencent voice config tests passed");
