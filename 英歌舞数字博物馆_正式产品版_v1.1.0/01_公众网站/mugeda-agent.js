@@ -197,7 +197,7 @@
     document.addEventListener('keydown', function (event) { if (event.key === 'Escape') shut(); });
     window.addEventListener('resize', fitPanelToViewport); window.addEventListener('orientationchange', function () { setTimeout(function () { syncVisualViewport(); fitPanelToViewport(); }, 120); });
 
-    function normalizeVoiceText(text) { return String(text || '').replace(/莺歌舞|英哥舞|秧歌舞/g, '英歌舞').replace(/英哥/g, '英歌').replace(/小锤/g, '小槌').replace(/锤法/g, '槌法').replace(/潮男/g, '潮南').replace(/普林/g, '普宁').trim(); }
+    function normalizeVoiceText(text) { return String(text || '').replace(/应歌舞|鹰歌舞|莺歌舞|英哥舞|秧歌舞/g, '英歌舞').replace(/英哥/g, '英歌').replace(/小锤/g, '小槌').replace(/锤法/g, '槌法').replace(/潮男/g, '潮南').replace(/普林/g, '普宁').trim(); }
     function encodeVoiceWave(chunks, inputRate) {
       var length = chunks.reduce(function (sum, chunk) { return sum + chunk.length; }, 0), merged = new Float32Array(length), offset = 0;
       chunks.forEach(function (chunk) { merged.set(chunk, offset); offset += chunk.length; });

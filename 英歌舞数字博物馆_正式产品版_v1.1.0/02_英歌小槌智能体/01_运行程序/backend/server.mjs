@@ -17,6 +17,7 @@ import { citationIntegrity, validateAgentRequest } from "./request-guard.mjs";
 import { speechLimits, transcribeWaveBuffer, windowsSpeechAvailable } from "./windows-speech.mjs";
 import { createLocalVoiceEngine } from "./local-voice.mjs";
 import { createTencentVoiceClient } from "./tencent-voice.mjs";
+import { createRealtimeVoiceSession } from "./realtime-voice-session.mjs";
 import { createCurationStore } from "./curation-store.mjs";
 import { createPrivateMediaService } from "./private-media.mjs";
 import { assessQuestionGrounding, classifyAgentScope, scopedAgentReply } from "./agent-scope.mjs";
@@ -1425,14 +1426,16 @@ const server = http.createServer(async (request, response) => {
       if (!originAllowed(requestOrigin,requestHost)) return sendJson(response, 403, { code: "ORIGIN_NOT_ALLOWED", message: "当前网页来源未加入白名单" });
       const mode = body.mode === "wake" ? "wake" : "transcribe";
       const voiceStatus = localVoice.status();
+      const cloudStatus = tencentVoice.status();
       if (mode === "wake" && !voiceStatus.wake.available) return sendJson(response, 503, { code: "LOCAL_KWS_UNAVAILABLE", message: "中文唤醒模型尚未安装" });
-      if (mode === "transcribe" && !voiceStatus.asr.available) return sendJson(response, 503, { code: "LOCAL_ASR_UNAVAILABLE", message: "中文本地识别模型尚未安装" });
+      if (mode === "transcribe" && !cloudStatus.asr.available && !voiceStatus.asr.available) return sendJson(response, 503, { code: "ASR_UNAVAILABLE", message: "语音识别暂时不可用" });
       const now = Date.now();
-      for (const [id, item] of voiceSessions) if (now - item.updatedAt > 2 * 60 * 1000) voiceSessions.delete(id);
+      for (const [id, item] of voiceSessions) if (now - item.updatedAt > 2 * 60 * 1000) { item.session.close?.(); voiceSessions.delete(id); }
       if (voiceSessions.size >= 12) return sendJson(response, 503, { code: "VOICE_SESSION_LIMIT", message: "当前语音会话较多，请稍后再试" });
       const id = crypto.randomUUID();
-      voiceSessions.set(id, { appId, updatedAt: now, mode, session: localVoice.createSession({ mode }) });
-      return sendJson(response, 201, { session_id: id, mode, sample_rate: 16000, expires_in: 120, wake_phrase: "小槌小槌" });
+      const engine = await createRealtimeVoiceSession({ mode, localVoice, cloudVoice: tencentVoice });
+      voiceSessions.set(id, { appId, updatedAt: now, mode, provider: engine.provider, session: engine.session });
+      return sendJson(response, 201, { session_id: id, mode, engine: engine.provider === "tencent" ? "tencent-realtime-asr" : mode === "wake" ? "sherpa-onnx-kws-ppinyin" : "sherpa-onnx-zipformer-zh", fallback: engine.fallback, sample_rate: 16000, expires_in: 120, wake_phrase: "小槌小槌" });
     }
     const voiceSessionMatch = url.pathname.match(/^\/api\/voice\/session\/([0-9a-f-]+)(?:\/chunk)?$/i);
     if (voiceSessionMatch && request.method === "DELETE" && !url.pathname.endsWith("/chunk")) {
@@ -1440,6 +1443,7 @@ const server = http.createServer(async (request, response) => {
       const appId = appIdFrom(request);
       const item = voiceSessions.get(id);
       if (!item || item.appId !== appId) return sendJson(response, 404, { code: "VOICE_SESSION_NOT_FOUND", message: "语音会话已结束" });
+      item.session.close?.();
       voiceSessions.delete(id);
       response.statusCode = 204;
       return response.end();
@@ -1455,12 +1459,18 @@ const server = http.createServer(async (request, response) => {
       if (!String(request.headers["content-type"] || "").toLowerCase().startsWith("application/octet-stream")) return sendJson(response, 415, { code: "INVALID_AUDIO_FORMAT", message: "实时识别只接受 16 位 PCM" });
       const pcm = await readBuffer(request, 256 * 1024);
       if (pcm.length < 2) return sendJson(response, 400, { code: "EMPTY_AUDIO", message: "没有收到语音数据" });
-      const samples = new Float32Array(Math.floor(pcm.length / 2));
-      for (let index = 0; index < samples.length; index += 1) samples[index] = pcm.readInt16LE(index * 2) / 32768;
       const sampleRate = Math.max(8000, Math.min(48000, Number(url.searchParams.get("sample_rate")) || 16000));
       const finish = url.searchParams.get("finish") === "1";
       item.updatedAt = Date.now();
-      const result = localVoice.acceptSession(item.session, samples, sampleRate, { finish });
+      let result;
+      if (item.provider === "tencent") {
+        if (sampleRate !== 16000) return sendJson(response, 400, { code: "INVALID_SAMPLE_RATE", message: "腾讯云实时识别需要 16k PCM" });
+        result = await item.session.push(pcm, { finish });
+      } else {
+        const samples = new Float32Array(Math.floor(pcm.length / 2));
+        for (let index = 0; index < samples.length; index += 1) samples[index] = pcm.readInt16LE(index * 2) / 32768;
+        result = localVoice.acceptSession(item.session, samples, sampleRate, { finish });
+      }
       return sendJson(response, 200, result);
     }
     if (request.method === "POST" && url.pathname === "/api/voice/transcribe") {

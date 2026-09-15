@@ -3,7 +3,9 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { createTencentVoiceClient, readTencentCredentialFile } from "../../backend/tencent-voice.mjs";
+import { createTencentVoiceClient, normalizeTencentTranscript, readTencentCredentialFile } from "../../backend/tencent-voice.mjs";
+
+assert.equal(normalizeTencentTranscript("应歌舞是什么"), "英歌舞是什么", "云端同音结果应在服务端归一化");
 
 const unavailable = createTencentVoiceClient({});
 assert.equal(unavailable.status().configured, false, "缺少凭据时云端语音必须保持关闭");
