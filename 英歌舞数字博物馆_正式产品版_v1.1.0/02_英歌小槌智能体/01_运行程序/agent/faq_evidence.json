@@ -1,0 +1,1345 @@
+{
+  "version": "2026.07.28.3",
+  "count": 100,
+  "description": "FAQ到知识页、事实卡和证据模式的映射；source_files按具体知识页优先、问答集兜底。",
+  "items": [
+    {
+      "faq_id": "faq-001",
+      "question": "英歌和英歌舞是同一个吗？",
+      "source_files": [
+        "24_术语表与概念辨析.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F001"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-002",
+      "question": "英歌来自哪里？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-003",
+      "question": "英歌有多少年历史？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F010"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-004",
+      "question": "英歌是不是起源于《水浒传》？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F011"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-005",
+      "question": "舞者手里的木棒叫什么？",
+      "source_files": [
+        "19_英歌槌制作工艺详解.md",
+        "05_道具与服饰.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-006",
+      "question": "为什么要画脸谱？",
+      "source_files": [
+        "38_脸谱服饰视觉辨识指南.md",
+        "54_多模态识别与问答边界.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F022"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-007",
+      "question": "英歌为什么那么“燃”？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-008",
+      "question": "英歌一定要108个人吗？",
+      "source_files": [
+        "03_表演形式.md",
+        "50_核心事实注册表.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F005",
+        "F006"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-009",
+      "question": "前棚和后棚是什么？",
+      "source_files": [
+        "23_演出结构详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F007"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-010",
+      "question": "快板、中板、慢板有什么区别？",
+      "source_files": [
+        "14_快板中板慢板详解.md",
+        "53_地区板式队伍比较矩阵.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F008",
+        "F038",
+        "F039",
+        "F040"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-011",
+      "question": "普宁英歌和潮阳英歌有什么区别？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F024"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-012",
+      "question": "哪个村才是英歌真正的发源地？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-013",
+      "question": "英歌的国家级非遗编号是什么？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F002",
+        "F003"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-014",
+      "question": "英歌有什么文化意义？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-015",
+      "question": "英歌就是傩舞吗？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F012"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-016",
+      "question": "女子可以跳英歌吗？",
+      "source_files": [
+        "12_女子英歌.md",
+        "35_代表队伍档案.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F018"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-017",
+      "question": "零基础能自己照视频学吗？",
+      "source_files": [
+        "54_多模态识别与问答边界.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-018",
+      "question": "做英歌研究应该采访谁？",
+      "source_files": [
+        "27_田野调查方法与访谈提纲.md",
+        "30_常见争议与事实辨析.md",
+        "31_权威来源与参考书目.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-019",
+      "question": "网上说“全网播放量超百亿”可信吗？",
+      "source_files": [
+        "27_田野调查方法与访谈提纲.md",
+        "30_常见争议与事实辨析.md",
+        "31_权威来源与参考书目.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-020",
+      "question": "潮阳只有慢板英歌吗？",
+      "source_files": [
+        "14_快板中板慢板详解.md",
+        "53_地区板式队伍比较矩阵.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F008"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-021",
+      "question": "普宁只有快板英歌吗？",
+      "source_files": [
+        "14_快板中板慢板详解.md",
+        "53_地区板式队伍比较矩阵.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F024"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-022",
+      "question": "女子英歌是什么时候出现的？",
+      "source_files": [
+        "12_女子英歌.md",
+        "35_代表队伍档案.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F018",
+        "F026"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-023",
+      "question": "西门女子英歌有什么代表性打法？",
+      "source_files": [
+        "12_女子英歌.md",
+        "35_代表队伍档案.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F027"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-024",
+      "question": "什么是醉槌？",
+      "source_files": [
+        "14_快板中板慢板详解.md",
+        "53_地区板式队伍比较矩阵.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F028"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-025",
+      "question": "一个队伍的动作能代表整个地区吗？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-026",
+      "question": "旋槌是什么？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-027",
+      "question": "洗街、布田是什么？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-028",
+      "question": "双龙出海是什么阵形？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F041"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-029",
+      "question": "吆喝只是为了热闹吗？",
+      "source_files": [
+        "39_锣鼓节奏与声音档案.md",
+        "22_锣鼓乐器与曲牌详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F034"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-030",
+      "question": "英歌一定有唢呐吗？",
+      "source_files": [
+        "39_锣鼓节奏与声音档案.md",
+        "22_锣鼓乐器与曲牌详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F023"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-031",
+      "question": "英歌有固定曲牌吗？",
+      "source_files": [
+        "39_锣鼓节奏与声音档案.md",
+        "22_锣鼓乐器与曲牌详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F023"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-032",
+      "question": "第一次看英歌应该观察什么？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-033",
+      "question": "怎么判断一支英歌队跳得好？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-034",
+      "question": "能从脸谱认出具体人物吗？",
+      "source_files": [
+        "38_脸谱服饰视觉辨识指南.md",
+        "54_多模态识别与问答边界.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F022",
+        "F043"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-035",
+      "question": "为什么现代演出常看不到后棚？",
+      "source_files": [
+        "23_演出结构详解.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F007"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-036",
+      "question": "进入国家级非遗后，动作是不是必须统一？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-037",
+      "question": "代表性传承人是不是唯一权威？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F013"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-038",
+      "question": "引用短视频可以证明历史吗？",
+      "source_files": [
+        "54_多模态识别与问答边界.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-039",
+      "question": "为什么活动时间不能写进静态知识库？",
+      "source_files": [
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [
+        "F025"
+      ],
+      "evidence_mode": "realtime",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-040",
+      "question": "用户上传了一张老照片，智能体应该怎么处理？",
+      "source_files": [
+        "54_多模态识别与问答边界.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "33_智能体标准问答集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-041",
+      "question": "正式名称为什么叫“英歌”而不是“英歌舞”？",
+      "source_files": [
+        "24_术语表与概念辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F001"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-042",
+      "question": "“中华战舞”是非遗正式名称吗？",
+      "source_files": [
+        "24_术语表与概念辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F001"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-043",
+      "question": "“鹰歌”“鹦哥”是不同舞蹈吗？",
+      "source_files": [
+        "24_术语表与概念辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-044",
+      "question": "英歌有完整三百年文献吗？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F010"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-045",
+      "question": "英歌在唐宋已经定型了吗？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-046",
+      "question": "明代吸收大鼓子秧歌适用于哪里？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-047",
+      "question": "哪个名称最早出现？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-048",
+      "question": "英歌为什么与水浒故事关系密切？",
+      "source_files": [
+        "01_历史渊源.md",
+        "40_历史年表与证据分层.md",
+        "30_常见争议与事实辨析.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F011"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-049",
+      "question": "英歌是哪一年成为国家级非遗的？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F003"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-050",
+      "question": "项目编号Ⅲ—8是什么意思？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F002"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-051",
+      "question": "甲子英歌也是国家级非遗吗？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F016"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-052",
+      "question": "神泉英歌是什么级别？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F019"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-053",
+      "question": "潮南英歌是什么级别？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-054",
+      "question": "谁负责保护普宁英歌？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F015"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-055",
+      "question": "谁负责保护潮阳英歌？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F015"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-056",
+      "question": "国家级传承人和国家级项目是一回事吗？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F013"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-057",
+      "question": "陈来发是第几代传人？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F014"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-058",
+      "question": "英歌是联合国人类非遗吗？",
+      "source_files": [
+        "08_非遗保护.md",
+        "41_传承人与保护单位档案.md",
+        "50_核心事实注册表.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F020"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-059",
+      "question": "潮阳有哪些可核实的队伍？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-060",
+      "question": "普宁有哪些可核实的队伍？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-061",
+      "question": "文光岭东有什么特点？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F028"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-062",
+      "question": "城南忠精只跳一种板式吗？",
+      "source_files": [
+        "14_快板中板慢板详解.md",
+        "53_地区板式队伍比较矩阵.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F029"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-063",
+      "question": "华市英歌队何时成立？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F031"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-064",
+      "question": "濠江联兴英歌队是什么风格？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F030"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-065",
+      "question": "泥沟的“八槌八鼓一蛇”是什么意思？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F032"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-066",
+      "question": "南溪队真的去纽约演出了吗？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F050"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-067",
+      "question": "西岐英歌属于普宁南山吗？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-068",
+      "question": "为什么不能给每个城市指定一个流派？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F024"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-069",
+      "question": "什么是头槌？",
+      "source_files": [
+        "52_角色功能与辨识关系表.md",
+        "16_核心角色详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-070",
+      "question": "时迁一定是头槌吗？",
+      "source_files": [
+        "52_角色功能与辨识关系表.md",
+        "16_核心角色详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-071",
+      "question": "宋江一定负责司鼓吗？",
+      "source_files": [
+        "52_角色功能与辨识关系表.md",
+        "16_核心角色详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-072",
+      "question": "为什么动作名称不能按字面解释？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-073",
+      "question": "什么是抱槌勾脚？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-074",
+      "question": "什么是穿双龙？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F041"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-075",
+      "question": "猛虎下山是固定阵法吗？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F041"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-076",
+      "question": "队形真的来自古代兵阵吗？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-077",
+      "question": "如何记录一个动作？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-078",
+      "question": "如何记录一个队形？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-079",
+      "question": "英歌槌有统一尺寸吗？",
+      "source_files": [
+        "19_英歌槌制作工艺详解.md",
+        "05_道具与服饰.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F044"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-080",
+      "question": "儿童可以使用成人英歌槌吗？",
+      "source_files": [
+        "19_英歌槌制作工艺详解.md",
+        "05_道具与服饰.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-081",
+      "question": "如何判断英歌槌是否安全？",
+      "source_files": [
+        "19_英歌槌制作工艺详解.md",
+        "05_道具与服饰.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-082",
+      "question": "英歌都穿武将服吗？",
+      "source_files": [
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F037"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-083",
+      "question": "英歌草鞋都有铃铛吗？",
+      "source_files": [
+        "05_道具与服饰.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F037"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-084",
+      "question": "脸谱是面具吗？",
+      "source_files": [
+        "38_脸谱服饰视觉辨识指南.md",
+        "54_多模态识别与问答边界.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F022"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-085",
+      "question": "如何可靠识别脸谱角色？",
+      "source_files": [
+        "52_角色功能与辨识关系表.md",
+        "16_核心角色详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F022",
+        "F043"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-086",
+      "question": "脸谱能不能创新？",
+      "source_files": [
+        "38_脸谱服饰视觉辨识指南.md",
+        "54_多模态识别与问答边界.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F043"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-087",
+      "question": "英歌的核心声音有哪些？",
+      "source_files": [
+        "39_锣鼓节奏与声音档案.md",
+        "22_锣鼓乐器与曲牌详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F023",
+        "F033",
+        "F034"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-088",
+      "question": "英歌锣鼓如何指挥动作和队形？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F023",
+        "F034"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-089",
+      "question": "甲子英歌有哪些公开乐器配置？",
+      "source_files": [
+        "53_地区板式队伍比较矩阵.md",
+        "35_代表队伍档案.md",
+        "37_潮南惠来及周边地区档案.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F033"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-090",
+      "question": "为什么要分轨录音？",
+      "source_files": [
+        "39_锣鼓节奏与声音档案.md",
+        "22_锣鼓乐器与曲牌详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-091",
+      "question": "英歌一定在正月初一到十五表演吗？",
+      "source_files": [
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F025"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-092",
+      "question": "英歌一定参加游神吗？",
+      "source_files": [
+        "43_仪式流程与巡游空间.md",
+        "55_实时活动问答与数据接口规范.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F045"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-093",
+      "question": "出队前一定要点睛吗？",
+      "source_files": [
+        "43_仪式流程与巡游空间.md",
+        "55_实时活动问答与数据接口规范.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F045"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-094",
+      "question": "观众能进入队伍拍照吗？",
+      "source_files": [
+        "43_仪式流程与巡游空间.md",
+        "55_实时活动问答与数据接口规范.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-095",
+      "question": "街巷为什么会改变队形？",
+      "source_files": [
+        "36_动作与步法词典.md",
+        "15_阵法与队形详解.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-096",
+      "question": "短视频能用于动作研究吗？",
+      "source_files": [
+        "54_多模态识别与问答边界.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-097",
+      "question": "如何证明一支海外队伍是长期传承？",
+      "source_files": [
+        "45_侨乡网络与海外传播类型.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F021"
+      ],
+      "evidence_mode": "static",
+      "citation_required": true
+    },
+    {
+      "faq_id": "faq-098",
+      "question": "智能体可以根据照片直接判断流派吗？",
+      "source_files": [
+        "54_多模态识别与问答边界.md",
+        "38_脸谱服饰视觉辨识指南.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [
+        "F022"
+      ],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-099",
+      "question": "训练最重要的评价顺序是什么？",
+      "source_files": [
+        "26_训练体系与安全规范.md",
+        "28_校园课程与公众教育.md",
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    },
+    {
+      "faq_id": "faq-100",
+      "question": "知识库遇到冲突来源怎么办？",
+      "source_files": [
+        "51_标准问答扩展集.md"
+      ],
+      "fact_ids": [],
+      "evidence_mode": "static",
+      "citation_required": false
+    }
+  ]
+}

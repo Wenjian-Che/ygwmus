@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#26352b">
+<title>游地域｜英歌舞数字博物馆</title>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="styles.css?v=20260913-logo2">
+<link rel="stylesheet" href="museum-content.css?v=20260831-mobile2">
+</head>
+<body class="secondary-page museum-page">
+<header class="site-header glass">
+<a class="brand" href="index.html">
+<img src="assets/museum-mark-v3.svg" alt="">
+<strong>英歌舞数字博物馆</strong>
+</a>
+<nav>
+<a href="content.html">馆藏总览</a>
+<a href="characters.html">识角色</a>
+<a href="formation.html">练阵形</a>
+<a href="archive.html">查档案</a>
+</nav>
+<a class="button button-glass magnetic" href="index.html">返回门厅</a>
+</header>
+<main>
+<section class="museum-hero" style="--hero-image:url('assets/motion-archive.png')">
+<div>
+<p class="museum-kicker">游地域</p>
+<h1>同叫英歌，为何各有不同？</h1>
+<p class="deck">社区传统、师承、板式、角色、锣鼓和演出场合不同，英歌也会呈现出不同样貌。</p>
+</div>
+<div class="yingge-motifs museum-motifs" aria-hidden="true">
+<img class="motif motif-flag" src="assets/elements/icon-command-flag.webp" alt="">
+</div>
+</section>
+<nav class="museum-subnav glass" aria-label="本页内容">
+<a href="#compare">比较方法</a>
+<a href="#areas">核心区域</a>
+<a href="#map">地图位置</a>
+<a href="#boundary">地域边界</a>
+</nav>
+<section class="museum-section" id="compare">
+<div class="definition">
+<h2>不要只按城市贴标签</h2>
+<p>比较各地英歌时，不能只写城市名称，还要看到具体社区、队伍、师承、板式和年代。即使在同一座城市，不同村落的队伍也可能很不一样。</p>
+</div>
+</section>
+<section class="museum-section tinted" id="areas">
+<header class="museum-heading">
+<h2>先从国家级项目分清地域入口</h2>
+<p>名录能够确认项目名称、申报地区、批次与保护单位，却不能代表一座城市里的所有队伍都采用同一套做法。真正比较地方差异时，还要继续下沉到社区、队伍与年代。</p>
+</header>
+<div class="focus-rows">
+<div class="focus-row">
+<h3>英歌（普宁英歌）</h3>
+<p>2006 年列入第一批国家级非物质文化遗产名录，申报地区为广东省普宁市，项目编号为 Ⅲ—8。项目页可支持项目身份、批次和地区信息；具体人数、动作与队形仍只适用于相应资料和队伍。<a href="https://www.ihchina.cn/project_details/12902.html" target="_blank" rel="noreferrer">查看国家级项目页</a></p>
+</div>
+<div class="focus-row">
+<h3>英歌（潮阳英歌）</h3>
+<p>2006 年列入第一批国家级非物质文化遗产名录，申报地区为广东省汕头市潮阳区，项目编号为 Ⅲ—8。慢板、中板、快板与七种基础队形来自潮阳项目资料和地方标准，不能外推为普宁、甲子或所有英歌的统一规则。<a href="https://www.ihchina.cn/project_details/12901.html" target="_blank" rel="noreferrer">查看国家级项目页</a></p>
+</div>
+<div class="focus-row">
+<h3>英歌（甲子英歌）</h3>
+<p>2011 年列入第三批国家级非物质文化遗产扩展项目，申报地区为广东省陆丰市甲子镇，同样使用项目编号 Ⅲ—8。“扩展项目”说明它与英歌项目体系相关，不等于三地拥有完全相同的角色、槌法或表演结构。<a href="https://www.ihchina.cn/project_details/12903.html" target="_blank" rel="noreferrer">查看国家级项目页</a></p>
+</div>
+</div>
+</section>
+<section class="museum-section" id="map">
+<header class="museum-heading">
+<h2>地域地图</h2>
+<p>选择地图中的地区，比较英歌在不同社区、队伍与年代中的具体差异。</p>
+</header>
+<div class="region-atlas" id="regionAtlas">
+<div class="globe-stage">
+<svg id="regionMap" class="region-map-svg" viewBox="0 0 1000 650" role="img" aria-label="潮汕地区英歌交互地图">
+<g id="regionMapViewport">
+</g>
+</svg>
+<div class="globe-controls">
+<button class="globe-zoom" id="globeZoomOut" type="button" aria-label="缩小地球">−</button>
+<button class="globe-zoom" id="globeZoomIn" type="button" aria-label="放大地球">+</button>
+</div>
+<p class="globe-help">拖动平移，滚轮或双指缩放，点击高亮区域</p>
+</div>
+<aside class="region-story" aria-live="polite">
+<div class="region-switcher" aria-label="选择英歌相关地区">
+<button class="is-active" type="button" data-region="汕头市">汕头</button>
+<button type="button" data-region="揭阳市">揭阳</button>
+<button type="button" data-region="潮州市">潮州</button>
+</div>
+<p class="region-type" id="regionType">高亮区域</p>
+<h3 id="regionName">汕头</h3>
+<p id="regionSummary">潮阳与潮南等地的英歌实践在此建立地区入口，具体内容继续下沉到社区、队伍与年代。</p>
+<dl>
+<div>
+<dt>观察重点</dt>
+<dd id="regionFocus">潮阳、潮南的社区队伍与地方版本</dd>
+</div>
+<div>
+<dt>继续观察</dt>
+<dd id="regionEvidence">接下来可以查看潮阳、潮南的具体队伍和不同时期。</dd>
+</div>
+</dl>
+<a href="#areas" id="regionLink">查看地区说明</a>
+</aside>
+</div>
+<p class="map-disclaimer">地图用于地区索引。行政边界与地名以国家标准地图服务公布信息为准。</p>
+</section>
+<section class="museum-section tinted" id="boundary">
+<div class="source-note">
+<strong>同一地名，也有时间差异</strong>
+<p>“潮阳”在不同历史时期的范围并不完全相同。队伍迁移和跨村授艺也会改变动作与锣鼓。了解一支队伍时，时间和地点要放在一起看。</p>
+</div>
+</section>
+</main>
+<footer>
+<div>
+<img src="assets/museum-mark-v3.svg" alt="">
+<strong>英歌舞数字博物馆</strong>
+</div>
+<span>本页重点：地方版本为何不同</span>
+</footer>
+<script src="vendor/gsap.min.js">
+</script>
+<script src="vendor/ScrollTrigger.min.js">
+</script>
+<script src="app.js?v=20260913-logo2">
+</script>
+<script src="vendor/topojson-client.min.js">
+</script>
+<script type="module" src="regions-map.js?v=20260904-chaoshan1">
+</script>
+</body>
+</html>

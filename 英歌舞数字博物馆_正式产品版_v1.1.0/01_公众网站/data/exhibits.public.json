@@ -1,0 +1,89 @@
+{
+  "schema_version": 2,
+  "generated_at": "2026-08-30T13:29:05.785Z",
+  "exhibits": [
+    {
+      "id": "yingge-across-borders",
+      "title": "英歌出海：跨国传播时间线",
+      "summary": "三次发生在东南亚的真实交流，呈现英歌如何从一次演出走向共同表演、在地组队和持续交流。",
+      "boundary_note": "本展只描述已核验的具体活动。它不代表所有英歌队伍的海外传播路径，也不把合作材料中的个人叙述直接视为公共史料。",
+      "audience_summary": "三次发生在东南亚的真实交流，呈现英歌如何从共同表演走向在地组队和持续交流。",
+      "student_takeaway": "传播不只是把表演带到海外，也包括共同学习、建立队伍和持续往来。",
+      "research_note": "本章节只描述已由现有政府、机构或主流媒体页面核验的具体活动，不将个案外推为全部英歌的海外传播路径。",
+      "events": [
+        {
+          "id": "thailand-2024-cultural-visit",
+          "event_title": "普宁英歌与泰国英歌队在曼谷共同表演",
+          "date": "2024-05-01",
+          "location": "泰国曼谷河滨码头夜市广场",
+          "people_or_team": "广东普宁富美青年英歌队、泰国春武里府旧罔县文益英歌队",
+          "caption": "两支队伍在曼谷共同表演。活动随后继续前往叻丕府和春武里府交流。",
+          "audience_summary": "普宁富美青年英歌队与泰国文益英歌队在曼谷共同表演，交流随后继续前往叻丕府和春武里府。",
+          "student_takeaway": "共同表演让交流从观看变成双方都参与的实践。",
+          "research_note": "活动时间、地点与队伍依据中国驻泰国大使馆和外交部页面；两张现场影像已按项目授权记录完成权利与隐私复核，仅用于呈现活动现场。",
+          "sources": [
+            {
+              "label": "中华人民共和国驻泰王国大使馆",
+              "url": "https://th.china-embassy.gov.cn/sgxw/202405/t20240502_11292436.html",
+              "source_type": "government_institution"
+            },
+            {
+              "label": "中华人民共和国外交部转载",
+              "url": "https://www.mfa.gov.cn/web/gjhdq_676201/gj_676203/yz_676205/1206_676932/1206x2_676952/202405/t20240507_11293826.shtml",
+              "source_type": "government_institution"
+            }
+          ],
+          "public_media": true,
+          "media_url": "assets/curation/thailand-2024-performance-wide.jpg",
+          "media_urls": [
+            "assets/curation/thailand-2024-performance-wide.jpg",
+            "assets/curation/thailand-2024-performance-close.jpg"
+          ]
+        },
+        {
+          "id": "johor-2024-yixing-team",
+          "event_title": "柔佛潮州八邑会馆义兴英歌队举行成立仪式",
+          "date": "2024-08-07/2024-08-11",
+          "location": "马来西亚柔佛州新山市",
+          "people_or_team": "柔佛潮州八邑会馆义兴英歌队、汕头市友好代表团",
+          "caption": "汕头市委外办记录代表团参加义兴英歌队成立仪式，说明海外交流已从观看延伸到在地队伍建设。",
+          "audience_summary": "汕头市友好代表团参加柔佛义兴英歌队成立仪式，交流开始进入在地队伍建设。",
+          "student_takeaway": "一种传统进入新社区后，可能从演出发展为当地队伍的持续学习。",
+          "research_note": "现有官方页面支持成立仪式事实，不足以支持‘首支英歌队’等更强结论；现场影像已按项目授权记录完成权利与隐私复核，仅用于呈现成立仪式场景。",
+          "curatorial_boundary": "合作材料使用了“首支英歌队”的表述。本展当前只采用政府页面可核验的队伍成立事实，不采用“首支”结论。",
+          "sources": [
+            {
+              "label": "中共汕头市委外事工作委员会办公室",
+              "url": "https://swwb.shantou.gov.cn/wsqwj/0500/202409/f6b4aa650e954a66b36917cc6893c82f.shtml",
+              "source_type": "government_institution"
+            }
+          ],
+          "public_media": true,
+          "media_url": "assets/curation/johor-2024-ceremony-performer.jpg",
+          "media_urls": [
+            "assets/curation/johor-2024-ceremony-performer.jpg"
+          ]
+        },
+        {
+          "id": "singapore-2024-cultural-exchange",
+          "event_title": "潮阳城南忠精英歌队赴新加坡交流",
+          "date": "2024-12-19/2024-12-23",
+          "location": "新加坡",
+          "people_or_team": "潮阳城南忠精英歌队、新加坡潮阳会馆",
+          "caption": "一行45人应邀赴新加坡，在五天行程中进行了四场交流表演。",
+          "audience_summary": "潮阳城南忠精英歌队赴新加坡，在五天行程中进行四场交流表演。",
+          "student_takeaway": "连续交流比一次演出更能形成社区之间的联系。",
+          "research_note": "人数、行程与场次依据现有主流媒体页面；候选图含媒体截图及未成年人风险，只作内部核验参考。",
+          "sources": [
+            {
+              "label": "南方日报、南方+",
+              "url": "https://static.nfnews.com/content/202502/18/c11002307.html",
+              "source_type": "media_report"
+            }
+          ],
+          "public_media": false
+        }
+      ]
+    }
+  ]
+}

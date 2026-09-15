@@ -1,0 +1,41 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const htmlPath = path.join(root, "web", "admin", "curation.html");
+const jsPath = path.join(root, "web", "admin", "curation-v2.js");
+const contentAdminPath = path.join(root, "web", "admin", "content.html");
+const shellPath = path.join(root, "web", "admin", "admin-shell.js");
+const workspacePath = path.join(root, "web", "admin", "workspace.html");
+
+assert.ok(fs.existsSync(htmlPath), "真实内容运营页尚未建立");
+assert.ok(fs.existsSync(jsPath), "真实内容运营逻辑尚未建立");
+const html = fs.readFileSync(htmlPath, "utf8");
+const js = fs.readFileSync(jsPath, "utf8");
+for (const text of ["媒体候选", "活动与来源", "展览章节", "版权与隐私", "发布前预览"]) assert.match(html, new RegExp(text));
+assert.match(html,/审计日志/);
+assert.match(js, /api\/admin\/curation/);
+assert.match(js, /workflow_status/);
+assert.match(js, /rights_status/);
+for (const operation of ["create_exhibit","create_event","add_source","bind_media","copy_event","reorder_events","delete_media"]) assert.match(js,new RegExp(operation));
+assert.match(js, /expected_version/);
+assert.match(js, /\/api\/admin\/curation\/preview/);
+assert.match(js, /\/api\/admin\/curation\/publish/);
+assert.match(js,/review_context/);
+assert.match(js,/field_diff/);
+for (const text of ["私有候选库未连接","授权核验清单","公开传播范围","平台、期限与地域","肖像","未成年人","第三方媒体截图","可撤回机制"]) assert.match(`${html}\n${js}`,new RegExp(text));
+for (const text of ["素材与活动","授权核验","隐私复核","审核意见","公开版本","待授权","已获授权","已审核","可发布"]) assert.match(`${html}\n${js}`,new RegExp(text));
+for (const fieldName of ["source_document","source_paragraph","sha256","rights_holder","license_scope","authorization_evidence_ref","minor_consent_evidence_ref","third_party_rights_evidence_ref","review_note","privacy_risk","contains_minors","contains_third_party_media","reviewed_at","review_workflow"]) assert.match(js,new RegExp(fieldName));
+assert.match(js,/高风险素材需要分别核对未成年人肖像同意与第三方媒体截图使用权/);
+assert.match(js,/api\/admin\/curation\/media\/.*preview/,"后台必须通过 admin-only 接口读取候选缩略图");
+assert.match(js,/URL\.createObjectURL/,"候选图必须通过认证 fetch 后创建临时 Blob URL");
+assert.match(js,/\['exhibit_id','所属章节'/,"新增活动必须提供所属章节选择");
+assert.doesNotMatch(js,/allEvents\(\)\.map\(\(event,index,list\)/,"活动移动不能使用全局扁平索引");
+assert.doesNotMatch(html, /保存并发布/);
+assert.match(fs.readFileSync(contentAdminPath, "utf8"), /src="admin-shell\.js"/, "内容工作区尚未接入统一后台壳");
+assert.match(fs.readFileSync(shellPath, "utf8"), /href:\s*"workspace\.html#materials"/, "统一工作台尚未接入真实内容运营入口");
+assert.match(fs.readFileSync(workspacePath, "utf8"), /curation\.html\?embedded=1/, "真实素材运营必须嵌入统一工作台");
+
+console.log("curation admin shell ok");

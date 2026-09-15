@@ -1,0 +1,29 @@
+{
+  "schema_version": "2026.08.20.1",
+  "entity_type": "signals",
+  "records": [
+    {
+      "signal_id": "jiazi-eight-beat-yodel",
+      "name": "甲子英歌八拍吆喝",
+      "scope": "甲子英歌公开资料中的队伍个案",
+      "known_role": "公开资料记载八拍吆喝与动作、队形变化有关，可作为现场听觉提示的研究入口。",
+      "exact_sequence_status": "not_published",
+      "boundary": "公开来源没有给出可复核的统一逐拍词谱、每拍对应动作或所有队伍通用规则，不能补写具体喊词和拍点。",
+      "source_refs": [{"source_id": "shanwei_jiazi", "support": "direct"}],
+      "status": "partial"
+    },
+    {
+      "signal_id": "team-specific-drum-change",
+      "name": "锣鼓与槌法变换提示",
+      "scope": "英歌队伍个案；需按队伍、板式和演出段落分别核验",
+      "known_role": "锣鼓、槌击、吆喝和队伍视觉动作共同承担节奏组织与段落转换提示。",
+      "exact_sequence_status": "not_published",
+      "boundary": "现有公开材料不能支撑“某一声鼓对应全国统一某个动作”的结论；逐拍映射必须绑定队伍、视频时间码或谱本。",
+      "source_refs": [
+        {"source_id": "shantou_teams", "support": "partial"},
+        {"source_id": "shanwei_jiazi", "support": "partial"}
+      ],
+      "status": "partial"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#14231b">
+  <title>英歌小槌｜智能策划助手</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="assistant.css">
+  <link rel="stylesheet" href="admin-shell.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="assistant-workspace.css">
+</head>
+<body data-admin-page="assistant">
+  <div class="admin-app-shell" data-admin-shell>
+    <aside class="admin-unified-rail" data-admin-sidebar aria-label="后台主导航"></aside>
+    <main class="assistant-main admin-page" data-admin-main>
+      <header class="assistant-header">
+        <div><p class="crumb">运营后台 / 英歌小槌</p><h1>智能策划助手</h1></div>
+        <div class="header-actions"><button id="exportChat" class="ghost-button" type="button">导出对话</button></div>
+      </header>
+      <div class="assistant-workspace">
+        <aside class="conversation-panel" aria-label="当前对话">
+          <div class="conversation-heading"><div><h2>对话</h2><p>记录只保存在当前浏览器会话中。</p></div><button class="new-chat" id="newChat" type="button">新建对话</button></div>
+          <div class="conversation-list" id="conversationList"><button type="button" class="conversation is-current"><b>当前对话</b><small>本次会话</small></button></div>
+        </aside>
+        <div class="assistant-grid">
+          <section class="chat-panel">
+            <div class="chat-toolbar"><div class="agent-identity"><div class="agent-mark">槌</div><div><strong>英歌小槌</strong><span>直接说你的问题，我会自动判断如何协助</span></div></div></div>
+            <div class="chat-stream" id="chatStream" aria-live="polite">
+              <div class="welcome-block"><p class="eyebrow">从问题到行动</p><h2>你想把英歌舞带到哪里？</h2><p>我可以把一个想法拆成目标、受众、内容结构、执行步骤和风险清单，也会把需要人工核实的地方标出来。</p><div class="suggestion-row"><button type="button" data-prompt="为潮汕地区的英歌舞数字特展做一份面向公众的策划方案，预算有限，希望突出动作与声音体验。">数字特展方案</button><button type="button" data-prompt="设计一场面向初中生的45分钟英歌舞研学活动，要包含动作观察、鼓点体验和安全提示。">研学活动脚本</button><button type="button" data-prompt="根据访客常问问题，给出英歌舞博物馆下季度的内容选题与传播节奏。">季度内容选题</button></div></div>
+            </div>
+            <form class="composer" id="assistantForm"><div class="composer-context"><span>英歌小槌会自动理解问题类型</span><button type="button" id="clearInput">清空</button></div><textarea id="assistantInput" rows="3" placeholder="直接输入问题或想法……" required></textarea><div class="composer-footer"><span>需要方案时直接说目标、受众或限制条件即可</span><button class="send-button" type="submit">发送</button></div></form>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="admin-shell.js?v=20260831-mobile2"></script>
+  <script src="assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+.event-media-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: 310px;
+}
+
+.event-media-gallery .event-media-track {
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 2px;
+  background: rgba(241, 243, 237, .22);
+}
+
+.event-media-gallery img:last-child {
+  object-position: 62% center;
+}
+
+@media (max-width: 800px) {
+  .event-media-track { height: 230px; }
+  .event-media-gallery .event-media-track { grid-template-columns: 1.2fr .8fr; }
+}

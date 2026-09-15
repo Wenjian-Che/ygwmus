@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#1d2c24">
+  <title>英歌出海｜英歌舞数字博物馆</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="styles.css?v=20260913-logo2">
+  <link rel="stylesheet" href="spread.css">
+  <link rel="stylesheet" href="spread-v2.css">
+  <link rel="stylesheet" href="spread-gallery.css">
+  <link rel="stylesheet" href="museum-editorial.css?v=20260831-mobile2">
+</head>
+<body class="spread-page">
+  <header class="spread-nav">
+    <a class="spread-brand" href="index.html"><img src="assets/museum-mark-v3.svg" alt=""><strong>英歌舞数字博物馆</strong></a>
+    <nav aria-label="数字博物馆导航">
+      <a class="museum-primary-link" href="index.html">首页</a>
+      <a class="museum-primary-link" href="content.html">馆藏总览</a>
+      <a class="museum-primary-link" href="learn.html">认识英歌</a>
+      <a class="museum-primary-link" href="spread.html" aria-current="page">英歌出海</a>
+      <a class="museum-primary-link" href="framework-museum.html">专题展馆</a>
+      <details class="museum-menu">
+        <summary>在线展馆</summary>
+        <div class="museum-menu-panel glass">
+          <a href="watch.html"><span>01</span><strong>看英歌</strong></a>
+          <a href="characters.html"><span>02</span><strong>识角色</strong></a>
+          <a href="formation.html"><span>03</span><strong>练阵形</strong></a>
+          <a href="sound.html"><span>04</span><strong>听锣鼓</strong></a>
+          <a href="regions.html"><span>05</span><strong>游地域</strong></a>
+          <a href="archive.html"><span>06</span><strong>查档案</strong></a>
+        </div>
+      </details>
+    </nav>
+  </header>
+  <main>
+    <section class="spread-intro">
+      <p class="spread-kicker">真实事件专题</p>
+      <h1>英歌出海</h1>
+      <p class="spread-deck">三次具体事件，呈现三种并列的跨境交流形态。</p>
+      <p class="spread-thesis">三个个案分别让人看见怎样共同表演、怎样在地组队，以及怎样继续交流。它们发生在不同主体、地点和时间中，本专题将其并置观察，不把个案拼成一条必然的发展路线。</p>
+    </section>
+    <section class="route-stage" aria-labelledby="routeTitle">
+      <h2 id="routeTitle">三次交流，三种传播方式</h2>
+      <div class="route-line" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div id="eventTimeline" class="event-timeline" aria-live="polite"><p class="loading-state">正在整理已核验事件</p></div>
+    </section>
+    <section class="spread-boundary">
+      <h2>怎样阅读这条时间线</h2>
+      <p id="boundaryText">这里只描述能够回到具体来源的活动。队伍名称、时间和地点以公开页面为准；合作材料可以帮助寻找线索，但不能代替公开的核验来源。</p>
+      <a href="archive.html">去资料档案了解证据分级</a>
+    </section>
+  </main>
+  <dialog id="sourceDialog" class="source-dialog" aria-labelledby="sourceTitle">
+    <button class="dialog-close" type="button" aria-label="关闭来源详情">关闭</button>
+    <div id="sourceDetail"></div>
+  </dialog>
+  <footer class="spread-footer"><span>英歌舞数字博物馆</span><span>具体事件，具体来源，具体边界</span></footer>
+  <script src="spread.js?v=20260901-en2"></script>
+  <script src="locale-shell.js?v=20260904-icp1"></script>
+</body>
+</html>

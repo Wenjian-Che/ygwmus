@@ -1,0 +1,1415 @@
+{
+  "version": "2026.08.21.5",
+  "count": 120,
+  "description": "真实模型回答回归集：检查答题焦点、关键事实、证据引用、边界、冗余和错误泛化。",
+  "cases": [
+    {
+      "id": "GQA-001",
+      "golden_id": "gold-007",
+      "category": "因果机制",
+      "query": "为什么英歌的人要不停敲手里的棒子？",
+      "direct_terms": [
+        "敲槌",
+        "英歌槌",
+        "棒子"
+      ],
+      "must_terms": [
+        "节奏",
+        "动作",
+        "同步"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "只是为了响"
+      ]
+    },
+    {
+      "id": "GQA-002",
+      "golden_id": "gold-012",
+      "category": "地域比较",
+      "query": "普宁英歌和潮阳英歌到底有什么不同？",
+      "direct_terms": [
+        "普宁",
+        "潮阳"
+      ],
+      "must_terms": [
+        "国家级",
+        "板式",
+        "队伍"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "普宁都是快板",
+        "潮阳都是慢板"
+      ]
+    },
+    {
+      "id": "GQA-003",
+      "golden_id": "gold-004",
+      "category": "起源辨析",
+      "query": "英歌是不是起源于《水浒传》？",
+      "direct_terms": [
+        "不能",
+        "不等于",
+        "水浒传"
+      ],
+      "must_terms": [
+        "水浒传",
+        "起源",
+        "观点"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "唯一源于《水浒传》",
+        "已经证实起源"
+      ]
+    },
+    {
+      "id": "GQA-004",
+      "golden_id": "gold-015",
+      "category": "非遗级别",
+      "query": "英歌是不是联合国教科文组织非遗？",
+      "direct_terms": [
+        "不能",
+        "不是",
+        "目前"
+      ],
+      "must_terms": [
+        "中国",
+        "国家级",
+        "联合国"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "已列入联合国教科文组织",
+        "是世界级非遗"
+      ]
+    },
+    {
+      "id": "GQA-005",
+      "golden_id": "gold-009",
+      "category": "人数辨析",
+      "query": "英歌一定要108个人吗？",
+      "direct_terms": [
+        "不一定",
+        "不是"
+      ],
+      "must_terms": [
+        "108",
+        "队伍",
+        "人数"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "必须108人",
+        "统一规定108人"
+      ]
+    },
+    {
+      "id": "GQA-006",
+      "golden_id": "gold-010",
+      "category": "演出结构",
+      "query": "英歌的前棚和后棚分别是什么？",
+      "direct_terms": [
+        "前棚",
+        "后棚"
+      ],
+      "must_terms": [
+        "持槌",
+        "小戏",
+        "现代"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "前台和后台"
+      ]
+    },
+    {
+      "id": "GQA-007",
+      "golden_id": "gold-008",
+      "category": "审美机制",
+      "query": "英歌为什么看起来那么震撼？",
+      "direct_terms": [
+        "震撼",
+        "来自"
+      ],
+      "must_terms": [
+        "声音",
+        "同步",
+        [
+          "队形",
+          "变阵",
+          "空间变化"
+        ]
+      ],
+      "require_boundary": false,
+      "forbidden_terms": [
+        "因为声音大而已"
+      ]
+    },
+    {
+      "id": "GQA-008",
+      "golden_id": "gold-006",
+      "category": "脸谱",
+      "query": "英歌为什么要画脸谱？",
+      "direct_terms": [
+        "脸谱",
+        "角色"
+      ],
+      "must_terms": [
+        "角色",
+        "视觉",
+        "队伍"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "颜色统一对应人物"
+      ]
+    },
+    {
+      "id": "GQA-009",
+      "golden_id": "gold-018",
+      "category": "女性传承",
+      "query": "女性可以跳英歌吗？",
+      "direct_terms": [
+        "可以"
+      ],
+      "must_terms": [
+        "西门",
+        "1952",
+        "2011"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "传统上绝对禁止女性"
+      ]
+    },
+    {
+      "id": "GQA-010",
+      "golden_id": "gold-019",
+      "category": "分龄安全",
+      "query": "小孩子可以学习英歌吗？",
+      "direct_terms": [
+        "可以"
+      ],
+      "must_terms": [
+        "教练",
+        "训练槌",
+        "安全"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "直接使用成人英歌槌"
+      ]
+    },
+    {
+      "id": "GQA-011",
+      "golden_id": "gold-023",
+      "category": "地方风格",
+      "query": "醉槌是不是喝醉以后跳？",
+      "direct_terms": [
+        "不是",
+        "并非"
+      ],
+      "must_terms": [
+        "似醉非醉",
+        "慢板",
+        "岭东"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "真的饮酒"
+      ]
+    },
+    {
+      "id": "GQA-012",
+      "golden_id": "gold-026",
+      "category": "队伍个案",
+      "query": "金浦青年英歌队为什么有背鼓的人？",
+      "direct_terms": [
+        "金浦",
+        "司鼓"
+      ],
+      "must_terms": [
+        "16寸",
+        "扁鼓",
+        "舞槌者"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "所有快板英歌都有"
+      ]
+    },
+    {
+      "id": "GQA-013",
+      "golden_id": "gold-027",
+      "category": "师承边界",
+      "query": "潮南西岐英歌是不是普宁南山英歌的直属分支？",
+      "direct_terms": [
+        "不足以",
+        "不能",
+        "尚不能"
+      ],
+      "must_terms": [
+        "成田镇",
+        "南山武派",
+        "师承"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "已经证实是直属分支"
+      ]
+    },
+    {
+      "id": "GQA-014",
+      "golden_id": "gold-028",
+      "category": "资料边界",
+      "query": "惠来神泉英歌有什么固定板式和特色？",
+      "direct_terms": [
+        "资料",
+        "不能",
+        "不足"
+      ],
+      "must_terms": [
+        "省级",
+        "惠来",
+        "板式"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "确定属于快板",
+        "固定为慢板"
+      ]
+    },
+    {
+      "id": "GQA-015",
+      "golden_id": "gold-034",
+      "category": "阵形",
+      "query": "英歌有哪些常见队形和变阵？",
+      "direct_terms": [
+        "队形",
+        "阵形"
+      ],
+      "must_terms": [
+        "双龙出海",
+        "穿双龙",
+        "不同队伍"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "全国统一路线"
+      ]
+    },
+    {
+      "id": "GQA-016",
+      "golden_id": "gold-036",
+      "category": "听觉机制",
+      "query": "英歌锣鼓怎样指挥动作和队形？",
+      "direct_terms": [
+        "锣鼓",
+        "时间",
+        "节奏"
+      ],
+      "must_terms": [
+        "重音",
+        "变阵",
+        "信号"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "每一声都有全国统一动作"
+      ]
+    },
+    {
+      "id": "GQA-017",
+      "golden_id": "gold-042",
+      "category": "多模态边界",
+      "query": "只看衣服、脸谱和双槌能知道是哪一支英歌队吗？",
+      "direct_terms": [
+        "不能",
+        "通常不能"
+      ],
+      "must_terms": [
+        "队旗",
+        "地点",
+        [
+          "低置信度",
+          "不能准确判断",
+          "无法锁定",
+          "不能把猜测"
+        ]
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "可以准确判断"
+      ]
+    },
+    {
+      "id": "GQA-018",
+      "golden_id": "gold-043",
+      "category": "视频证据",
+      "query": "剪辑变速又换了配乐的英歌视频还能分析鼓点吗？",
+      "direct_terms": [
+        "不能",
+        "不适合"
+      ],
+      "must_terms": [
+        "原声",
+        "变速",
+        "音画"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "可以准确还原鼓点"
+      ]
+    },
+    {
+      "id": "GQA-019",
+      "golden_id": "gold-047",
+      "category": "跨文化表达",
+      "query": "英歌英文应该写Yingge还是Dance to the Hero's Song？",
+      "direct_terms": [
+        "Yingge"
+      ],
+      "must_terms": [
+        "Yingge",
+        "首次",
+        "解释"
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "必须翻译成Dance to the Hero's Song"
+      ]
+    },
+    {
+      "id": "GQA-020",
+      "golden_id": "gold-050",
+      "category": "实时信息",
+      "query": "这周末哪里有英歌演出，几点开始？",
+      "direct_terms": [
+        "实时",
+        "日期",
+        "时间",
+        "地点",
+        "公告"
+      ],
+      "must_terms": [
+        [
+          "最新公告",
+          "实时公告",
+          "官网公告"
+        ],
+        "不能",
+        [
+          "日期",
+          "时间",
+          "周末"
+        ]
+      ],
+      "require_boundary": true,
+      "forbidden_terms": [
+        "按照往年安排就是"
+      ]
+    },
+    {
+      "id": "GQA-021",
+      "golden_id": "gold-051",
+      "category": "基础概念",
+      "query": "国家级非遗里的英歌正式名称是什么？",
+      "direct_terms": ["正式名称", "英歌"],
+      "must_terms": ["国家级非遗", "俗称", "英歌舞"],
+      "require_boundary": true,
+      "forbidden_terms": ["正式名称是英歌舞"]
+    },
+    {
+      "id": "GQA-022",
+      "golden_id": "gold-052",
+      "category": "非遗制度",
+      "query": "英歌项目编号Ⅲ—8是什么意思？",
+      "direct_terms": ["Ⅲ—8", "项目编号"],
+      "must_terms": ["国家级", "传统舞蹈", "批次"],
+      "require_boundary": true,
+      "forbidden_terms": ["Ⅲ—8就是统一舞谱"]
+    },
+    {
+      "id": "GQA-023",
+      "golden_id": "gold-053",
+      "category": "非遗制度",
+      "query": "潮阳英歌、普宁英歌、甲子英歌分别是哪一批？",
+      "direct_terms": ["潮阳", "普宁", "甲子"],
+      "must_terms": ["2006", "第一批", "2011", "第三批", "扩展"],
+      "require_boundary": true,
+      "forbidden_terms": ["三者都是第一批"]
+    },
+    {
+      "id": "GQA-024",
+      "golden_id": "gold-054",
+      "category": "非遗保护",
+      "query": "国家级非遗保护单位是不是最正宗的英歌队伍？",
+      "direct_terms": ["不能", "保护单位"],
+      "must_terms": ["制度主体", "队伍", "具体来源"],
+      "require_boundary": true,
+      "forbidden_terms": ["保护单位就是最正宗"]
+    },
+    {
+      "id": "GQA-025",
+      "golden_id": "gold-055",
+      "category": "地区与队伍",
+      "query": "潮阳棉北后溪英歌队有哪些公开特色？",
+      "direct_terms": ["后溪", "公开特色"],
+      "must_terms": ["中快板", "双龙出海", "八卦阵", "逐拍"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有潮阳队伍都一样"]
+    },
+    {
+      "id": "GQA-026",
+      "golden_id": "gold-056",
+      "category": "地区与队伍",
+      "query": "潮阳西门女子英歌队是2011年才成立的吗？",
+      "direct_terms": ["不能", "1952", "2011"],
+      "must_terms": ["初建", "重组", "恢复", "西门女子"],
+      "require_boundary": true,
+      "forbidden_terms": ["2011年首次成立"]
+    },
+    {
+      "id": "GQA-027",
+      "golden_id": "gold-057",
+      "category": "地区与队伍",
+      "query": "潮阳城南忠精英歌队有哪些动作训练记录？",
+      "direct_terms": ["城南忠精", "动作"],
+      "must_terms": ["慢", "中", "快", "马步", "外转槌", "内转槌"],
+      "require_boundary": true,
+      "forbidden_terms": ["潮阳统一动作顺序"]
+    },
+    {
+      "id": "GQA-028",
+      "golden_id": "gold-058",
+      "category": "动作与队伍边界",
+      "query": "西胪英歌的七下槌等于杨卫的七下槌吗？",
+      "direct_terms": ["不能", "七下槌"],
+      "must_terms": ["杨卫", "1991", "西胪", "同名", "动作顺序"],
+      "require_boundary": true,
+      "forbidden_terms": ["就是同一套"]
+    },
+    {
+      "id": "GQA-029",
+      "golden_id": "gold-059",
+      "category": "阵形",
+      "query": "潮阳地方标准列出了哪些英歌基础队形？",
+      "direct_terms": ["七种", "基础队形"],
+      "must_terms": ["双列队形", "方形阵", "双龙出海", "田螺阵", "麦穗花阵", "四海升平", "八卦阵"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一七阵"]
+    },
+    {
+      "id": "GQA-030",
+      "golden_id": "gold-060",
+      "category": "阵形",
+      "query": "英歌田螺阵应该怎么看？",
+      "direct_terms": ["田螺阵", "螺旋"],
+      "must_terms": ["收拢", "展开", "入口", "出口", "队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国田螺阵都一样"]
+    },
+    {
+      "id": "GQA-031",
+      "golden_id": "gold-061",
+      "category": "阵形边界",
+      "query": "英歌八卦阵是不是固定八个人、八拍？",
+      "direct_terms": ["不能", "八卦阵"],
+      "must_terms": ["空间", "外圈", "内圈", "人数", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["固定八个人", "固定八拍"]
+    },
+    {
+      "id": "GQA-032",
+      "golden_id": "gold-062",
+      "category": "阵形",
+      "query": "双龙出海这个英歌阵形是怎么分队的？",
+      "direct_terms": ["双龙出海", "两股"],
+      "must_terms": ["分流", "并行", "再汇合", "队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有队伍都从同一拍分流"]
+    },
+    {
+      "id": "GQA-033",
+      "golden_id": "gold-063",
+      "category": "道具与训练",
+      "query": "英歌槌的长度和重量是统一的吗？",
+      "direct_terms": ["没有", "统一", "英歌槌"],
+      "must_terms": ["槌长", "重量", "队伍", "训练用途", "安全"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一尺寸"]
+    },
+    {
+      "id": "GQA-034",
+      "golden_id": "gold-064",
+      "category": "锣鼓与动作",
+      "query": "英歌是不是一声鼓就对应一个固定动作？",
+      "direct_terms": ["不能", "固定动作"],
+      "must_terms": ["锣鼓", "槌击", "吆喝", "队伍", "时间码"],
+      "require_boundary": true,
+      "forbidden_terms": ["一声鼓对应一个全国动作"]
+    },
+    {
+      "id": "GQA-035",
+      "golden_id": "gold-065",
+      "category": "锣鼓与信号",
+      "query": "甲子英歌的八拍吆喝具体每一拍喊什么？",
+      "direct_terms": ["不能", "八拍吆喝"],
+      "must_terms": ["甲子", "逐拍", "词谱", "原声视频", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一八句"]
+    },
+    {
+      "id": "GQA-036",
+      "golden_id": "gold-066",
+      "category": "人数与编制",
+      "query": "英歌人数为什么会有12到108等不同说法？",
+      "direct_terms": ["人数", "不同"],
+      "must_terms": ["12", "108", "普宁", "24", "36", "72", "队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["必须108人"]
+    },
+    {
+      "id": "GQA-037",
+      "golden_id": "gold-067",
+      "category": "传承人",
+      "query": "国家级代表性传承人陈来发是哪一批？",
+      "direct_terms": ["陈来发", "第二批"],
+      "must_terms": ["普宁英歌", "国家级", "02-0355", "第六代"],
+      "require_boundary": true,
+      "forbidden_terms": ["陈来发是第一批"]
+    },
+    {
+      "id": "GQA-038",
+      "golden_id": "gold-068",
+      "category": "传承人与动作",
+      "query": "杨卫和英歌七下槌有什么关系？",
+      "direct_terms": ["杨卫", "七下槌"],
+      "must_terms": ["第二批", "02-0356", "1991", "编创", "不同队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一套路"]
+    },
+    {
+      "id": "GQA-039",
+      "golden_id": "gold-069",
+      "category": "传承人",
+      "query": "林忠诚（林松）的国家级传承人官方序号是多少？",
+      "direct_terms": ["未公开", "林忠诚"],
+      "must_terms": ["林松", "第六批", "官方序号", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["可以推测编号"]
+    },
+    {
+      "id": "GQA-040",
+      "golden_id": "gold-070",
+      "category": "实时活动边界",
+      "query": "2025年4月潮阳后溪赴京献演现在还算正在进行吗？",
+      "direct_terms": ["不算", "历史活动"],
+      "must_terms": ["2025年4月8日", "后溪", "已结束", "近期", "公告"],
+      "require_boundary": true,
+      "forbidden_terms": ["现在仍在进行"]
+    },
+    {
+      "id": "GQA-041",
+      "golden_id": "gold-071",
+      "category": "角色与分工",
+      "query": "英歌里的头槌和二槌分别是什么？",
+      "direct_terms": ["头槌", "二槌"],
+      "must_terms": ["功能", "领舞", "队形", "具体队伍", "角色表"],
+      "require_boundary": true,
+      "forbidden_terms": ["头槌一定是李逵"]
+    },
+    {
+      "id": "GQA-042",
+      "golden_id": "gold-072",
+      "category": "角色与分工",
+      "query": "英歌里的时迁通常负责什么？",
+      "direct_terms": ["时迁", "作用"],
+      "must_terms": ["穿行", "引路", "银蛇", "队伍", "职责"],
+      "require_boundary": true,
+      "forbidden_terms": ["时迁必然是头槌"]
+    },
+    {
+      "id": "GQA-043",
+      "golden_id": "gold-073",
+      "category": "角色与分工",
+      "query": "英歌里的司鼓是不是宋江？",
+      "direct_terms": ["不一定", "司鼓"],
+      "must_terms": ["鼓点", "速度", "段落", "功能称谓", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["司鼓一定是宋江"]
+    },
+    {
+      "id": "GQA-044",
+      "golden_id": "gold-074",
+      "category": "脸谱辨识",
+      "query": "英歌红脸是不是就能认出关胜？",
+      "direct_terms": ["不能", "红色"],
+      "must_terms": ["关胜", "戏曲", "队伍角色表", "颜色", "具体人物"],
+      "require_boundary": true,
+      "forbidden_terms": ["红脸一定是关胜"]
+    },
+    {
+      "id": "GQA-045",
+      "golden_id": "gold-075",
+      "category": "脸谱辨识",
+      "query": "只看英歌脸谱颜色能判断人物吗？",
+      "direct_terms": ["不能", "颜色"],
+      "must_terms": ["底色", "头冠", "道具", "队伍", "外部证据"],
+      "require_boundary": true,
+      "forbidden_terms": ["颜色就能确定人物"]
+    },
+    {
+      "id": "GQA-046",
+      "golden_id": "gold-076",
+      "category": "脸谱辨识",
+      "query": "甲子英歌的脸谱有什么已确认的特点？",
+      "direct_terms": ["甲子", "脸谱"],
+      "must_terms": ["前24人", "不同", "眉", "额", "腮", "公开样本"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有英歌都24张脸谱"]
+    },
+    {
+      "id": "GQA-047",
+      "golden_id": "gold-077",
+      "category": "脸谱绘制与安全",
+      "query": "英歌脸谱绘制是不是全国统一七个步骤？",
+      "direct_terms": ["不是", "统一工序"],
+      "must_terms": ["记录框架", "绘脸者", "皮肤测试", "具体队伍", "安全"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国固定七步"]
+    },
+    {
+      "id": "GQA-048",
+      "golden_id": "gold-078",
+      "category": "演出结构",
+      "query": "英歌的前棚和后棚分别是什么？",
+      "direct_terms": ["前棚", "后棚"],
+      "must_terms": ["持槌", "锣鼓", "小戏", "不是后台", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["前棚就是前台"]
+    },
+    {
+      "id": "GQA-049",
+      "golden_id": "gold-079",
+      "category": "演出结构",
+      "query": "英歌是不是一定有中棚？",
+      "direct_terms": ["不一定", "中棚"],
+      "must_terms": ["前棚", "后棚", "具体出处", "节目单", "统一结构"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有英歌都有中棚"]
+    },
+    {
+      "id": "GQA-050",
+      "golden_id": "gold-080",
+      "category": "演出结构与媒介",
+      "query": "舞台版英歌和村落巡游版有什么不同？",
+      "direct_terms": ["不同", "呈现语境"],
+      "must_terms": ["巡游", "舞台版", "人数", "队形", "改编"],
+      "require_boundary": true,
+      "forbidden_terms": ["舞台版一定不正宗"]
+    },
+    {
+      "id": "GQA-051",
+      "golden_id": "gold-081",
+      "category": "影像与演出结构",
+      "query": "短视频里的一段英歌能代表完整演出吗？",
+      "direct_terms": ["不能", "完整演出"],
+      "must_terms": ["短视频", "高潮片段", "原声", "时间码", "队伍背景"],
+      "require_boundary": true,
+      "forbidden_terms": ["片段就是完整套路"]
+    },
+    {
+      "id": "GQA-052",
+      "golden_id": "gold-082",
+      "category": "锣鼓与声音",
+      "query": "英歌的锣鼓乐器是不是每个地方都一样？",
+      "direct_terms": ["不是", "乐器"],
+      "must_terms": ["鼓", "锣", "钹", "槌击", "吆喝", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一乐器数量"]
+    },
+    {
+      "id": "GQA-053",
+      "golden_id": "gold-083",
+      "category": "锣鼓与声音",
+      "query": "《梁山好汉》是英歌通用曲牌吗？",
+      "direct_terms": ["不能", "通用固定曲牌"],
+      "must_terms": ["梁山好汉", "节目名", "谱本", "司鼓", "音频证据"],
+      "require_boundary": true,
+      "forbidden_terms": ["梁山好汉就是全国曲牌"]
+    },
+    {
+      "id": "GQA-054",
+      "golden_id": "gold-084",
+      "category": "跨文化与传播",
+      "query": "英歌可以直接叫中华战舞吗？",
+      "direct_terms": ["不建议", "中华战舞"],
+      "must_terms": ["传播性称谓", "英歌", "节庆", "社区", "队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["中华战舞是正式名称"]
+    },
+    {
+      "id": "GQA-055",
+      "golden_id": "gold-085",
+      "category": "跨文化与传播",
+      "query": "英歌英文应该写Yingge还是Yingge dance？",
+      "direct_terms": ["Yingge", "最稳妥"],
+      "must_terms": ["Yingge dance", "专名", "解释", "锣鼓", "队形"],
+      "require_boundary": true,
+      "forbidden_terms": ["必须翻译成Dance to the Hero's Song"]
+    },
+    {
+      "id": "GQA-056",
+      "golden_id": "gold-086",
+      "category": "跨文化与脸谱",
+      "query": "英歌脸谱是戴在脸上的面具吗？",
+      "direct_terms": ["通常不是", "面具"],
+      "must_terms": ["直接绘在脸上", "面部彩绘", "队伍", "具体视觉证据"],
+      "require_boundary": true,
+      "forbidden_terms": ["英歌都戴面具"]
+    },
+    {
+      "id": "GQA-057",
+      "golden_id": "gold-087",
+      "category": "跨文化与概念辨析",
+      "query": "英歌是不是一种武术？",
+      "direct_terms": ["使用武术化", "不等同"],
+      "must_terms": ["站姿", "步法", "槌路", "戏剧角色", "队形", "社区"],
+      "require_boundary": true,
+      "forbidden_terms": ["英歌就是格斗"]
+    },
+    {
+      "id": "GQA-058",
+      "golden_id": "gold-088",
+      "category": "儿童学习与安全",
+      "query": "孩子可以学习英歌吗？",
+      "direct_terms": ["可以参与", "适龄"],
+      "must_terms": ["渐进", "无槌步法", "安全间距", "教练", "儿童"],
+      "require_boundary": true,
+      "forbidden_terms": ["儿童可以直接练高速对槌"]
+    },
+    {
+      "id": "GQA-059",
+      "golden_id": "gold-089",
+      "category": "训练安全",
+      "query": "可以在家自学英歌高速对槌和低重心变阵吗？",
+      "direct_terms": ["不建议", "现场指导"],
+      "must_terms": ["高速对槌", "低重心", "空手", "低速", "教练", "安全"],
+      "require_boundary": true,
+      "forbidden_terms": ["在家直接练就可以"]
+    },
+    {
+      "id": "GQA-060",
+      "golden_id": "gold-090",
+      "category": "当代传播与实时边界",
+      "query": "英歌现在还有人跳吗？",
+      "direct_terms": ["有", "仍出现在"],
+      "must_terms": ["村落", "城市", "校园", "剧场", "海外", "最新公告"],
+      "require_boundary": true,
+      "forbidden_terms": ["英歌已经失传"]
+    },
+    {
+      "id": "GQA-061",
+      "golden_id": "gold-091",
+      "category": "板式与节奏",
+      "query": "英歌的快板、中板、慢板除了快慢还差在哪里？",
+      "direct_terms": ["不能只", "板式"],
+      "must_terms": ["节奏", "槌法", "步法", "队形", "具体地区", "队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["板式就是BPM", "全国快板速度固定"]
+    },
+    {
+      "id": "GQA-062",
+      "golden_id": "gold-092",
+      "category": "地域比较",
+      "query": "比较普宁英歌和潮阳英歌应该看哪些方面？",
+      "direct_terms": ["建议", "比较层级"],
+      "must_terms": ["项目批次", "板式", "人数", "角色脸谱", "锣鼓", "阵形", "暂缺可比资料"],
+      "require_boundary": true,
+      "forbidden_terms": ["普宁一定更正宗", "潮阳所有队伍都一样"]
+    },
+    {
+      "id": "GQA-063",
+      "golden_id": "gold-093",
+      "category": "板式与编制",
+      "query": "能不能根据英歌人数直接判断它是哪种板式？",
+      "direct_terms": ["不能", "直接判断"],
+      "must_terms": ["人数", "板式", "地区", "演出场景", "队伍自称"],
+      "require_boundary": true,
+      "forbidden_terms": ["108人就是快板", "人数一看就能定板式"]
+    },
+    {
+      "id": "GQA-064",
+      "golden_id": "gold-094",
+      "category": "阵形观察",
+      "query": "潮阳标准里的方形阵是不是固定四列、固定人数？",
+      "direct_terms": ["不是", "方形阵"],
+      "must_terms": ["空间结构", "四边", "队距", "每边人数", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["固定四列", "每边必须相同人数"]
+    },
+    {
+      "id": "GQA-065",
+      "golden_id": "gold-095",
+      "category": "阵形观察",
+      "query": "英歌麦穗花阵应该观察什么？",
+      "direct_terms": ["可以先", "观察"],
+      "must_terms": ["中心轴", "分展", "队距", "潮阳标准", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["麦穗花阵固定人数", "标准已经给出逐拍槌路"]
+    },
+    {
+      "id": "GQA-066",
+      "golden_id": "gold-096",
+      "category": "阵形观察",
+      "query": "四海升平这个英歌阵形是四个队伍吗？",
+      "direct_terms": ["不应", "四海升平"],
+      "must_terms": ["圆环", "环形单元", "四向", "具体队伍", "编制数字"],
+      "require_boundary": true,
+      "forbidden_terms": ["就是四个队伍", "固定四组人"]
+    },
+    {
+      "id": "GQA-067",
+      "golden_id": "gold-097",
+      "category": "阵形边界",
+      "query": "双列队形是不是所有英歌队伍都通用的固定队形？",
+      "direct_terms": ["不能", "双列队形"],
+      "must_terms": ["潮阳地方标准", "两列平行", "队伍", "队距", "跨地区"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国统一双列", "所有队伍完全相同"]
+    },
+    {
+      "id": "GQA-068",
+      "golden_id": "gold-098",
+      "category": "演出观察",
+      "query": "为什么研究英歌要看完整表演过程，而不是只看一个动作？",
+      "direct_terms": ["因为", "完整表演过程"],
+      "must_terms": ["起鼓", "行进", "段落转换", "变阵", "收势", "时间码"],
+      "require_boundary": true,
+      "forbidden_terms": ["一个动作就能代表完整英歌", "只看高潮就够了"]
+    },
+    {
+      "id": "GQA-069",
+      "golden_id": "gold-099",
+      "category": "巡游与仪式",
+      "query": "英歌巡游为什么常有停演点？",
+      "direct_terms": ["可能", "停演点"],
+      "must_terms": ["长距离", "社区", "观众", "队伍整理", "具体活动"],
+      "require_boundary": true,
+      "forbidden_terms": ["每支队伍都必须在同样地点停演", "停演点只有一个固定意义"]
+    },
+    {
+      "id": "GQA-070",
+      "golden_id": "gold-100",
+      "category": "观演观察",
+      "query": "看英歌时为什么不能只盯着最前排？",
+      "direct_terms": ["因为", "不能只"],
+      "must_terms": ["群体同步", "队形", "后排", "司鼓", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["头槌一个人决定全部动作", "后排只是背景"]
+    },
+    {
+      "id": "GQA-071",
+      "golden_id": "gold-101",
+      "category": "表演评价",
+      "query": "怎么区分英歌的动作完成度和舞台效果？",
+      "direct_terms": ["可以", "两层分开"],
+      "must_terms": ["节奏稳定", "击点", "重心", "队距", "灯光", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["越炫就是越专业", "最正宗等于完成度最高"]
+    },
+    {
+      "id": "GQA-072",
+      "golden_id": "gold-102",
+      "category": "观演安全",
+      "query": "现场看英歌应该保持多远才安全？",
+      "direct_terms": ["不能", "固定米数"],
+      "must_terms": ["槌长", "队形路线", "行进线外", "儿童", "主办方"],
+      "require_boundary": true,
+      "forbidden_terms": ["站一米就绝对安全", "观众可以随时穿队"]
+    },
+    {
+      "id": "GQA-073",
+      "golden_id": "gold-103",
+      "category": "观演礼仪与安全",
+      "query": "观众可以临时加入英歌队伍一起走吗？",
+      "direct_terms": ["通常不能", "自行加入"],
+      "must_terms": ["路线", "角色", "安全信号", "教练指导", "具体活动"],
+      "require_boundary": true,
+      "forbidden_terms": ["观众随时可以进队", "跟拍就是授权"]
+    },
+    {
+      "id": "GQA-074",
+      "golden_id": "gold-104",
+      "category": "海外传播",
+      "query": "海外英歌是不是把中国队伍原样搬过去？",
+      "direct_terms": ["不能", "原样复制"],
+      "must_terms": ["移民社群", "当地节庆", "在地化", "具体地点", "演出语境"],
+      "require_boundary": true,
+      "forbidden_terms": ["海外英歌完全没有变化", "所有海外队伍都是中国队复制"]
+    },
+    {
+      "id": "GQA-075",
+      "golden_id": "gold-105",
+      "category": "跨文化与地域",
+      "query": "向外国人介绍英歌时，地域应该怎么写？",
+      "direct_terms": ["建议", "层级"],
+      "must_terms": ["广东省", "潮汕地区", "汕头潮阳", "揭阳普宁", "汕尾陆丰甲子", "行政市"],
+      "require_boundary": true,
+      "forbidden_terms": ["潮汕就是一个城市", "所有英歌都来自同一村"]
+    },
+    {
+      "id": "GQA-076",
+      "golden_id": "gold-106",
+      "category": "保护与创新",
+      "query": "非遗保护和英歌舞台创新是不是互相冲突？",
+      "direct_terms": ["不必", "关键是"],
+      "must_terms": ["传统依据", "改动内容", "改编", "社区版本", "安全"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有创新都破坏非遗", "舞台版一定不是非遗"]
+    },
+    {
+      "id": "GQA-077",
+      "golden_id": "gold-107",
+      "category": "数字展陈与证据",
+      "query": "AI生成的英歌人物图能不能当作历史资料？",
+      "direct_terms": ["不能", "AI生成图"],
+      "must_terms": ["历史资料", "数字展陈示意", "标注", "真实照片", "授权来源"],
+      "require_boundary": true,
+      "forbidden_terms": ["AI图可以证明传统", "生成图就是官方样式"]
+    },
+    {
+      "id": "GQA-078",
+      "golden_id": "gold-108",
+      "category": "影像证据",
+      "query": "一张英歌演出截图能确定脸谱是哪一年的吗？",
+      "direct_terms": ["不能", "单凭一张截图"],
+      "must_terms": ["年代", "裁切", "灯光", "活动日期", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["看截图就能确定年代", "服饰一眼就是传统原版"]
+    },
+    {
+      "id": "GQA-079",
+      "golden_id": "gold-109",
+      "category": "来源与证据",
+      "query": "英歌知识库里的高风险事实应该优先引用哪些来源？",
+      "direct_terms": ["优先引用", "高风险事实"],
+      "must_terms": ["国家非遗平台", "文化和旅游主管部门", "地方政府", "地方标准", "直接证据"],
+      "require_boundary": true,
+      "forbidden_terms": ["网上点赞最多就是最权威", "一个政府页面能证明所有细节"]
+    },
+    {
+      "id": "GQA-080",
+      "golden_id": "gold-110",
+      "category": "来源与证据",
+      "query": "英歌资料之间出现冲突时，智能体应该怎么回答？",
+      "direct_terms": ["先", "拆成"],
+      "must_terms": ["时间", "地区", "队伍", "未公开", "待核验", "共同事实"],
+      "require_boundary": true,
+      "forbidden_terms": ["直接选一个版本", "冲突说明可以省略"]
+    },
+    {
+      "id": "GQA-081",
+      "golden_id": "gold-111",
+      "category": "队伍身份与命名",
+      "query": "如何确认一个英歌队伍的正式名称？",
+      "direct_terms": ["建议先", "正式名称"],
+      "must_terms": ["主办方", "保护单位", "队伍自称", "节目单", "村名", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["视频字幕就是官方名称", "同名队伍一定是同一支"]
+    },
+    {
+      "id": "GQA-082",
+      "golden_id": "gold-112",
+      "category": "时效与冲突",
+      "query": "英歌队伍成立年份有两个版本时怎么回答？",
+      "direct_terms": ["先", "两个年份"],
+      "must_terms": ["成立年份", "建队", "复建", "来源日期", "待核验", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["较早年份一定是真的", "新闻年份就是成立年"]
+    },
+    {
+      "id": "GQA-083",
+      "golden_id": "gold-113",
+      "category": "人物与制度",
+      "query": "代表性传承人和英歌队伍是什么关系？",
+      "direct_terms": ["不是同一", "关系"],
+      "must_terms": ["代表性传承人", "队伍", "保护单位", "传承职责", "具体项目"],
+      "require_boundary": true,
+      "forbidden_terms": ["传承人就是全队负责人", "只要传承人名字就能代表全队"]
+    },
+    {
+      "id": "GQA-084",
+      "golden_id": "gold-114",
+      "category": "人物称谓",
+      "query": "能不能把一位传承人称为某支英歌队的唯一代表？",
+      "direct_terms": ["不宜", "唯一代表"],
+      "must_terms": ["传承人", "代表性", "队伍", "公开资料", "称谓边界"],
+      "require_boundary": true,
+      "forbidden_terms": ["一个人就是全队唯一代表", "传承人身份等于队长"]
+    },
+    {
+      "id": "GQA-085",
+      "golden_id": "gold-115",
+      "category": "人物隐私",
+      "query": "英歌人物姓名可以直接写进公开回答吗？",
+      "direct_terms": ["不能", "直接写"],
+      "must_terms": ["姓名", "授权", "公开来源", "传承人", "隐私"],
+      "require_boundary": true,
+      "forbidden_terms": ["网页出现就可以公开", "队员姓名都属于公共信息"]
+    },
+    {
+      "id": "GQA-086",
+      "golden_id": "gold-116",
+      "category": "传承谱系",
+      "query": "英歌队伍的师承关系应该怎么记录？",
+      "direct_terms": ["建议", "师承关系"],
+      "must_terms": ["师承关系", "时间", "地点", "传授内容", "证据", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["同姓就是师徒", "一条连线就能证明完整谱系"]
+    },
+    {
+      "id": "GQA-087",
+      "golden_id": "gold-117",
+      "category": "传承与身体经验",
+      "query": "什么是英歌传承中的隐性知识？",
+      "direct_terms": ["通常是", "隐性知识"],
+      "must_terms": ["隐性知识", "身体经验", "槌距", "听鼓", "带练", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["隐性知识就是秘密口令", "一篇文字能还原全部经验"]
+    },
+    {
+      "id": "GQA-088",
+      "golden_id": "gold-118",
+      "category": "保护与职责",
+      "query": "保护单位、传承人和队伍在英歌传承中分别做什么？",
+      "direct_terms": ["不是并列同义", "分别"],
+      "must_terms": ["保护单位", "传承人", "队伍", "制度责任", "具体项目"],
+      "require_boundary": true,
+      "forbidden_terms": ["保护单位就是表演队", "传承人包办全部事务"]
+    },
+    {
+      "id": "GQA-089",
+      "golden_id": "gold-119",
+      "category": "实时与历史",
+      "query": "已经结束的英歌活动还能回答成‘现在正在演’吗？",
+      "direct_terms": ["不能", "现在正在演"],
+      "must_terms": ["活动日期", "历史活动", "当前", "实时公告", "数据截至"],
+      "require_boundary": true,
+      "forbidden_terms": ["旧海报等于正在演出", "今年活动默认今天还在"]
+    },
+    {
+      "id": "GQA-090",
+      "golden_id": "gold-120",
+      "category": "实时活动",
+      "query": "用户问‘今天哪里有英歌’，查不到实时公告怎么办？",
+      "direct_terms": ["应明确", "无法确认"],
+      "must_terms": ["实时公告", "地点", "日期", "官方渠道", "不编造"],
+      "require_boundary": true,
+      "forbidden_terms": ["查不到就推荐旧活动", "根据往年惯例猜地点"]
+    },
+    {
+      "id": "GQA-091",
+      "golden_id": "gold-121",
+      "category": "活动证据",
+      "query": "英歌活动海报能证明队伍已经实际出场吗？",
+      "direct_terms": ["不能单凭", "海报"],
+      "must_terms": ["海报", "计划", "实际出场", "现场", "活动结果", "具体活动"],
+      "require_boundary": true,
+      "forbidden_terms": ["海报出现就等于已出场", "节目单就是现场实况"]
+    },
+    {
+      "id": "GQA-092",
+      "golden_id": "gold-122",
+      "category": "活动时效",
+      "query": "如何区分英歌历史活动记录和近期活动信息？",
+      "direct_terms": ["先", "区分"],
+      "must_terms": ["历史活动", "当前活动", "活动日期", "发布日期", "数据截至", "官方公告"],
+      "require_boundary": true,
+      "forbidden_terms": ["按文章发布时间就能判断演出日期", "历史年表就是实时日历"]
+    },
+    {
+      "id": "GQA-093",
+      "golden_id": "gold-123",
+      "category": "人物时效",
+      "query": "怎么回答‘某位传承人现在还是现任吗’？",
+      "direct_terms": ["不能", "现任"],
+      "must_terms": ["现任", "名录发布日期", "任期", "最新公告", "待核验", "具体人物"],
+      "require_boundary": true,
+      "forbidden_terms": ["旧名录默认一直有效", "没有新闻就是仍在任"]
+    },
+    {
+      "id": "GQA-094",
+      "golden_id": "gold-124",
+      "category": "队伍身份与标识",
+      "query": "英歌队伍有没有统一的官方称号或唯一标志？",
+      "direct_terms": ["不能一概而论", "统一"],
+      "must_terms": ["统一", "官方称号", "队伍", "保护项目", "标识授权", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["一个队伍logo就是全国官方标志", "宣传称号等于法定名称"]
+    },
+    {
+      "id": "GQA-095",
+      "golden_id": "gold-125",
+      "category": "传承证据",
+      "query": "能根据同姓、同村就推断英歌师徒关系吗？",
+      "direct_terms": ["不能", "同姓"],
+      "must_terms": ["同姓", "同村", "师徒关系", "口述", "公开证据", "具体人物"],
+      "require_boundary": true,
+      "forbidden_terms": ["同姓就是师徒", "同村就能确定传承链"]
+    },
+    {
+      "id": "GQA-096",
+      "golden_id": "gold-126",
+      "category": "影像标注",
+      "query": "英歌动作的时间码应该怎么标注？",
+      "direct_terms": ["建议", "时间码"],
+      "must_terms": ["时间码", "起始", "结束", "镜头", "鼓点", "原始视频"],
+      "require_boundary": true,
+      "forbidden_terms": ["剪辑点就是动作击点", "一个时间码能代表整段演出"]
+    },
+    {
+      "id": "GQA-097",
+      "golden_id": "gold-127",
+      "category": "听觉证据",
+      "query": "看不清鼓点或听不清吆喝时，智能体能不能补写完整口令？",
+      "direct_terms": ["不能", "补写"],
+      "must_terms": ["听觉证据", "不确定", "口令", "鼓点", "原声", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["听不清也可以按常见口令补全", "相似视频能证明本队口令"]
+    },
+    {
+      "id": "GQA-098",
+      "golden_id": "gold-128",
+      "category": "术语与地域",
+      "query": "为什么同一个英歌动作在不同队伍里叫法不一样？",
+      "direct_terms": ["因为", "叫法不一样"],
+      "must_terms": ["动作名称", "地区", "队伍", "方言", "口述", "统一术语"],
+      "require_boundary": true,
+      "forbidden_terms": ["全国只有一种标准叫法", "同名动作一定完全相同"]
+    },
+    {
+      "id": "GQA-099",
+      "golden_id": "gold-129",
+      "category": "多模态识别",
+      "query": "只凭一段英歌视频，怎么判断是不是同一支队伍？",
+      "direct_terms": ["不能只凭", "判断"],
+      "must_terms": ["队伍身份", "服饰", "队旗", "场地", "日期", "连续证据"],
+      "require_boundary": true,
+      "forbidden_terms": ["红色服装就一定是同一队", "视频标题就是队伍证明"]
+    },
+    {
+      "id": "GQA-100",
+      "golden_id": "gold-130",
+      "category": "人物隐私与数字展陈",
+      "query": "英歌知识库展示人物照片时，怎样处理隐私和授权？",
+      "direct_terms": ["应先", "隐私和授权"],
+      "must_terms": ["隐私", "授权", "公开范围", "署名", "真实照片", "数字展陈"],
+      "require_boundary": true,
+      "forbidden_terms": ["网上图片默认可以商用", "AI合成图可以当人物肖像"]
+    },
+    {
+      "id": "GQA-101",
+      "golden_id": "gold-131",
+      "category": "历史与证据",
+      "query": "英歌传说、历史证据和现代解释应该怎么区分？",
+      "direct_terms": ["建议", "区分"],
+      "must_terms": ["传说", "历史证据", "现代解释", "文献年代", "具体地区"],
+      "require_boundary": true,
+      "forbidden_terms": ["传说就是历史事实", "流传最广的说法一定最早"]
+    },
+    {
+      "id": "GQA-102",
+      "golden_id": "gold-132",
+      "category": "历史与文化比较",
+      "query": "英歌与傩文化的关系能不能直接写成源自傩舞？",
+      "direct_terms": ["不能", "源自傩舞"],
+      "must_terms": ["傩文化", "脸部彩绘", "驱邪纳吉", "历史证据", "具体地区"],
+      "require_boundary": true,
+      "forbidden_terms": ["有脸谱就证明源自傩舞", "英歌就是傩舞分支"]
+    },
+    {
+      "id": "GQA-103",
+      "golden_id": "gold-133",
+      "category": "表演形态比较",
+      "query": "英歌和醒狮最核心区别是什么？",
+      "direct_terms": ["核心区别", "英歌"],
+      "must_terms": ["人体", "双槌", "醒狮", "狮具", "采青", "具体项目"],
+      "require_boundary": true,
+      "forbidden_terms": ["英歌就是醒狮的另一种叫法", "有锣鼓就是英歌"]
+    },
+    {
+      "id": "GQA-104",
+      "golden_id": "gold-134",
+      "category": "女子英歌",
+      "query": "女子英歌能不能直接理解成男子英歌的女性版？",
+      "direct_terms": ["不能", "女性版"],
+      "must_terms": ["女子英歌", "男子英歌", "训练", "角色叙事", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["女子英歌就是柔美版", "所有女子队都使用同一角色"]
+    },
+    {
+      "id": "GQA-105",
+      "golden_id": "gold-135",
+      "category": "道具与制作",
+      "query": "英歌槌制作记录需要哪些字段？",
+      "direct_terms": ["建议", "字段"],
+      "must_terms": ["队伍", "板式", "用途", "制作者", "总长", "单支重量", "来源与授权"],
+      "require_boundary": true,
+      "forbidden_terms": ["只记颜色就够了", "国家名录尺寸就是所有队伍规格"]
+    },
+    {
+      "id": "GQA-106",
+      "golden_id": "gold-136",
+      "category": "道具与安全",
+      "query": "为什么同一队伍也会给训练槌、巡游槌和舞台槌不同规格？",
+      "direct_terms": ["因为", "不同规格"],
+      "must_terms": ["训练槌", "巡游槌", "舞台槌", "板式", "年龄", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["演出槌越重越专业", "所有用途都用同一把槌"]
+    },
+    {
+      "id": "GQA-107",
+      "golden_id": "gold-137",
+      "category": "视觉辨识",
+      "query": "英歌头饰、服饰和脸谱应该一起观察吗？",
+      "direct_terms": ["可以", "一起观察"],
+      "must_terms": ["头饰", "服饰", "脸谱", "道具", "角色", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["看脸谱颜色就能确定人物", "一个头饰代表所有队伍"]
+    },
+    {
+      "id": "GQA-108",
+      "golden_id": "gold-138",
+      "category": "锣鼓与信号",
+      "query": "英歌锣鼓、哨声和头槌信号怎么分工？",
+      "direct_terms": ["可以", "分成"],
+      "must_terms": ["锣鼓", "哨声", "头槌", "连续节拍", "离散指令", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["一声哨全国都代表同一动作", "头槌可以替代全部锣鼓"]
+    },
+    {
+      "id": "GQA-109",
+      "golden_id": "gold-139",
+      "category": "阵形证据",
+      "query": "阵名能不能直接还原英歌站位和路线？",
+      "direct_terms": ["不能", "站位"],
+      "must_terms": ["阵名", "站位", "路线", "队员编号", "时间码", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["八卦阵就是八个人八拍", "阵名等于完整动作谱"]
+    },
+    {
+      "id": "GQA-110",
+      "golden_id": "gold-140",
+      "category": "数字化记录",
+      "query": "英歌图谱至少要记录哪些要素才可复现？",
+      "direct_terms": ["至少", "记录"],
+      "must_terms": ["起始站位", "移动方向", "步数", "转向节点", "鼓点", "场地宽度"],
+      "require_boundary": true,
+      "forbidden_terms": ["一张阵形截图就能复现", "数字化后就不需要队伍确认"]
+    },
+    {
+      "id": "GQA-111",
+      "golden_id": "gold-141",
+      "category": "动作术语比较",
+      "query": "同名的‘七下槌’是不是同一个动作？",
+      "direct_terms": ["不能", "同一个动作"],
+      "must_terms": ["七下槌", "队伍", "槌路", "鼓点", "视频", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["数字相同就是同一套动作", "七下槌全国只有一个版本"]
+    },
+    {
+      "id": "GQA-112",
+      "golden_id": "gold-142",
+      "category": "锣鼓术语",
+      "query": "英歌里的‘速鼓’是不是所有队伍的统一术语？",
+      "direct_terms": ["不能", "统一术语"],
+      "must_terms": ["速鼓", "队伍", "节奏", "套式", "口述", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["速鼓就是全国统一快板", "看到速鼓就能推断完整阵法"]
+    },
+    {
+      "id": "GQA-113",
+      "golden_id": "gold-143",
+      "category": "历史比较",
+      "query": "为什么英歌与北方秧歌、社火相似不能证明同源？",
+      "direct_terms": ["因为", "不能证明同源"],
+      "must_terms": ["形式相似", "文献年代", "迁徙路线", "术语", "动作谱系", "具体地区"],
+      "require_boundary": true,
+      "forbidden_terms": ["看起来像就是同源", "都在春节表演就能证明传播"]
+    },
+    {
+      "id": "GQA-114",
+      "golden_id": "gold-144",
+      "category": "仪式与源流",
+      "query": "英歌的驱邪纳吉说法能否作为历史起源证据？",
+      "direct_terms": ["不能", "起源证据"],
+      "must_terms": ["驱邪纳吉", "傩文化", "历史证据", "文献", "具体地区"],
+      "require_boundary": true,
+      "forbidden_terms": ["有祈福功能就证明古代起源", "仪式意义等于历史年代"]
+    },
+    {
+      "id": "GQA-115",
+      "golden_id": "gold-145",
+      "category": "非遗制度",
+      "query": "国家级非遗项目名称和保护单位是什么关系？",
+      "direct_terms": ["不是", "保护单位"],
+      "must_terms": ["国家级非遗项目", "项目名称", "保护单位", "名录", "职责", "具体项目"],
+      "require_boundary": true,
+      "forbidden_terms": ["保护单位就是项目名称", "一个队伍就是国家级项目"]
+    },
+    {
+      "id": "GQA-116",
+      "golden_id": "gold-146",
+      "category": "非遗级别辨析",
+      "query": "英歌是否属于联合国教科文组织非遗，智能体如何核验？",
+      "direct_terms": ["不能", "直接把"],
+      "must_terms": ["联合国教科文组织", "国家级非遗", "官方名录", "项目名称", "列入年份", "待核验"],
+      "require_boundary": true,
+      "forbidden_terms": ["国家级非遗就是联合国非遗", "媒体称世界级就等于列入名录"]
+    },
+    {
+      "id": "GQA-117",
+      "golden_id": "gold-147",
+      "category": "对话路由",
+      "query": "当用户只说‘英歌’时，智能体什么时候必须追问地区或队伍？",
+      "direct_terms": ["需要", "追问"],
+      "must_terms": ["地区", "队伍", "演出场景", "具体人物", "实时活动", "共同事实"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有英歌问题都先让用户补充", "不问地区也能给出逐拍答案"]
+    },
+    {
+      "id": "GQA-118",
+      "golden_id": "gold-148",
+      "category": "对话边界",
+      "query": "回答某支英歌队时，知识库只有地区资料怎么办？",
+      "direct_terms": ["应该", "只有地区资料"],
+      "must_terms": ["地区资料", "具体队伍", "待核验", "通用机制", "追问", "来源"],
+      "require_boundary": true,
+      "forbidden_terms": ["地区资料就是该队伍资料", "资料不全时可以按常见套路补齐"]
+    },
+    {
+      "id": "GQA-119",
+      "golden_id": "gold-149",
+      "category": "回答逻辑",
+      "query": "用户把错误前提带入英歌问题时，智能体怎么纠正又不跑题？",
+      "direct_terms": ["先", "纠正"],
+      "must_terms": ["错误前提", "核心问题", "证据", "边界", "不跑题", "具体队伍"],
+      "require_boundary": true,
+      "forbidden_terms": ["只回复用户错误", "顺着错误前提继续编造"]
+    },
+    {
+      "id": "GQA-120",
+      "golden_id": "gold-150",
+      "category": "回答与引用",
+      "query": "英歌智能体的长答案怎样做到来源和事实句对应？",
+      "direct_terms": ["可以", "对应"],
+      "must_terms": ["事实句", "来源", "证据", "个案", "边界", "追问"],
+      "require_boundary": true,
+      "forbidden_terms": ["所有来源统一放文末", "一个来源可以覆盖全部细节"]
+    }
+  ]
+}

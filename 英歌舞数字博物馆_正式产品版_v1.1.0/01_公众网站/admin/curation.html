@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#15221b">
+  <title>真实内容运营｜英歌舞数字博物馆</title>
+  <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="curation.css">
+  <link rel="stylesheet" href="curation-v2.css">
+  <link rel="stylesheet" href="curation-review.css">
+  <link rel="stylesheet" href="admin-shell.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="admin-mobile.css?v=20260831-mobile2">
+</head>
+<body data-admin-page="curation">
+  <div class="admin-app-shell" data-admin-shell>
+    <aside class="admin-unified-rail" data-admin-sidebar aria-label="后台主导航"></aside>
+    <main class="ops-main admin-page" data-admin-main>
+      <header class="ops-header" id="overview">
+        <div><p>可追溯内容工作区</p><h1>真实内容运营</h1><span>从合作材料发现线索，经过事实、权利和隐私复核后再进入前台。</span></div>
+        <div class="header-actions"><span id="connectionState">正在连接后台</span><button id="refresh" class="secondary" type="button">刷新</button><a class="button" href="#preview">检查发布差异</a></div>
+      </header>
+
+      <nav class="admin-local-nav curation-local-nav" data-admin-local-nav data-admin-section-nav aria-label="真实内容页内导航">
+        <a href="#overview">概览</a>
+        <a href="#chapters">展览章节</a>
+        <a href="#events">活动与来源</a>
+        <a href="#assets">媒体候选</a>
+        <a href="#rights">版权与隐私</a>
+        <a href="#preview">发布预览</a>
+        <a href="#audit">审计日志</a>
+      </nav>
+
+      <section class="metric-strip" id="metrics" aria-label="内容状态"></section>
+
+      <section class="workspace" id="chapters">
+        <div class="section-heading action-heading"><div><p class="kicker">01 / 叙事结构</p><h2>展览章节</h2><p>章节决定前台的叙事顺序。新增内容始终从草稿开始。</p></div><button id="newExhibit" type="button">新增草稿章节</button></div>
+        <div id="chapterList" class="chapter-list"><p class="empty-state">正在读取策展清单</p></div>
+      </section>
+
+      <section class="workspace" id="events">
+        <div class="section-heading action-heading"><div><p class="kicker">02 / 事实条目</p><h2>活动与来源</h2><p>事实、来源和工作流分别审核。发布文字不等于允许图片公开。</p></div><button id="newEvent" type="button">新增草稿活动</button></div>
+        <div id="eventList" class="event-list"><p class="empty-state">正在读取活动</p></div>
+      </section>
+
+      <section class="workspace" id="assets">
+        <div class="section-heading action-heading"><div><p class="kicker">03 / 影像门禁</p><h2>媒体候选</h2><p>候选媒体与活动可绑定，但只有授权、隐私复核和安全公开地址全部通过后才会进入公众数据。</p></div><button id="newMedia" type="button">登记媒体候选</button></div>
+        <div id="assetList" class="asset-list"></div>
+      </section>
+
+      <section class="workspace split-workspace" id="rights">
+        <div><div class="section-heading"><p class="kicker">04 / 页面覆盖</p><h2>前台真实度</h2><p>运营人员可看到哪些页面仍是 IP 占位，哪些已有真实材料。</p></div><div id="coverageList" class="coverage-list"></div></div>
+        <aside class="source-policy"><h2>两条独立门禁</h2><p>文字事实通过核验后可以发布；图片仍须单独完成公开授权和隐私复核。</p><dl><div><dt>事实门禁</dt><dd>事实已核验 + 来源已核验 + 至少一个安全 HTTPS 来源</dd></div><div><dt>影像门禁</dt><dd>权利已授权 + 隐私已通过 + 安全公开地址</dd></div><div><dt>物理删除</dt><dd>只允许从未发布、没有引用的草稿</dd></div></dl></aside>
+      </section>
+
+      <section class="workspace preview-workspace" id="preview">
+        <div class="section-heading action-heading"><div><p class="kicker">05 / 确认发布</p><h2>发布前预览</h2><p>这里展示同一公众投影与上次已发布快照的差异。预览不会写入前台。</p></div><button id="loadPreview" type="button">生成预览</button></div>
+        <div id="previewChanges" class="preview-changes"><p class="empty-state">生成预览后查看新增、修改和撤下内容</p></div>
+        <div id="previewContent" class="preview-content" hidden></div>
+        <div class="publish-bar"><p>确认后才会原子更新公众 JSON。待授权图片不会被带入。</p><button id="confirmPublish" type="button" disabled>确认发布这次变更</button></div>
+      </section>
+      <section class="workspace" id="audit">
+        <div class="section-heading"><p class="kicker">06 / 责任链</p><h2>审计日志</h2><p>记录谁在什么版本修改、审核或发布了什么。日志只追加，不进入公众数据。</p></div>
+        <div id="auditList" class="audit-list"><p class="empty-state">正在读取审计记录</p></div>
+      </section>
+    </main>
+  </div>
+  <script src="admin-shell.js?v=20260831-mobile2"></script>
+  <script src="curation-v2.js"></script>
+</body>
+</html>
