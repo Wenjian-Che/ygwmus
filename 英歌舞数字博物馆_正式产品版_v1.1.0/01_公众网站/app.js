@@ -788,6 +788,14 @@ const createYinggeVoice=()=>{
     activeInput.dispatchEvent(new Event('input',{bubbles:true}));
     voiceStatus('实时转写中：'+recognizedText);
   };
+  const submitManualVoiceQuestion=()=>{
+    if(!recognizedText||!activeInput||activeInput.id!=='question')return false;
+    const form=activeInput.closest('form');
+    if(!form||!activeInput.value.trim())return false;
+    voiceStatus('识别完成，正在发送并组织回答','thinking');
+    form.requestSubmit();
+    return true;
+  };
   const sendStreamingSamples=(chunks,inputRate,{finish=false}={})=>{
     const session=streamingSessionId;if(!session)return Promise.resolve();
     const pcm=resamplePcm(chunks,inputRate,16000);const body=pcmToInt16(pcm.samples);
@@ -810,7 +818,7 @@ const createYinggeVoice=()=>{
       if(tail.length)await sendStreamingSamples(tail,current.sampleRate,{finish:true});
       else if(streamingSessionId)await sendStreamingSamples([new Float32Array(320)],16000,{finish:true});
     }catch(error){voiceStatus(error.message||'实时语音识别暂时不可用')}
-    await closeStreamingSession();listeningPhase='idle';resetInputControls();voiceStatus(recognizedText?'已完成转写，请确认后发送':'没有听清，请再试一次');await restoreWakeAfterManual();
+    await closeStreamingSession();listeningPhase='idle';resetInputControls();if(!submitManualVoiceQuestion())voiceStatus('没有听清，请再试一次');await restoreWakeAfterManual();
   };
   const beginStreamingRecognition=async stream=>{
     const response=await fetch(voiceApi+'/session',{method:'POST',headers:{'content-type':'application/json','x-app-id':'yingge-h5'},body:JSON.stringify({sample_rate:16000,mode:'transcribe'})});
@@ -879,7 +887,7 @@ const createYinggeVoice=()=>{
       if(!recognizedText)throw new Error('没有听清，请靠近麦克风再说一次');
       activeInput.value=[initialInput,recognizedText].filter(Boolean).join(initialInput&&recognizedText?'，':'');
       activeInput.dispatchEvent(new Event('input',{bubbles:true}));
-      voiceStatus('已识别，请确认后发送');
+      submitManualVoiceQuestion();
     }catch(error){voiceStatus(error.message||'语音识别暂时不可用')}
     finally{listeningPhase='idle';resetInputControls();await restoreWakeAfterManual()}
   };
@@ -964,7 +972,7 @@ const createYinggeVoice=()=>{
       window.clearTimeout(recognitionTimer);
       activeInput.value=[initialInput,recognizedText].filter(Boolean).join(initialInput&&recognizedText?'，':'');
       activeInput.dispatchEvent(new Event('input',{bubbles:true}));
-      voiceStatus(hasFinal?'已识别，请确认后发送':'正在识别：'+recognizedText);
+      voiceStatus(hasFinal?'已识别，再次点击结束并发送':'正在识别：'+recognizedText);
     };
     current.onerror=event=>{
       window.clearTimeout(recognitionTimer);
@@ -984,7 +992,7 @@ const createYinggeVoice=()=>{
       recognition=null;
       listeningPhase='idle';
       resetInputControls();
-      if(recognizedText)voiceStatus('已识别，请确认后发送');
+      if(recognizedText)submitManualVoiceQuestion();
       else voiceStatus('没有听清，请再试一次');
       restoreWakeAfterManual();
     };
