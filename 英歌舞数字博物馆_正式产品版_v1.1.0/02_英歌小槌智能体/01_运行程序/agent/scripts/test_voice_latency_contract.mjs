@@ -15,4 +15,9 @@ assert.ok(awakeFlow.indexOf("beginWakeQuestionWindow") < awakeFlow.indexOf("awai
 assert.match(app, /wakeChunkLength>=context\.sampleRate\*\.25/, "唤醒音频应以 250ms 小批次低延迟发送");
 assert.match(app, /},250\);\s*return true/, "识别终点后的确认等待不得超过 250ms");
 
+for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
+  const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.1\.1/, `${name} 必须刷新不可变缓存版本`);
+}
+
 console.log("voice latency contract tests passed");
