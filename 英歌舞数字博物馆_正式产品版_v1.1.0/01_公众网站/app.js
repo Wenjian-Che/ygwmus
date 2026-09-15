@@ -1387,7 +1387,7 @@ if(guide){
           if(!data)continue;const payload=JSON.parse(data);
           if(event==='delta'){if(!answer){clearThinkingState(assistant);assistant.body.textContent='';assistant.node.classList.remove('agent-thinking');typing=beginAnswerTyping(assistant,()=>answer)}answer+=payload.text||'';dispatchAgentEvent('delta',{text:publicAnswerText(answer)});scrollAgent()}
           if(event==='citations')citations=payload.items||[];
-          if(event==='done'){await typing?.complete();renderAgentAnswer(assistant.body,answer);setAgentStatus('知识库已连接','online');setAgentMotion('answering',1500);dispatchAgentEvent('done',{text:speechAnswerText(answer),citations})}
+          if(event==='done'){typing?.cancel();renderAgentAnswer(assistant.body,answer);setAgentStatus('知识库已连接','online');setAgentMotion('answering',1500);dispatchAgentEvent('done',{text:speechAnswerText(answer),citations})}
         }
       }
       if(!answer)assistant.body.textContent='这次没有生成有效回答，请换一种方式提问。';
