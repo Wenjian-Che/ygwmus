@@ -29,7 +29,7 @@ assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.2\.0/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.2\.1/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");

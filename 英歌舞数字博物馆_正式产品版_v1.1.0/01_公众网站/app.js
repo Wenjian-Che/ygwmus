@@ -1218,8 +1218,8 @@ document.querySelectorAll('.definition-lens').forEach(button=>button.addEventLis
   if(!item)return;
   document.querySelectorAll('.definition-lens').forEach(node=>{const active=node===button;node.classList.toggle('is-active',active);node.setAttribute('aria-pressed',String(active))});
   const title=document.querySelector('#definitionReadoutTitle'),text=document.querySelector('#definitionReadoutText');
-  if(title)title.textContent=item.title;
-  if(text)text.textContent=item.text;
+  if(title)window.__yinggeSetLocalizedText?.(title,item.title);
+  if(text)window.__yinggeSetLocalizedText?.(text,item.text);
   const orbit=document.querySelector('.definition-orbit');
   if(orbit&&window.gsap&&!matchMedia('(prefers-reduced-motion: reduce)').matches)gsap.to(orbit,{rotation:-20+(Object.keys(lensCopy).indexOf(button.dataset.lens)*90),duration:.72,ease:'power3.out'});
 }));
@@ -1425,9 +1425,9 @@ if(publicPath==='characters.html'){
   addVisualCredit(split?.querySelector('.reading-copy'));
 }
 window.addEventListener('load',()=>ScrollTrigger.refresh(),{once:true});window.addEventListener('pagehide',()=>{mm.revert();contentMotion.revert();learningMotion.revert();ScrollTrigger.getAll().forEach(t=>t.kill())},{once:true});
-if(document.querySelector('.hero')){const homeStory=document.createElement('script');homeStory.src='home-story.js?v=20260911-voice10';document.body.appendChild(homeStory)}
+if(document.querySelector('.hero')){const homeStory=document.createElement('script');homeStory.src='home-story.js?v=1.2.1';document.body.appendChild(homeStory)}
 if(document.body.classList.contains('museum-page')||['formation.html','archive.html','content.html'].includes(publicPath)){
-  const loadDepth=()=>{if(document.querySelector('[data-depth-layer]'))return;document.querySelector('script[data-depth-loader]')?.remove();const depthScript=document.createElement('script');depthScript.dataset.depthLoader='true';depthScript.src='exhibit-depth.js?v=20260901-en2';document.body.appendChild(depthScript)};
+  const loadDepth=()=>{if(document.querySelector('[data-depth-layer]'))return;document.querySelector('script[data-depth-loader]')?.remove();const depthScript=document.createElement('script');depthScript.dataset.depthLoader='true';depthScript.src='exhibit-depth.js?v=1.2.1';document.body.appendChild(depthScript)};
   if(publicPath==='archive.html'){window.addEventListener('archive:ready',loadDepth,{once:true});setTimeout(loadDepth,1200)}else loadDepth();
 }
 
@@ -1917,6 +1917,17 @@ if(document.body.classList.contains('museum-page')||['formation.html','archive.h
     const panel=document.querySelector('#mobileMuseumNav');if(panel&&!panel.querySelector('.mobile-nav-locale')){const button=document.createElement('button');button.type='button';button.className='mobile-nav-locale button button-glass';button.addEventListener('click',()=>apply(locale==='en'?'zh':'en'));panel.appendChild(button)}
   };
   window.yinggeLocale={get locale(){return locale},get isEnglish(){return locale==='en'},translate:text=>locale==='en'?(copy[String(text)]||String(text)):String(text),copy};
+  window.__yinggeSetLocalizedText=(node,zh,en='')=>{
+    if(!node)return;
+    node.dataset.localeZh=String(zh||'');
+    node.textContent=locale==='en'?(en||copy[zh]||zh):zh;
+  };
+  window.__yinggeSetLocalizedAttr=(node,attr,zh,en='')=>{
+    if(!node)return;
+    const key='locale'+attr.replace(/[^a-z0-9]/gi,'_');
+    node.dataset[key]=String(zh||'');
+    node.setAttribute(attr,locale==='en'?(en||copy[zh]||zh):zh);
+  };
   window.__yinggeLocaleRefresh=()=>{addToggle();apply(locale)};
   addToggle();apply(locale);
 })();

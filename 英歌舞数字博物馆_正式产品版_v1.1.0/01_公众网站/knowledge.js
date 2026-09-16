@@ -14,6 +14,7 @@
   const treeReadoutTitle = document.querySelector('#treeReadoutTitle');
   const treeReadoutText = document.querySelector('#treeReadoutText');
   const treeAgentQuestion = document.querySelector('#treeAgentQuestion');
+  const floatingCompanion = document.querySelector('.museum-companion');
   const tempoLab = document.querySelector('.tempo-lab');
   const tempoTabs = gsap.utils.toArray('.tempo-tab');
   const tempoVisual = document.querySelector('.tempo-visual');
@@ -31,35 +32,48 @@
   const caseText = document.querySelector('#caseText');
   const caseSource = document.querySelector('#caseSource');
   const caseAgentQuestion = document.querySelector('#caseAgentQuestion');
+  if (treeReadout && floatingCompanion && 'IntersectionObserver' in window) {
+    const treeObserver = new IntersectionObserver(entries => {
+      floatingCompanion.classList.toggle('is-knowledge-tree-visible', entries[0]?.isIntersecting === true);
+    }, { threshold: .12 });
+    treeObserver.observe(document.querySelector('.knowledge-tree'));
+    window.addEventListener('pagehide', () => treeObserver.disconnect(), { once: true });
+  }
   const treeCopy = {
     body: {
       title: '身体技艺',
       text: '英歌的力量先来自重心下沉和全身协调。脚下的移动、腰胯的转动、上身的开合与双槌路线共同完成一个动作，并不是只靠手臂挥槌。',
+      textEn: 'Yingge’s force begins with a lowered centre of gravity and whole-body coordination. Footwork, hip rotation, torso movement, and paired-stick paths complete each action together.',
       question: '英歌的力量感为什么不是只靠手臂？'
     },
     sound: {
       title: '声音指挥',
       text: '锣鼓并非陪衬。鼓点提供速度、重音和段落信号，锣钹强化拍点，槌击与吆喝让声音和身体在现场互相回应。具体口令和节奏仍随板式、队伍而变。',
+      textEn: 'Percussion is not accompaniment. Drumbeats set pace, accents, and section cues; gongs, cymbals, stick strikes, and calls connect sound with movement. Exact patterns vary by style and troupe.',
       question: '英歌的鼓点、锣钹、槌击和吆喝分别起什么作用？'
     },
     space: {
       title: '空间组织',
       text: '队形不是静止图案。队员通过分行、合拢、穿插、回旋和换位处理人与人之间的距离，使个人动作成为可以移动的集体结构。',
+      textEn: 'A formation is not a static shape. Lines, joining, threading, circling, and position changes organise individual actions into a moving collective structure.',
       question: '英歌队形怎样从个人动作变成集体空间？'
     },
     role: {
       title: '人物装束',
       text: '脸谱和装束帮助建立人物形象，但颜色不能单独证明角色身份。判断人物还要结合队伍位置、表演职责、服装、器物和具体队伍资料。',
+      textEn: 'Facial patterns and costume help shape a character, but colour alone cannot identify a role. Position, function, dress, objects, and troupe records must be considered together.',
       question: '为什么不能只靠脸谱颜色判断英歌角色？'
     },
     place: {
       title: '地方传承',
       text: '英歌在社区中依靠师承、训练和节庆实践延续。地区名称只是索引，真正的差异往往发生在具体村落、队伍、年代和传承关系中。',
+      textEn: 'Yingge continues through teaching lineages, training, and festival practice. Place names are only an index; meaningful differences belong to particular villages, troupes, periods, and lineages.',
       question: '理解英歌的地方差异，为什么要具体到村落、队伍和年代？'
     },
     evidence: {
       title: '证据来源',
       text: '名录和标准用于确认项目身份与术语，队伍档案和影像说明具体做法，口述材料保存传承记忆。不同证据回答不同问题，不能混成同一等级的结论。',
+      textEn: 'Registers and standards confirm project identity and terms; troupe records and footage document practices; oral accounts preserve transmission memories. Each source answers a different question.',
       question: '英歌研究中的名录、影像和口述材料分别能证明什么？'
     }
   };
@@ -128,22 +142,12 @@
         item.setAttribute('aria-pressed', String(active));
       });
       const update = () => {
-        treeReadoutTitle.textContent = copy.title;
-        treeReadoutText.textContent = copy.text;
+        window.__yinggeSetLocalizedText?.(treeReadoutTitle, copy.title);
+        window.__yinggeSetLocalizedText?.(treeReadoutText, copy.text, copy.textEn);
         treeAgentQuestion.dataset.agentQuestion = copy.question;
-        window.__yinggeLocaleRefresh?.();
       };
-      if (reducedMotion || !treeReadout) update();
-      else gsap.to(treeReadout, {
-        autoAlpha: 0,
-        y: 10,
-        duration: .16,
-        overwrite: true,
-        onComplete: () => {
-          update();
-          gsap.to(treeReadout, { autoAlpha: 1, y: 0, duration: .34, ease: 'power3.out', overwrite: true });
-        }
-      });
+      update();
+      if (!reducedMotion && treeReadout) gsap.fromTo(treeReadout, { autoAlpha: .42, y: 8 }, { autoAlpha: 1, y: 0, duration: .34, ease: 'power3.out', overwrite: true });
     };
 
     treeNodes.forEach(node => node.addEventListener('click', () => activateTreeNode(node)));
@@ -157,13 +161,12 @@
         item.setAttribute('aria-selected', String(active));
       });
       tempoLab.dataset.tempoMode = button.dataset.tempo;
-      tempoGlyph.textContent = copy.glyph;
-      tempoCount.textContent = copy.count;
-      tempoTitle.textContent = copy.title;
-      tempoText.textContent = copy.text;
-      tempoWatch.textContent = copy.watch;
+      window.__yinggeSetLocalizedText?.(tempoGlyph, copy.glyph);
+      window.__yinggeSetLocalizedText?.(tempoCount, copy.count);
+      window.__yinggeSetLocalizedText?.(tempoTitle, copy.title);
+      window.__yinggeSetLocalizedText?.(tempoText, copy.text);
+      window.__yinggeSetLocalizedText?.(tempoWatch, copy.watch);
       tempoAgentQuestion.dataset.agentQuestion = copy.question;
-      window.__yinggeLocaleRefresh?.();
       if (!reducedMotion && tempoVisual) {
         gsap.fromTo(tempoVisual, { scale: .985 }, { scale: 1, duration: .62, ease: 'power3.out', overwrite: true });
         gsap.fromTo('#tempoGlyph', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: .42, ease: 'power3.out', overwrite: true });
@@ -176,12 +179,11 @@
     const writeCase = copy => {
       caseImage.src = copy.image;
       caseImage.alt = copy.alt;
-      caseMeta.textContent = copy.meta;
-      caseTitle.textContent = copy.title;
-      caseText.textContent = copy.text;
+      window.__yinggeSetLocalizedText?.(caseMeta, copy.meta);
+      window.__yinggeSetLocalizedText?.(caseTitle, copy.title);
+      window.__yinggeSetLocalizedText?.(caseText, copy.text);
       caseSource.href = copy.source;
       caseAgentQuestion.dataset.agentQuestion = copy.question;
-      window.__yinggeLocaleRefresh?.();
     };
 
     const activateCase = button => {
@@ -192,20 +194,8 @@
         item.classList.toggle('is-active', active);
         item.setAttribute('aria-selected', String(active));
       });
-      if (reducedMotion) {
-        writeCase(copy);
-        return;
-      }
-      gsap.to(caseStage, {
-        autoAlpha: 0,
-        y: 10,
-        duration: .18,
-        overwrite: true,
-        onComplete: () => {
-          writeCase(copy);
-          gsap.to(caseStage, { autoAlpha: 1, y: 0, duration: .48, ease: 'power3.out', overwrite: true });
-        }
-      });
+      writeCase(copy);
+      if (!reducedMotion) gsap.fromTo(caseStage, { autoAlpha: .42, y: 8 }, { autoAlpha: 1, y: 0, duration: .48, ease: 'power3.out', overwrite: true });
     };
 
     caseTabs.forEach(button => button.addEventListener('click', () => activateCase(button)));

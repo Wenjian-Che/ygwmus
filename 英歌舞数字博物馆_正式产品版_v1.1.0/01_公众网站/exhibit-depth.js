@@ -187,17 +187,18 @@
     });
     tempoLab.dataset.tempo = key;
     const update = () => {
-      document.querySelector('#tempoWord').textContent = data.word;
-      document.querySelector('#tempoTitle').textContent = data.title;
-      document.querySelector('#tempoBody').textContent = data.body;
+      window.__yinggeSetLocalizedText?.(document.querySelector('#tempoWord'), data.word);
+      window.__yinggeSetLocalizedText?.(document.querySelector('#tempoTitle'), data.title);
+      window.__yinggeSetLocalizedText?.(document.querySelector('#tempoBody'), data.body);
       document.querySelector('#tempoFacts').innerHTML = data.facts.map(item => `<div><dt>${item[0]}</dt><dd>${item[1]}</dd></div>`).join('');
+      document.querySelectorAll('#tempoFacts dt,#tempoFacts dd').forEach(node=>{node.dataset.localeZh=node.textContent.trim()});
       window.__yinggeLocaleRefresh?.();
     };
+    update();
     if (window.gsap && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      gsap.to('.tempo-copy h3,.tempo-copy>p,.tempo-copy dl', {autoAlpha:0, y:10, duration:.16, onComplete:update});
-      gsap.to('.tempo-copy h3,.tempo-copy>p,.tempo-copy dl', {autoAlpha:1, y:0, duration:.45, delay:.18, ease:'power3.out'});
+      gsap.fromTo('.tempo-copy h3,.tempo-copy>p,.tempo-copy dl', {autoAlpha:.42, y:8}, {autoAlpha:1, y:0, duration:.45, ease:'power3.out', overwrite:true});
       gsap.fromTo('.tempo-visual i', {scaleY:.35}, {scaleY:1, stagger:.045, duration:key === 'fast' ? .24 : key === 'medium' ? .42 : .68, ease:'power3.out'});
-    } else update();
+    }
   }));
 
   if (window.gsap && window.ScrollTrigger && !matchMedia('(prefers-reduced-motion: reduce)').matches) {

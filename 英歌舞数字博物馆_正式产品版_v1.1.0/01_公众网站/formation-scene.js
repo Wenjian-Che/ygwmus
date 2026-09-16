@@ -124,9 +124,8 @@ if(canvas){
   let running=true;
 
   function updateCopy(mode){
-    document.querySelector('#formationName').textContent=facts[mode][0];
-    document.querySelector('#formationDescription').textContent=facts[mode][1];
-    window.__yinggeLocaleRefresh?.();
+    window.__yinggeSetLocalizedText?.(document.querySelector('#formationName'),facts[mode][0]);
+    window.__yinggeSetLocalizedText?.(document.querySelector('#formationDescription'),facts[mode][1]);
     document.querySelectorAll('[data-formation]').forEach(button=>button.classList.toggle('active',button.dataset.formation===mode));
   }
 
