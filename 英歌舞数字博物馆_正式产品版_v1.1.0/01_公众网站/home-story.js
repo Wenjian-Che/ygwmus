@@ -1,7 +1,7 @@
 (() => {
   const stylesheet = document.createElement('link');
   stylesheet.rel = 'stylesheet';
-  stylesheet.href = 'home-story.css?v=20260831-mobile2';
+  stylesheet.href = 'home-story.css?v=1.2.1';
   document.head.appendChild(stylesheet);
 
   const hero = document.querySelector('.hero');
@@ -25,6 +25,7 @@
       <a class="definition-link" href="learn.html#what-is-yingge">接着看一场英歌怎样展开</a>
     </div>
     <div class="home-definition-stage" aria-label="英歌由身体、双槌、锣鼓、角色和阵形共同构成">
+      <p class="definition-stage-guide">选择一个视角，看看一场英歌怎样协同发生</p>
       <div class="definition-visual">
         <img src="assets/rhythm.png" alt="英歌槌、锣鼓、头饰与阵形构成的导览画面">
         <div class="definition-visual-shade"></div>
@@ -36,9 +37,18 @@
       <button class="definition-point point-sound" type="button" data-definition="sound"><strong>锣鼓</strong><span>共同节拍与信号</span></button>
       <button class="definition-point point-role" type="button" data-definition="role"><strong>角色</strong><span>人物、脸谱与器物</span></button>
       <button class="definition-point point-space" type="button" data-definition="space"><strong>阵形</strong><span>站位、路线与变阵</span></button>
-      <p class="definition-readout" id="homeDefinitionReadout" aria-live="polite">先看重心、步法和槌路，力量从一个人的身体传到整支队伍。</p>
+      <p class="definition-readout" id="homeDefinitionReadout" aria-live="polite"><strong class="definition-readout-label">身体</strong><span>先看重心、步法和槌路，力量从一个人的身体传到整支队伍。</span></p>
     </div>`;
   hero.insertAdjacentElement('afterend', definitionSection);
+
+  const definitionCompanion = document.querySelector('.museum-companion');
+  if (definitionCompanion && 'IntersectionObserver' in window) {
+    const definitionObserver = new IntersectionObserver(entries => {
+      definitionCompanion.classList.toggle('is-home-definition-visible', entries[0]?.isIntersecting === true);
+    }, { threshold: .12 });
+    definitionObserver.observe(definitionSection);
+    window.addEventListener('pagehide', () => definitionObserver.disconnect(), { once: true });
+  }
 
   const agentSection = document.createElement('section');
   agentSection.className = 'home-agent-stage';
@@ -189,14 +199,16 @@
   }
 
   const definitionCopy = {
-    body: '先看重心、步法和槌路，力量从一个人的身体传到整支队伍。',
-    clubs: '双槌不仅制造声音，也把方向、速度和人与人的配合变得可见。',
-    sound: '鼓、锣钹、槌击和吆喝建立共同节拍，也发出段落与变阵信号。',
-    role: '人物扮演、脸谱、服饰和器物需要回到具体地区与队伍中辨认。',
-    space: '站位、间距和行进路线把个人动作组织成不断变化的集体空间。'
+    body: { label: '身体', labelEn: 'Body', text: '先看重心、步法和槌路，力量从一个人的身体传到整支队伍。', textEn: 'Start with balance, footwork, and stick paths: force travels from each body through the whole troupe.' },
+    clubs: { label: '双槌', labelEn: 'Paired sticks', text: '双槌不仅制造声音，也把方向、速度和人与人的配合变得可见。', textEn: 'Paired sticks make sound while revealing direction, speed, and coordination between performers.' },
+    sound: { label: '锣鼓', labelEn: 'Percussion', text: '鼓、锣钹、槌击和吆喝建立共同节拍，也发出段落与变阵信号。', textEn: 'Drums, gongs, cymbals, stick strikes, and calls establish a shared beat and signal transitions.' },
+    role: { label: '角色', labelEn: 'Roles', text: '人物扮演、脸谱、服饰和器物需要回到具体地区与队伍中辨认。', textEn: 'Roles, facial patterns, costumes, and objects must be identified within a specific place and troupe.' },
+    space: { label: '阵形', labelEn: 'Formation', text: '站位、间距和行进路线把个人动作组织成不断变化的集体空间。', textEn: 'Positions, spacing, and routes organise individual movements into a changing collective space.' }
   };
   const points = Array.from(document.querySelectorAll('.definition-point'));
   const readout = document.querySelector('#homeDefinitionReadout');
+  const readoutLabel = readout?.querySelector('.definition-readout-label');
+  const readoutText = readout?.querySelector('span');
 
   const activatePoint = point => {
     const copy = definitionCopy[point.dataset.definition];
@@ -205,19 +217,17 @@
       item.classList.toggle('is-active', active);
       item.setAttribute('aria-pressed', String(active));
     });
-    if (!copy || !readout) return;
-    if (typeof gsap === 'undefined' || reducedMotion) { readout.textContent = copy; window.__yinggeLocaleRefresh?.(); }
-    else gsap.to(readout, { autoAlpha: 0, y: 8, duration: .16, onComplete: () => {
-      readout.textContent = copy;
-      window.__yinggeLocaleRefresh?.();
-      gsap.to(readout, { autoAlpha: 1, y: 0, duration: .32, ease: 'power3.out' });
-    }});
+    if (!copy || !readout || !readoutText) return;
+    const updateReadout = () => { window.__yinggeSetLocalizedText?.(readoutLabel, copy.label, copy.labelEn); window.__yinggeSetLocalizedText?.(readoutText, copy.text, copy.textEn); };
+    updateReadout();
+    if (typeof gsap !== 'undefined' && !reducedMotion) gsap.fromTo(readout, { autoAlpha: .42, y: 7 }, { autoAlpha: 1, y: 0, duration: .32, ease: 'power3.out', overwrite: true });
   };
 
+  const supportsDefinitionHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
   points.forEach(point => {
     point.setAttribute('aria-pressed', String(point.classList.contains('is-active')));
     point.addEventListener('click', () => activatePoint(point));
-    point.addEventListener('mouseenter', () => activatePoint(point));
+    if (supportsDefinitionHover) point.addEventListener('mouseenter', () => activatePoint(point));
   });
 
   const homeAgentMessages = agentSection.querySelector('#homeAgentMessages');

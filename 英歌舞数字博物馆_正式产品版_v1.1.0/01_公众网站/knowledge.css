@@ -726,22 +726,28 @@
 
 .node-body { left: 2%; bottom: 22%; }
 .node-sound { right: 1%; bottom: 27%; }
-.node-space { left: 0; top: 39%; }
-.node-role { right: 0; top: 34%; }
-.node-place { left: 8%; top: 13%; }
-.node-evidence { right: 7%; top: 8%; }
+.node-space { left: 0; top: 43%; }
+.node-role { right: 0; top: 40%; }
+.node-place { left: 8%; top: 25%; }
+.node-evidence { right: 7%; top: 22%; }
 
 .knowledge-tree-readout {
   left: 50%;
-  top: 3%;
-  width: min(350px, 46%);
-  padding: 0 0 0 18px;
+  top: 2%;
+  width: min(340px, 48%);
+  padding: 2px 0 2px 18px;
   border-left: 2px solid var(--coral);
   transform: translateX(-50%);
 }
 
 .knowledge-tree-readout > strong { display: block; color: #fff; font-size: 18px; }
 .knowledge-tree-readout > p { margin: 9px 0 0; color: #c2cdc1; font-size: 12px; line-height: 1.72; }
+
+.museum-companion.is-knowledge-tree-visible {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .inline-agent-question {
   position: relative;
