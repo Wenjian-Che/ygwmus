@@ -92,6 +92,7 @@ for (const term of ["英歌舞", "英歌小槌", "潮汕", "潮阳", "普宁", "
   assert.match(hotwords, new RegExp(`${term}\\|\\d+`), `腾讯云 ASR 请求应真实携带领域热词：${term}`);
 }
 assert.equal(new URL(socketLog.url).searchParams.get("reinforce_hotword"), "1");
+assert.equal(new URL(socketLog.url).searchParams.has("vad_silence_time"), false, "不应给未声明支持的引擎强行下发 VAD 阈值");
 assert.equal(asr.status().asr.hotwordsConfigured, true, "状态接口应明确告知热词已下发");
 const signedUrl = new URL(socketLog.url);
 const receivedSignature = signedUrl.searchParams.get("signature");
@@ -105,6 +106,7 @@ socketLog.url = ""; socketLog.messages = [];
 const standardAsr = createTencentVoiceClient({ TENCENT_SECRET_ID: "AKIDexample", TENCENT_SECRET_KEY: "example-secret-key", TENCENT_APP_ID: "1234567890", TENCENT_ASR_ENGINE_MODEL_TYPE: "16k_zh" }, { WebSocketImpl: FakeSocket });
 const standardSession = await standardAsr.createRecognitionSession();
 assert.equal(new URL(socketLog.url).searchParams.has("input_sample_rate"), false, "16k 实时引擎应直接接收 16k PCM，不声明 8k 兼容参数");
+assert.equal(new URL(socketLog.url).searchParams.get("vad_silence_time"), "650", "16k_zh 应下发适合语音问答的断句静音阈值");
 standardSession.close();
 
 class EndpointSocket extends FakeSocket {

@@ -210,17 +210,26 @@
       for (var n = 0; n < samples.length; n++) { var value = Math.max(-1, Math.min(1, samples[n])); view.setInt16(44 + n * 2, value < 0 ? value * 32768 : value * 32767, true); }
       return buffer;
     }
+    function resampleVoicePcm(chunks, inputRate) {
+      var length = chunks.reduce(function (sum, chunk) { return sum + chunk.length; }, 0), merged = new Float32Array(length), offset = 0;
+      chunks.forEach(function (chunk) { merged.set(chunk, offset); offset += chunk.length; });
+      if (inputRate <= 16000) return merged;
+      var ratio = inputRate / 16000, output = new Float32Array(Math.floor(merged.length / ratio));
+      for (var i = 0; i < output.length; i++) { var from = Math.floor(i * ratio), to = Math.min(merged.length, Math.floor((i + 1) * ratio)), sum = 0; for (var j = from; j < to; j++) sum += merged[j]; output[i] = sum / Math.max(1, to - from); }
+      return output;
+    }
+    function pcmVoiceBody(samples) { var body = new ArrayBuffer(samples.length * 2), view = new DataView(body); for (var i = 0; i < samples.length; i++) { var value = Math.max(-1, Math.min(1, samples[i])); view.setInt16(i * 2, value < 0 ? value * 32768 : value * 32767, true); } return body; }
     var Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     var canCloudVoice = Boolean(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext));
     var startVoice = null, stopVoice = null;
     if ((!Recognition && !canCloudVoice) || !window.isSecureContext) { mic.hidden = true; }
     else {
-      var recognition = null, cloudRecorder = null, voiceStartedAt = 0, voiceTimer = 0, voiceStopping = false, voiceSessionActive = false, voiceClickReadyAt = 0, voiceRestartTimer = 0, voiceTextBase = '', voiceStartToken = 0;
+      var recognition = null, cloudRecorder = null, cloudSessionId = '', cloudQueue = Promise.resolve(), cloudText = '', voiceStartedAt = 0, voiceTimer = 0, voiceStopping = false, voiceSessionActive = false, voiceClickReadyAt = 0, voiceRestartTimer = 0, voiceTextBase = '', voiceStartToken = 0;
       function voiceTime() { var elapsed = Math.max(0, Math.floor((Date.now() - voiceStartedAt) / 1000)); return String(Math.floor(elapsed / 60)).padStart(2, '0') + ':' + String(elapsed % 60).padStart(2, '0'); }
       function clearVoiceTimer() { window.clearInterval(voiceTimer); voiceTimer = 0; }
       function updateVoiceState() { var elapsed = voiceTime(); micLabel.textContent = '结束 ' + elapsed; setStatus('正在识别 · ' + elapsed); }
       function finishVoiceSession(message, bad) { window.clearTimeout(voiceRestartTimer); clearVoiceTimer(); recognition = null; voiceStopping = false; voiceSessionActive = false; mic.classList.remove('active'); mic.setAttribute('aria-pressed', 'false'); mic.setAttribute('aria-label', '点击开始语音输入'); mic.title = '点击开始语音输入'; micLabel.textContent = '语音输入'; launcher.classList.remove('listening'); resumePageAudio(); setStatus(message, bad); }
-      function submitRecognizedVoice() { var question = input.value.trim(); finishVoiceSession(question ? '识别完成，正在发送' : '未识别到内容，请再试一次', !question); if (question && question !== voiceTextBase) ask(question); }
+      function submitRecognizedVoice() { var question = input.value.trim(); if (!question || question === voiceTextBase || Array.from(question.replace(/\s/g, '')).length < 2) { finishVoiceSession('没有听清完整问题，请再说一次', true); return; } finishVoiceSession('识别完成，正在发送'); ask(question); }
       function launchRecognition() {
         if (!voiceSessionActive || voiceStopping) return;
         if (!Recognition) { finishVoiceSession('当前浏览器无法使用语音识别', true); return; }
@@ -235,24 +244,31 @@
         };
         try { current.start(); } catch (_) { recognition = null; if (voiceSessionActive && !voiceStopping) voiceRestartTimer = window.setTimeout(launchRecognition, 300); }
       }
+      function closeCloudSession() { var session = cloudSessionId; cloudSessionId = ''; if (!session) return Promise.resolve(); return fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/session/' + encodeURIComponent(session), { method: 'DELETE', headers: { 'x-app-id': config.appId } }).catch(function () {}); }
+      function sendCloudChunks(chunks, inputRate, finish) {
+        var session = cloudSessionId; if (!session) return Promise.reject(new Error('实时语音会话已经结束'));
+        var body = pcmVoiceBody(resampleVoicePcm(chunks, inputRate));
+        cloudQueue = cloudQueue.catch(function () {}).then(function () { return fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/session/' + encodeURIComponent(session) + '/chunk?sample_rate=16000' + (finish ? '&finish=1' : ''), { method: 'POST', headers: { 'content-type': 'application/octet-stream', 'x-app-id': config.appId }, body: body }); }).then(function (response) { return response.json().catch(function () { return {}; }).then(function (payload) { if (!response.ok) throw new Error(payload.message || '实时语音识别暂时不可用'); if (payload.text) { cloudText = normalizeVoiceText(payload.text); input.value = (voiceTextBase + ' ' + cloudText).trim(); } return payload; }); });
+        return cloudQueue;
+      }
       function beginCloudRecording(stream) {
-        var AudioContextClass = window.AudioContext || window.webkitAudioContext, context = new AudioContextClass(), source = context.createMediaStreamSource(stream), processor = context.createScriptProcessor(4096, 1, 1), chunks = [], closed = false;
+        var AudioContextClass = window.AudioContext || window.webkitAudioContext, context = new AudioContextClass(), source = context.createMediaStreamSource(stream), processor = context.createScriptProcessor(4096, 1, 1), chunks = [], chunkLength = 0, closed = false;
         if (context.state === 'suspended') context.resume().catch(function () {});
-        processor.onaudioprocess = function (event) { chunks.push(new Float32Array(event.inputBuffer.getChannelData(0))); if (event.outputBuffer) event.outputBuffer.getChannelData(0).fill(0); };
+        processor.onaudioprocess = function (event) { var chunk = new Float32Array(event.inputBuffer.getChannelData(0)); chunks.push(chunk); chunkLength += chunk.length; if (event.outputBuffer) event.outputBuffer.getChannelData(0).fill(0); if (chunkLength >= context.sampleRate * .3) { var batch = chunks; chunks = []; chunkLength = 0; sendCloudChunks(batch, context.sampleRate, false).catch(function (error) { finishVoiceSession(error.message || '实时语音识别暂时不可用', true); }); } };
         source.connect(processor); processor.connect(context.destination);
-        return { finish: function () { if (closed) return Promise.resolve(new ArrayBuffer(0)); closed = true; processor.disconnect(); source.disconnect(); stream.getTracks().forEach(function (track) { track.stop(); }); var wave = encodeVoiceWave(chunks, context.sampleRate); return context.close().catch(function () {}).then(function () { return wave; }); }, cancel: function () { if (closed) return; closed = true; processor.disconnect(); source.disconnect(); stream.getTracks().forEach(function (track) { track.stop(); }); context.close().catch(function () {}); } };
+        return { finish: function () { if (closed) return Promise.resolve({ chunks: [], inputRate: context.sampleRate }); closed = true; processor.disconnect(); source.disconnect(); stream.getTracks().forEach(function (track) { track.stop(); }); var tail = chunks; return context.close().catch(function () {}).then(function () { return { chunks: tail, inputRate: context.sampleRate }; }); }, cancel: function () { if (closed) return; closed = true; processor.disconnect(); source.disconnect(); stream.getTracks().forEach(function (track) { track.stop(); }); context.close().catch(function () {}); closeCloudSession(); } };
       }
       startVoice = function () {
         if (voiceSessionActive) return;
         open(); suspendPageAudio(); voiceStopping = false; voiceSessionActive = true; voiceTextBase = input.value.trim(); voiceStartedAt = Date.now(); voiceClickReadyAt = Date.now() + 850; mic.classList.add('active'); mic.setAttribute('aria-pressed', 'true'); mic.setAttribute('aria-label', '点击结束语音输入'); mic.title = '点击结束语音输入'; setStatus('正在连接语音识别'); updateVoiceState(); voiceTimer = window.setInterval(updateVoiceState, 250);
         var token = ++voiceStartToken;
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext)) navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }).then(function (stream) { if (!voiceSessionActive || token !== voiceStartToken) { stream.getTracks().forEach(function (track) { track.stop(); }); return; } cloudRecorder = beginCloudRecording(stream); updateVoiceState(); }).catch(function () { if (voiceSessionActive && token === voiceStartToken) launchRecognition(); });
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && (window.AudioContext || window.webkitAudioContext)) Promise.all([navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true, channelCount: 1 } }), fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/session', { method: 'POST', headers: { 'content-type': 'application/json', 'x-app-id': config.appId }, body: JSON.stringify({ sample_rate: 16000, mode: 'transcribe' }) }).then(function (response) { return response.json().catch(function () { return {}; }).then(function (payload) { if (!response.ok || !payload.session_id) throw new Error(payload.message || '实时语音服务暂时不可用'); return payload.session_id; }); })]).then(function (values) { var stream = values[0], sessionId = values[1]; if (!voiceSessionActive || token !== voiceStartToken) { stream.getTracks().forEach(function (track) { track.stop(); }); fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/session/' + encodeURIComponent(sessionId), { method: 'DELETE', headers: { 'x-app-id': config.appId } }).catch(function () {}); return; } cloudSessionId = sessionId; cloudQueue = Promise.resolve(); cloudText = ''; cloudRecorder = beginCloudRecording(stream); updateVoiceState(); }).catch(function () { closeCloudSession(); if (voiceSessionActive && token === voiceStartToken) launchRecognition(); });
         else launchRecognition();
       };
       stopVoice = function () {
         if (!voiceSessionActive || voiceStopping) return;
         voiceStopping = true; voiceSessionActive = false; voiceStartToken += 1; window.clearTimeout(voiceRestartTimer); clearVoiceTimer(); setStatus('正在识别刚才的录音');
-        if (cloudRecorder) { var recorder = cloudRecorder; cloudRecorder = null; recorder.finish().then(function (wave) { if (wave.byteLength < 2048) throw new Error('录音太短，请再说一次'); return fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/transcribe', { method: 'POST', headers: { 'content-type': 'audio/wav', 'x-app-id': config.appId }, body: wave }); }).then(function (response) { return response.json().catch(function () { return {}; }).then(function (payload) { if (!response.ok) throw new Error(payload.message || '语音识别暂时不可用'); return payload; }); }).then(function (payload) { var text = normalizeVoiceText(payload.text); if (!text) throw new Error('未识别到内容，请再试一次'); input.value = (voiceTextBase + ' ' + text).trim(); submitRecognizedVoice(); }).catch(function (error) { finishVoiceSession(error.message || '语音识别暂时不可用', true); }); return; }
+        if (cloudRecorder) { var recorder = cloudRecorder; cloudRecorder = null; recorder.finish().then(function (tail) { return sendCloudChunks(tail.chunks.length ? tail.chunks : [new Float32Array(320)], tail.inputRate, true); }).then(function (payload) { var text = normalizeVoiceText(payload.text || cloudText); if (!text) throw new Error('未识别到内容，请再试一次'); input.value = (voiceTextBase + ' ' + text).trim(); return closeCloudSession().then(submitRecognizedVoice); }).catch(function (error) { closeCloudSession(); finishVoiceSession(error.message || '语音识别暂时不可用', true); }); return; }
         if (recognition) recognition.stop(); else submitRecognizedVoice();
       };
       mic.onclick = function () { if (voiceSessionActive) { if (Date.now() >= voiceClickReadyAt) stopVoice(); } else startVoice(); };

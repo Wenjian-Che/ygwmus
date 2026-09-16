@@ -99,7 +99,7 @@ function tc3Authorization({ secretId, secretKey, service, host, action, version,
   };
 }
 
-function asrSocketUrl(credentials, engineModelType, now, { hotwordList = "", hotwordId = "" } = {}) {
+function asrSocketUrl(credentials, engineModelType, now, { hotwordList = "", hotwordId = "", vadSilenceTime = 0 } = {}) {
   const timestamp = Math.floor(now / 1000);
   const parameters = {
     engine_model_type: engineModelType,
@@ -117,6 +117,7 @@ function asrSocketUrl(credentials, engineModelType, now, { hotwordList = "", hot
     parameters.hotword_list = hotwordList;
     parameters.reinforce_hotword = "1";
   } else if (hotwordId) parameters.hotword_id = hotwordId;
+  if (vadSilenceTime) parameters.vad_silence_time = String(vadSilenceTime);
   // 签名原文必须使用排序后的原始参数值。只有最终 URL 才做百分号编码。
   // 若先用 URLSearchParams 编码再签名，热词等参数会改变签名原文，腾讯云返回 4002。
   const keys = Object.keys(parameters).sort();
@@ -143,11 +144,13 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
   const sampleRate = [8000, 16000, 24000].includes(Number(env.TENCENT_TTS_SAMPLE_RATE)) ? Number(env.TENCENT_TTS_SAMPLE_RATE) : 24000;
   const region = clean(env.TENCENT_REGION) || "ap-guangzhou";
   const hotwordId = clean(env.TENCENT_ASR_HOTWORD_ID);
-  const hotwordList = clean(env.TENCENT_ASR_HOTWORD_LIST) || (hotwordId ? "" : "英歌舞|11,英歌小槌|11,潮汕|9,潮阳|9,潮南|9,普宁|9,揭阳|9,脸谱|9,槌法|10,锣鼓|9,阵法|9,双槌|9,蛇步|9,布田英歌|10,英歌队|8");
+  const hotwordList = clean(env.TENCENT_ASR_HOTWORD_LIST) || (hotwordId ? "" : "英歌舞|11,英歌小槌|11,潮汕|9,汕头|9,潮阳|9,潮南|9,普宁|9,揭阳|9,脸谱|9,槌法|10,锣鼓|9,阵法|9,双槌|9,蛇步|9,布田英歌|10,麦穗花阵|10,水浒传|9,中华战舞|9,非物质文化遗产|8,英歌队|8");
+  const configuredVad = Number(env.TENCENT_ASR_VAD_SILENCE_TIME);
+  const vadSilenceTime = engineModelType === "16k_zh" ? (Number.isFinite(configuredVad) && configuredVad >= 240 && configuredVad <= 2000 ? Math.round(configuredVad) : 650) : 0;
   async function createRecognitionSession() {
     if (!configured) throw Object.assign(new Error("腾讯云语音尚未安全配置"), { code: "TENCENT_VOICE_UNAVAILABLE" });
     if (!WebSocketImpl) throw Object.assign(new Error("当前运行环境不支持实时语音连接"), { code: "TENCENT_ASR_WEBSOCKET_UNAVAILABLE" });
-    const socket = new WebSocketImpl(asrSocketUrl(credentials, engineModelType, now(), { hotwordList, hotwordId }));
+    const socket = new WebSocketImpl(asrSocketUrl(credentials, engineModelType, now(), { hotwordList, hotwordId, vadSilenceTime }));
     let latestText = "";
     const segments = new Map();
     let endpointPending = false;
@@ -280,7 +283,7 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
       return {
         configured,
         provider: configured ? "tencent-cloud" : "local",
-        asr: { available: configured, engine: configured ? "tencent-realtime-asr" : null, engineModelType: configured ? engineModelType : null, hotwordsConfigured: configured && Boolean(hotwordList || hotwordId), hotwordMode: hotwordList ? "temporary-list" : (hotwordId ? "vocabulary-id" : "none") },
+        asr: { available: configured, engine: configured ? "tencent-realtime-asr" : null, engineModelType: configured ? engineModelType : null, hotwordsConfigured: configured && Boolean(hotwordList || hotwordId), hotwordMode: hotwordList ? "temporary-list" : (hotwordId ? "vocabulary-id" : "none"), vadSilenceTime: vadSilenceTime || null },
         tts: { available: configured, engine: configured ? "tencent-tts" : null, voiceType: configured ? voiceType : null, sampleRate: configured ? sampleRate : null }
       };
     },
