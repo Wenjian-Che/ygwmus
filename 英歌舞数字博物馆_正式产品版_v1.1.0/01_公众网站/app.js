@@ -283,7 +283,7 @@ if(guidePanelSetup){
     const voiceControls=document.createElement('div');
     voiceControls.className='voice-control-row';
     voiceControls.setAttribute('aria-label','语音功能');
-    voiceControls.innerHTML='<button type="button" data-wake-toggle aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>开启语音唤醒</span></button><button type="button" data-voice-input data-voice-target="question" aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>语音输入</span></button><button type="button" data-voice-output aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-volume.svg" alt=""><span data-voice-label>小槌朗读：开</span></button><button type="button" data-voice-stop hidden><img class="voice-control-icon" src="assets/icons/tabler-player-stop.svg" alt=""><span data-voice-label>停止朗读</span></button><div class="voice-state-card" data-voice-stage="idle"><span class="voice-state-mark" aria-hidden="true"><i></i></span><span class="voice-state-copy"><strong data-voice-state-label>语音就绪</strong><span data-voice-status aria-live="polite">点击开启唤醒，或直接使用语音输入</span></span><span class="voice-live-indicator" data-voice-activity hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span></div><span class="voice-privacy-note">语音仅用于实时识别，不保存原始录音</span>';
+    voiceControls.innerHTML='<button type="button" data-wake-toggle aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>开启语音唤醒</span></button><button type="button" data-voice-input data-voice-target="question" aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>语音输入</span></button><button type="button" data-voice-output aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-volume.svg" alt=""><span data-voice-label>小槌朗读：开</span></button><button type="button" data-voice-stop hidden><img class="voice-control-icon" src="assets/icons/tabler-player-stop.svg" alt=""><span data-voice-label>停止朗读</span></button><div class="voice-state-card" data-voice-stage="idle"><span class="voice-state-mark" aria-hidden="true"><i></i></span><span class="voice-state-copy"><strong data-voice-state-label>语音就绪</strong><span data-voice-status aria-live="polite">点击开启唤醒，或直接使用语音输入</span></span><span class="voice-live-indicator" data-voice-activity hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span></div><span class="voice-privacy-note">不保存录音或转写文本，仅统计匿名运行状态</span>';
     guideForm.querySelector('.agent-note')?.before(voiceControls);
   }
 }
@@ -346,12 +346,19 @@ const createYinggeVoice=()=>{
   let wakeEchoGuardUntil=0;
   let wakeNoiseFloor=.004;
   let wakeLastVoiceAt=0;
+  let wakeDetectedAt=0;
+  let wakeEngine='unknown';
   let wakeFlowToken=0;
   let resumeWakeAfterManual=false;
   let holdReleaseRequested=false;
   let ignoreVoiceClickUntil=0;
   const voiceHoldTimers=new WeakMap();
   const voiceHoldActive=new WeakSet();
+  const reportVoiceEvent=(event,{latencyMs=null,engine=wakeEngine}={})=>{
+    const body={event,engine,device_class:isCoarsePointer?'mobile':'desktop'};
+    if(Number.isFinite(Number(latencyMs)))body.latency_ms=Math.max(0,Math.round(Number(latencyMs)));
+    fetch(voiceApi+'/events',{method:'POST',headers:{'content-type':'application/json','x-app-id':'yingge-h5'},body:JSON.stringify(body),keepalive:true}).catch(()=>{});
+  };
 
   const inferVoicePhase=text=>{
     const value=String(text||'');
@@ -492,6 +499,8 @@ const createYinggeVoice=()=>{
     if(!response.ok||!payload.session_id)throw new Error(payload.message||'语音服务暂时没有响应');
     if(expectedToken!==null&&expectedToken!==wakeFlowToken){fetch(voiceApi+'/session/'+encodeURIComponent(payload.session_id),{method:'DELETE',headers:{'x-app-id':'yingge-h5'}}).catch(()=>{});return false}
     wakeSessionId=payload.session_id;
+    wakeEngine=payload.engine||wakeEngine;
+    if(mode==='transcribe'&&payload.fallback)reportVoiceEvent('asr_fallback',{engine:wakeEngine});
     return true;
   };
   const stopWakeStandby=async({quiet=false}={})=>{
@@ -538,7 +547,7 @@ const createYinggeVoice=()=>{
     window.clearInterval(wakeQuestionTimer);let remaining=followup?6:9;
     if(followup)voiceStatus(`可以直接追问，${remaining} 秒后恢复唤醒待机`,'followup');else playWakeAcknowledgement();
     const show=()=>{if(followup)voiceStatus(`可以直接追问，${remaining} 秒后恢复唤醒待机`,'followup');else if(!wakeAckPlaying)voiceStatus(`正在聆听，请在 ${remaining} 秒内说出问题`,'listening')};
-    wakeQuestionTimer=window.setInterval(()=>{remaining-=1;if(wakeState!=='awake'){window.clearInterval(wakeQuestionTimer);wakeQuestionTimer=0;return}if(remaining>0){show();return}window.clearInterval(wakeQuestionTimer);wakeQuestionTimer=0;stopWakeAcknowledgement();voiceStatus('没有听到问题，已恢复唤醒待机','standby');if(wakeUsesBrowser){wakeState='standby';updateWakeControls();startBrowserWakeCycle()}else{wakeState='answering';rearmWakeStandby()}},1000);
+    wakeQuestionTimer=window.setInterval(()=>{remaining-=1;if(wakeState!=='awake'){window.clearInterval(wakeQuestionTimer);wakeQuestionTimer=0;return}if(remaining>0){show();return}window.clearInterval(wakeQuestionTimer);wakeQuestionTimer=0;reportVoiceEvent('wake_timeout',{latencyMs:wakeDetectedAt?Date.now()-wakeDetectedAt:null});stopWakeAcknowledgement();voiceStatus('没有听到问题，已恢复唤醒待机','standby');if(wakeUsesBrowser){wakeState='standby';updateWakeControls();startBrowserWakeCycle()}else{wakeState='answering';rearmWakeStandby()}},1000);
   };
   const pauseWakeForManual=async()=>{
     if(wakeState==='off')return;
@@ -640,21 +649,21 @@ const createYinggeVoice=()=>{
     wakeConfirmTimer=window.setTimeout(()=>{
       if(wakeState!=='confirming'||wakeQuestionCandidate!==clean)return;
       wakeConfirmTimer=0;wakeQuestionCandidate='';wakeState='answering';wakeChunks=[];wakeChunkLength=0;updateWakeControls();
-      if(submitAwakeQuestion(clean))voiceStatus('问题已确认，正在发送并组织回答','thinking');
+      if(submitAwakeQuestion(clean)){reportVoiceEvent('question_submitted',{latencyMs:wakeDetectedAt?Date.now()-wakeDetectedAt:null});voiceStatus('问题已确认，正在发送并组织回答','thinking')}
       else{wakeState='awake';updateWakeControls();voiceStatus('问题尚未发送，请再说一次','listening')}
     },250);
     return true;
   };
   const handleWakePayload=async payload=>{
     if(wakeState==='standby'&&payload.awake){
-      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
-      wakeLastTriggerAt=Date.now();
+      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed');return}
+      wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected');
       await enterAwakeConversation();
       return;
     }
     if(wakeState==='speaking'&&payload.awake){
-      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
-      wakeLastTriggerAt=Date.now();
+      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed');return}
+      wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected');
       stopSpeaking({rearm:false,announce:false});
       await enterAwakeConversation();
       return;
@@ -695,14 +704,14 @@ const createYinggeVoice=()=>{
       const clean=normalizeYinggeTranscript(transcript).replace(/\s+/g,'');
       if(wakeState==='standby'&&clean)voiceStatus(hasFinal?'正在识别唤醒词':'已检测到语音，正在识别');
       if(wakeState==='standby'&&/小[槌锤垂陲捶吹崔]小[槌锤垂陲捶吹崔]/.test(clean)){
-        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
-        wakeLastTriggerAt=Date.now();
+        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed');return}
+        wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected',{engine:'browser-speech-recognition'});
         enterAwakeConversation();
         return;
       }
       if(wakeState==='speaking'&&/小[槌锤垂陲捶吹崔]小[槌锤垂陲捶吹崔]/.test(clean)){
-        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
-        wakeLastTriggerAt=Date.now();
+        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed',{engine:'browser-speech-recognition'});return}
+        wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected',{engine:'browser-speech-recognition'});
         stopSpeaking({rearm:false,announce:false});enterAwakeConversation();
         return;
       }
@@ -735,7 +744,7 @@ const createYinggeVoice=()=>{
     primeWakeAcknowledgement();
     stopListening();stopSpeaking({rearm:false,announce:false});wakeState='starting';updateWakeControls();voiceStatus('正在开启麦克风','starting');
     if((!canRecordLocally||!localCapabilities.wake)&&canUseRecognition&&!forceLocal){
-      wakeUsesBrowser=true;wakeState='standby';updateWakeControls();voiceStatus('正在聆听唤醒词，请说“小槌小槌”','standby');startBrowserWakeCycle();return;
+      wakeUsesBrowser=true;wakeEngine='browser-speech-recognition';wakeState='standby';updateWakeControls();voiceStatus('正在聆听唤醒词，请说“小槌小槌”','standby');reportVoiceEvent('wake_started',{engine:wakeEngine});startBrowserWakeCycle();return;
     }
     try{
       wakeUsesBrowser=false;
@@ -764,9 +773,9 @@ const createYinggeVoice=()=>{
       };
       source.connect(processor);processor.connect(context.destination);
       wakeRecorder={async close(){if(closed)return;closed=true;processor.disconnect();source.disconnect();stream.getTracks().forEach(track=>track.stop());await context.close()}};
-      wakeState='standby';updateWakeControls();voiceStatus('正在聆听唤醒词，请说“小槌小槌”','standby');
+      wakeState='standby';updateWakeControls();voiceStatus('正在聆听唤醒词，请说“小槌小槌”','standby');reportVoiceEvent('wake_started');
     }catch(error){
-      wakeState='off';await closeWakeSession();updateWakeControls();voiceStatus(recognitionProblem(error.name)||error.message);
+      reportVoiceEvent('voice_error');wakeState='off';await closeWakeSession();updateWakeControls();voiceStatus(recognitionProblem(error.name)||error.message);
     }
   };
   const beginPcmRecording=(stream,{onChunk}={})=>{
@@ -1488,6 +1497,7 @@ if(document.body.classList.contains('museum-page')||['formation.html','archive.h
      only the navigation chrome. Proper names and source titles stay in their
      original form when they identify a cited record. */
   Object.assign(copy,{
+    '不保存录音或转写文本，仅统计匿名运行状态':'No audio or transcripts are stored; only anonymous operating events are counted.',
     '跳至主要内容':'Skip to main content',
     '先通过现场照片和观看导览建立整体印象，遇到不懂的动作、人物与地方差异，随时问英歌小槌。':'Start with field photographs and the viewing guide. Ask Xiaochui whenever a movement, role, or local difference is unclear.',
     '从一个现场瞬间学习整体观察顺序，再继续理解动作、声音、队形和角色。':'Learn an order for reading one moment in the field, then continue with movement, sound, formations, and roles.',

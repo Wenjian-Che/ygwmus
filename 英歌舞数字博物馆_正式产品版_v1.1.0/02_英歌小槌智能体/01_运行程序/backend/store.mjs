@@ -42,6 +42,15 @@ export async function createStore(backendDir, { requirePersistent = false } = {}
       latency_ms INTEGER NOT NULL,
       created_at TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS voice_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      app_id TEXT NOT NULL,
+      event TEXT NOT NULL,
+      engine TEXT,
+      latency_ms INTEGER,
+      device_class TEXT,
+      created_at TEXT NOT NULL
+    );
     CREATE TABLE IF NOT EXISTS unanswered_questions (
       app_id TEXT NOT NULL,
       question TEXT NOT NULL,
@@ -146,6 +155,17 @@ export async function createStore(backendDir, { requirePersistent = false } = {}
     db.prepare("INSERT INTO usage_events (app_id, endpoint, status, latency_ms, model, intent, evidence_quality, retrieval_ms, citation_integrity, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
       .run(event.app_id || "yingge-h5", event.endpoint, event.status, event.latency_ms, event.model || null, event.intent || null, event.evidence_quality || null, Number.isFinite(Number(event.retrieval_ms)) ? Number(event.retrieval_ms) : null, event.citation_integrity === undefined ? null : (event.citation_integrity ? 1 : 0), event.created_at || new Date().toISOString());
   }
+  function recordVoiceEvent(event) {
+    db.prepare("INSERT INTO voice_events (app_id, event, engine, latency_ms, device_class, created_at) VALUES (?, ?, ?, ?, ?, ?)")
+      .run(event.app_id || "yingge-h5", String(event.event || "unknown").slice(0, 64), String(event.engine || "").slice(0, 80) || null, Number.isFinite(Number(event.latency_ms)) ? Math.max(0, Math.round(Number(event.latency_ms))) : null, ["mobile", "desktop", "unknown"].includes(event.device_class) ? event.device_class : "unknown", event.created_at || new Date().toISOString());
+  }
+  function voiceMetrics(hours = 24) {
+    const since = new Date(Date.now() - Math.max(1, Math.min(720, Number(hours) || 24)) * 3600000).toISOString();
+    const rows = db.prepare("SELECT event, COUNT(*) AS count, ROUND(AVG(latency_ms), 1) AS avg_latency_ms FROM voice_events WHERE created_at >= ? GROUP BY event ORDER BY event").all(since);
+    const byEvent = Object.fromEntries(rows.map((row) => [row.event, Number(row.count || 0)]));
+    const submitted = Number(byEvent.question_submitted || 0), timedOut = Number(byEvent.wake_timeout || 0), completed = submitted + timedOut;
+    return { hours: Math.max(1, Math.min(720, Number(hours) || 24)), total: rows.reduce((sum, row) => sum + Number(row.count || 0), 0), by_event: byEvent, average_latency_ms: Object.fromEntries(rows.filter((row) => row.avg_latency_ms !== null).map((row) => [row.event, Number(row.avg_latency_ms)])), wake_to_question_rate: completed ? Number((submitted / completed).toFixed(4)) : null };
+  }
   function recordInteraction(event) {
     const quality = String(event.quality || "insufficient");
     const status = quality === "supported" ? "observed" : "needs_review";
@@ -247,11 +267,12 @@ export async function createStore(backendDir, { requirePersistent = false } = {}
     const byApp = db.prepare("SELECT app_id, COUNT(*) AS requests, SUM(CASE WHEN status < 400 THEN 1 ELSE 0 END) AS successes, ROUND(AVG(latency_ms), 1) AS avg_latency_ms, ROUND(AVG(retrieval_ms), 2) AS avg_retrieval_ms FROM usage_events GROUP BY app_id ORDER BY requests DESC").all();
     return { summary, by_app: byApp };
   }
-  return { mode: "sqlite", listApps, upsertApp, recordReview, upsertDynamic, listDynamic, recordUsage, recordInteraction, recordFeedback, listInteractions, updateInteractionStatus, deleteInteraction, saveEvidenceAudit, getEvidenceAudit, interactionMetrics, recordUnanswered, listUnanswered, resolveUnanswered, createKnowledgeTask, listKnowledgeTasks, updateKnowledgeTask, recordRevision, listRevisions, metrics, close: () => db.close(), path: dbPath };
+  return { mode: "sqlite", listApps, upsertApp, recordReview, upsertDynamic, listDynamic, recordUsage, recordVoiceEvent, voiceMetrics, recordInteraction, recordFeedback, listInteractions, updateInteractionStatus, deleteInteraction, saveEvidenceAudit, getEvidenceAudit, interactionMetrics, recordUnanswered, listUnanswered, resolveUnanswered, createKnowledgeTask, listKnowledgeTasks, updateKnowledgeTask, recordRevision, listRevisions, metrics, close: () => db.close(), path: dbPath };
 }
 
 function createJsonFallback() {
   const interactions = new Map();
   const audits = new Map();
-  return { mode: "json", listApps: () => [], upsertApp: () => {}, recordReview: () => {}, upsertDynamic: () => {}, listDynamic: () => [], recordUsage: () => {}, recordInteraction: (item) => interactions.set(item.message_id, { ...item, status: item.quality === "supported" ? "observed" : "needs_review" }), recordFeedback: (item) => { const current = interactions.get(item.message_id); if (!current) return false; interactions.set(item.message_id, { ...current, rating: item.rating, feedback_reasons: item.reasons || [], feedback_note: item.note || "", status: item.rating === "down" ? "needs_review" : "accepted" }); return true; }, listInteractions: (status = "review") => [...interactions.values()].filter((item) => status === "all" || item.status === "needs_review"), updateInteractionStatus: (item) => { const current = interactions.get(item.message_id); if (!current) return false; interactions.set(item.message_id, { ...current, status: item.status }); return true; }, deleteInteraction: (item) => interactions.delete(item.message_id), saveEvidenceAudit: (audit) => { const messageId = String(audit?.message_id || "").trim(); if (!messageId) return false; audits.set(messageId, audit); return true; }, getEvidenceAudit: (messageId) => audits.get(String(messageId || "")) || null, interactionMetrics: () => ({ total: interactions.size, needs_review: [...interactions.values()].filter((item) => item.status === "needs_review").length, downvotes: [...interactions.values()].filter((item) => item.rating === "down").length, low_confidence: [...interactions.values()].filter((item) => item.quality !== "supported").length, golden: [...interactions.values()].filter((item) => item.status === "golden").length }), recordUnanswered: () => {}, listUnanswered: () => [], resolveUnanswered: () => false, createKnowledgeTask: (task) => task, listKnowledgeTasks: () => [], updateKnowledgeTask: () => false, recordRevision: (revision) => revision, listRevisions: () => [], metrics: () => ({ summary: { requests: 0, successes: 0, errors: 0, avg_latency_ms: 0 }, by_app: [] }), close: () => {}, path: null };
+  const voiceEvents = [];
+  return { mode: "json", listApps: () => [], upsertApp: () => {}, recordReview: () => {}, upsertDynamic: () => {}, listDynamic: () => [], recordUsage: () => {}, recordVoiceEvent: (item) => voiceEvents.push({ event: String(item.event || "unknown"), latency_ms: Number(item.latency_ms || 0) }), voiceMetrics: () => { const byEvent = {};for (const item of voiceEvents) byEvent[item.event]=(byEvent[item.event]||0)+1;const submitted=byEvent.question_submitted||0,timedOut=byEvent.wake_timeout||0;return{hours:24,total:voiceEvents.length,by_event:byEvent,average_latency_ms:{},wake_to_question_rate:submitted+timedOut?Number((submitted/(submitted+timedOut)).toFixed(4)):null}}, recordInteraction: (item) => interactions.set(item.message_id, { ...item, status: item.quality === "supported" ? "observed" : "needs_review" }), recordFeedback: (item) => { const current = interactions.get(item.message_id); if (!current) return false; interactions.set(item.message_id, { ...current, rating: item.rating, feedback_reasons: item.reasons || [], feedback_note: item.note || "", status: item.rating === "down" ? "needs_review" : "accepted" }); return true; }, listInteractions: (status = "review") => [...interactions.values()].filter((item) => status === "all" || item.status === "needs_review"), updateInteractionStatus: (item) => { const current = interactions.get(item.message_id); if (!current) return false; interactions.set(item.message_id, { ...current, status: item.status }); return true; }, deleteInteraction: (item) => interactions.delete(item.message_id), saveEvidenceAudit: (audit) => { const messageId = String(audit?.message_id || "").trim(); if (!messageId) return false; audits.set(messageId, audit); return true; }, getEvidenceAudit: (messageId) => audits.get(String(messageId || "")) || null, interactionMetrics: () => ({ total: interactions.size, needs_review: [...interactions.values()].filter((item) => item.status === "needs_review").length, downvotes: [...interactions.values()].filter((item) => item.rating === "down").length, low_confidence: [...interactions.values()].filter((item) => item.quality !== "supported").length, golden: [...interactions.values()].filter((item) => item.status === "golden").length }), recordUnanswered: () => {}, listUnanswered: () => [], resolveUnanswered: () => false, createKnowledgeTask: (task) => task, listKnowledgeTasks: () => [], updateKnowledgeTask: () => false, recordRevision: (revision) => revision, listRevisions: () => [], metrics: () => ({ summary: { requests: 0, successes: 0, errors: 0, avg_latency_ms: 0 }, by_app: [] }), close: () => {}, path: null };
 }

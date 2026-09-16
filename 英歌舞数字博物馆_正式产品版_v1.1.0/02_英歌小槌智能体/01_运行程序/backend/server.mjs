@@ -1419,6 +1419,16 @@ const server = http.createServer(async (request, response) => {
       if (!originAllowed(requestOrigin,requestHost)) return sendJson(response, 403, { code: "ORIGIN_NOT_ALLOWED", message: "当前网页来源未加入白名单" });
       return sendJson(response, 200, publicVoiceStatus());
     }
+    if (request.method === "POST" && url.pathname === "/api/voice/events") {
+      const body = await readJson(request).catch(() => ({}));
+      const appId = appIdFrom(request, body);
+      if (!appAuthorized(appId)) return sendJson(response, 403, { code: "APP_NOT_ALLOWED", message: "app_id 未注册或已停用" });
+      const allowed = new Set(["wake_started", "wake_detected", "wake_timeout", "question_submitted", "wake_duplicate_suppressed", "asr_fallback", "voice_error"]);
+      const event = String(body.event || "");
+      if (!allowed.has(event)) return sendJson(response, 400, { code: "INVALID_VOICE_EVENT", message: "未知语音事件" });
+      store.recordVoiceEvent({ app_id: appId, event, engine: String(body.engine || "").slice(0, 80), latency_ms: Number(body.latency_ms), device_class: ["mobile", "desktop"].includes(body.device_class) ? body.device_class : "unknown" });
+      return sendJson(response, 202, { accepted: true });
+    }
     if (request.method === "POST" && url.pathname === "/api/voice/session") {
       const body = await readJson(request).catch(() => ({}));
       const appId = appIdFrom(request, body);
@@ -1862,7 +1872,7 @@ const server = http.createServer(async (request, response) => {
       const ok = store.resolveUnanswered({ app_id: String(body.app_id || "yingge-h5"), question: body.question, status: body.status || "resolved" });
       return sendJson(response, ok ? 200 : 404, { ok, message: ok ? "已更新问题状态" : "未找到对应问题" });
     }
-    if (request.method === "GET" && url.pathname === "/api/admin/metrics") return sendJson(response, 200, { ...store.metrics(), retrieval: retrievalEngine.diagnostics(), generated_at: new Date().toISOString() });
+    if (request.method === "GET" && url.pathname === "/api/admin/metrics") return sendJson(response, 200, { ...store.metrics(), voice: store.voiceMetrics(Number(url.searchParams.get("voice_hours") || 24)), retrieval: retrievalEngine.diagnostics(), generated_at: new Date().toISOString() });
     if (request.method === "GET" && url.pathname === "/api/admin/evaluation") return sendJson(response, 200, evaluateRetrieval(Number(url.searchParams.get("limit") || 6)));
     if (request.method === "GET" && url.pathname === "/api/admin/evaluation/history") return sendJson(response, 200, { items: readEvaluationHistory() });
     if (request.method === "POST" && url.pathname === "/api/admin/evaluation/run") { const limit = Number((await readJson(request)).limit || 6); return sendJson(response, 200, saveEvaluationSnapshot(evaluateRetrieval(limit), limit)); }
