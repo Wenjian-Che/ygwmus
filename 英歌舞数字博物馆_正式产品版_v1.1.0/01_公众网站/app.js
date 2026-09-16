@@ -298,7 +298,8 @@ const createYinggeVoice=()=>{
   const canSpeak='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window;
   const SPEECH_CHUNK_TARGET=64;
   const voiceApi=`${YINGGE_API_BASE}/api/voice`;
-  const WAKE_ACK_URL='assets/voice/xiaochui-wake-response.wav';
+  const WAKE_ACK_URL='assets/voice/xiaochui-wake-response.wav?v=1.2.2';
+  const WAKE_TRIGGER_COOLDOWN_MS=1800;
   const OUTPUT_KEY='yingge-voice-output-enabled';
   let recognition=null;
   let recognitionTimer=0;
@@ -341,6 +342,10 @@ const createYinggeVoice=()=>{
   let wakeAckStartedAt=0;
   let wakeAckVoiceFrames=0;
   let wakeAckPrimed=false;
+  let wakeLastTriggerAt=0;
+  let wakeEchoGuardUntil=0;
+  let wakeNoiseFloor=.004;
+  let wakeLastVoiceAt=0;
   let wakeFlowToken=0;
   let resumeWakeAfterManual=false;
   let holdReleaseRequested=false;
@@ -520,14 +525,14 @@ const createYinggeVoice=()=>{
   };
   const playWakeAcknowledgement=()=>{
     primeWakeAcknowledgement();
-    if(!wakeAckAudio){playWakeChime();voiceStatus('小槌已唤醒，请直接说出问题','awake');return}
+    if(!wakeAckAudio){playWakeChime();voiceStatus('小槌我在','awake');return}
     stopWakeAcknowledgement();
     wakeAckPlaying=true;wakeAckStartedAt=Date.now();wakeAckVoiceFrames=0;
-    wakeAckAudio.onended=()=>{wakeAckPlaying=false;wakeChunks=[];wakeChunkLength=0;if(wakeState==='awake')voiceStatus('回应结束，请开始说出问题','listening')};
-    wakeAckAudio.onerror=()=>{wakeAckPlaying=false;playWakeChime();if(wakeState==='awake')voiceStatus('小槌已唤醒，请直接说出问题','awake')};
-    voiceStatus('小槌我在，回应结束后请开始说','awake');
+    wakeAckAudio.onended=()=>{wakeAckPlaying=false;wakeEchoGuardUntil=Date.now()+320;wakeChunks=[];wakeChunkLength=0;if(wakeState==='awake')voiceStatus('正在聆听','listening')};
+    wakeAckAudio.onerror=()=>{wakeAckPlaying=false;wakeEchoGuardUntil=Date.now()+220;playWakeChime();if(wakeState==='awake')voiceStatus('小槌我在','awake')};
+    voiceStatus('小槌我在','awake');
     const playback=wakeAckAudio.play();
-    playback?.catch(()=>{wakeAckPlaying=false;playWakeChime();if(wakeState==='awake')voiceStatus('小槌已唤醒，请直接说出问题','awake')});
+    playback?.catch(()=>{wakeAckPlaying=false;wakeEchoGuardUntil=Date.now()+220;playWakeChime();if(wakeState==='awake')voiceStatus('小槌我在','awake')});
   };
   const beginWakeQuestionWindow=({followup=false}={})=>{
     window.clearInterval(wakeQuestionTimer);let remaining=followup?6:9;
@@ -642,10 +647,14 @@ const createYinggeVoice=()=>{
   };
   const handleWakePayload=async payload=>{
     if(wakeState==='standby'&&payload.awake){
+      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
+      wakeLastTriggerAt=Date.now();
       await enterAwakeConversation();
       return;
     }
     if(wakeState==='speaking'&&payload.awake){
+      if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
+      wakeLastTriggerAt=Date.now();
       stopSpeaking({rearm:false,announce:false});
       await enterAwakeConversation();
       return;
@@ -686,10 +695,14 @@ const createYinggeVoice=()=>{
       const clean=normalizeYinggeTranscript(transcript).replace(/\s+/g,'');
       if(wakeState==='standby'&&clean)voiceStatus(hasFinal?'正在识别唤醒词':'已检测到语音，正在识别');
       if(wakeState==='standby'&&/小[槌锤垂陲捶吹崔]小[槌锤垂陲捶吹崔]/.test(clean)){
+        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
+        wakeLastTriggerAt=Date.now();
         enterAwakeConversation();
         return;
       }
       if(wakeState==='speaking'&&/小[槌锤垂陲捶吹崔]小[槌锤垂陲捶吹崔]/.test(clean)){
+        if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS)return;
+        wakeLastTriggerAt=Date.now();
         stopSpeaking({rearm:false,announce:false});enterAwakeConversation();
         return;
       }
@@ -732,14 +745,20 @@ const createYinggeVoice=()=>{
       const context=new AudioContextClass();
       const source=context.createMediaStreamSource(stream);
       const processor=context.createScriptProcessor(4096,1,1);
+      wakeNoiseFloor=.004;wakeLastVoiceAt=0;
       let closed=false;
       processor.onaudioprocess=event=>{
         if(!['standby','awake','speaking'].includes(wakeState)){event.outputBuffer?.getChannelData(0).fill(0);return}
-        const chunk=new Float32Array(event.inputBuffer.getChannelData(0));wakeChunks.push(chunk);wakeChunkLength+=chunk.length;
+        const chunk=new Float32Array(event.inputBuffer.getChannelData(0));
         if(wakeState==='awake'&&wakeAckPlaying){wakeChunks=[];wakeChunkLength=0;event.outputBuffer?.getChannelData(0).fill(0);return}
         let energy=0;for(let index=0;index<chunk.length;index+=1)energy+=chunk[index]*chunk[index];
-        const level=Math.sqrt(energy/Math.max(1,chunk.length));
-        if(level>.012&&Date.now()-wakeSignalStatusAt>700){wakeSignalStatusAt=Date.now();voiceStatus(wakeState==='awake'?'正在聆听你的问题':wakeState==='speaking'?'检测到声音，正在判断是否需要打断':'已检测到语音，正在识别唤醒词',wakeState==='awake'?'listening':wakeState==='speaking'?'speaking':'recognizing')}
+        const level=Math.sqrt(energy/Math.max(1,chunk.length)),now=Date.now();
+        if(level<Math.max(.007,wakeNoiseFloor*1.45))wakeNoiseFloor=wakeNoiseFloor*.96+level*.04;
+        const likelyVoice=level>=Math.max(.011,wakeNoiseFloor*2.35);
+        if(likelyVoice)wakeLastVoiceAt=now;
+        if(now<wakeEchoGuardUntil||(!likelyVoice&&now-wakeLastVoiceAt>260))chunk.fill(0);
+        wakeChunks.push(chunk);wakeChunkLength+=chunk.length;
+        if(likelyVoice&&now-wakeSignalStatusAt>700){wakeSignalStatusAt=now;voiceStatus(wakeState==='awake'?'正在聆听你的问题':wakeState==='speaking'?'检测到声音，正在判断是否需要打断':'已检测到语音，正在识别唤醒词',wakeState==='awake'?'listening':wakeState==='speaking'?'speaking':'recognizing')}
         event.outputBuffer?.getChannelData(0).fill(0);
         if(wakeChunkLength>=context.sampleRate*.25){const batch=wakeChunks;wakeChunks=[];wakeChunkLength=0;sendWakeSamples(batch,context.sampleRate)}
       };

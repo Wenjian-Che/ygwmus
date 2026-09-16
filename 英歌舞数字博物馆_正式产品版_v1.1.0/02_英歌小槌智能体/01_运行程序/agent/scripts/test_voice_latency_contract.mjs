@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,6 +8,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../.
 const app = fs.readFileSync(path.join(root, "01_公众网站", "app.js"), "utf8");
 const mugeda = fs.readFileSync(path.join(root, "01_公众网站", "mugeda-agent.js"), "utf8");
 const mugedaLoader = fs.readFileSync(path.join(root, "02_英歌小槌智能体", "01_运行程序", "agent", "scripts", "yingge.js"), "utf8");
+const wakeAck = fs.readFileSync(path.join(root, "01_公众网站", "assets", "voice", "xiaochui-wake-response.wav"));
+const wakeAckManifest = JSON.parse(fs.readFileSync(path.join(root, "01_公众网站", "assets", "voice", "xiaochui-wake-response.json"), "utf8"));
 
 assert.match(app, /\[应鹰莺\].*英歌/, "网站实时转写应修正‘应歌舞’等同音结果");
 assert.match(mugeda, /应歌舞.*英歌舞/, "木疙瘩转写应修正‘应歌舞’");
@@ -26,10 +29,26 @@ assert.match(mugedaLoader, /mugeda-agent\.js\?v=1\.2\.0/, "木疙瘩加载器必
 assert.match(mugeda, /Array\.from\(question\.replace\(\/\\s\/g, ''\)\)\.length < 2/, "木疙瘩应拦截过短、低可信的识别结果");
 assert.doesNotMatch(app, /if\(event==='done'\)\{await typing\?\.complete\(\)/, "微信 WebView 的最终回答不得等待动画帧完成");
 assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/, "收到完成帧时应立即落下完整回答文字");
+assert.match(app, /WAKE_TRIGGER_COOLDOWN_MS/, "重复唤醒应有短时去重保护");
+assert.match(app, /wakeNoiseFloor/, "唤醒输入应使用自适应环境噪声门限");
+assert.match(app, /wakeEchoGuardUntil/, "系统回应结束后应抑制短暂回声尾音");
+assert.match(app, /voiceStatus\('小槌我在','awake'\)/, "唤醒回应文案应只有‘小槌我在’");
+assert.match(app, /xiaochui-wake-response\.wav\?v=1\.2\.2/, "短唤醒回应必须刷新不可变音频缓存");
+assert.doesNotMatch(app, /小槌我在，有什么|小槌我在，回应结束后请开始说/, "唤醒回应不得附加服务式长句");
+
+assert.equal(wakeAck.subarray(0, 4).toString("ascii"), "RIFF", "唤醒回应必须是 WAV");
+const sampleRate = wakeAck.readUInt32LE(24);
+const dataSize = wakeAck.readUInt32LE(40);
+const channels = wakeAck.readUInt16LE(22);
+const bits = wakeAck.readUInt16LE(34);
+const wakeAckSeconds = dataSize / (sampleRate * channels * (bits / 8));
+assert.ok(wakeAckSeconds >= .35 && wakeAckSeconds <= 1.8, `‘小槌我在’回应应简短，当前 ${wakeAckSeconds.toFixed(2)} 秒`);
+assert.equal(wakeAckManifest.text, "小槌我在", "唤醒音频清单不得包含额外服务式问句");
+assert.equal(crypto.createHash("sha256").update(wakeAck).digest("hex"), wakeAckManifest.sha256, "唤醒音频必须与‘小槌我在’审核清单一致");
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.2\.1/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.2\.2/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");
