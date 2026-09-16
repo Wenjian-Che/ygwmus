@@ -924,7 +924,7 @@ const createYinggeVoice=()=>{
     if(hold&&holdReleaseRequested){activeButton=null;await restoreWakeAfterManual();return}
     const preferCloudRecognition=canRecordLocally&&localCapabilities.asr;
     listeningPhase='requesting';
-    voiceStatus(preferCloudRecognition?'正在连接腾讯云实时识别':canUseRecognition?'正在启动语音识别':'正在申请麦克风权限','starting');
+    voiceStatus(preferCloudRecognition?'正在连接实时语音识别':canUseRecognition?'正在启动语音识别':'正在申请麦克风权限','starting');
     resetInputControls();
     try{
       if(preferCloudRecognition||!canUseRecognition){
@@ -1001,7 +1001,7 @@ const createYinggeVoice=()=>{
       if(hold&&holdReleaseRequested)window.setTimeout(()=>finishListening(button),0);
       recognitionTimer=window.setTimeout(()=>{
         if(recognition!==current||recognizedText)return;
-        voiceStatus('语音识别服务没有响应，请使用 Chrome 或 Edge 重试');
+        voiceStatus('语音识别服务没有响应，请重新打开页面或改用文字输入');
         stopListening();
       },8000);
     }catch{recognition=null;listeningPhase='idle';resetInputControls();voiceStatus('语音输入暂时不可用');await restoreWakeAfterManual()}
