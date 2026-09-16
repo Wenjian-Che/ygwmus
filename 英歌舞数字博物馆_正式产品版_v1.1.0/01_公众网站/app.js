@@ -175,7 +175,7 @@ function setupMobileMuseumNavigation(){
   header.append(toggle,panel);
 }
 setupMobileMuseumNavigation();
-const guideStyles=document.createElement('link');guideStyles.rel='stylesheet';guideStyles.href='guide-agent.css?v=20260911-voice10';document.head.appendChild(guideStyles);
+const guideStyles=document.createElement('link');guideStyles.rel='stylesheet';guideStyles.href='guide-agent.css?v=1.4.0';document.head.appendChild(guideStyles);
 const setPublicText=(selector,value)=>{const node=document.querySelector(selector);if(node)node.textContent=value};
 const removePublic=(selector)=>document.querySelector(selector)?.remove();
 if(publicPath==='index.html'||publicPath===''){
@@ -286,7 +286,15 @@ if(guidePanelSetup){
     voiceControls.innerHTML='<button type="button" data-wake-toggle aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>开启语音唤醒</span></button><button type="button" data-voice-input data-voice-target="question" aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-microphone.svg" alt=""><span data-voice-label>语音输入</span></button><button type="button" data-voice-output aria-pressed="false"><img class="voice-control-icon" src="assets/icons/tabler-volume.svg" alt=""><span data-voice-label>小槌朗读：开</span></button><button type="button" data-voice-stop hidden><img class="voice-control-icon" src="assets/icons/tabler-player-stop.svg" alt=""><span data-voice-label>停止朗读</span></button><div class="voice-state-card" data-voice-stage="idle"><span class="voice-state-mark" aria-hidden="true"><i></i></span><span class="voice-state-copy"><strong data-voice-state-label>语音就绪</strong><span data-voice-status aria-live="polite">点击开启唤醒，或直接使用语音输入</span></span><span class="voice-live-indicator" data-voice-activity hidden aria-hidden="true"><i></i><i></i><i></i><i></i></span></div><span class="voice-privacy-note">不保存录音或转写文本，仅统计匿名运行状态</span>';
     guideForm.querySelector('.agent-note')?.before(voiceControls);
   }
+  if(guideForm&&!guideForm.querySelector('.guide-info')){
+    const info=document.createElement('details');info.className='guide-info';info.innerHTML='<summary>隐私与回答说明</summary>';
+    const privacy=guideForm.querySelector('.voice-privacy-note'),note=guideForm.querySelector('.agent-note');
+    if(privacy)info.appendChild(privacy);if(note)info.appendChild(note);guideForm.appendChild(info);
+  }
 }
+
+const syncGuideViewport=()=>document.documentElement.style.setProperty('--guide-viewport-height',`${Math.round(window.visualViewport?.height||window.innerHeight)}px`);
+syncGuideViewport();window.visualViewport?.addEventListener('resize',syncGuideViewport);window.visualViewport?.addEventListener('scroll',syncGuideViewport);
 
 const createYinggeVoice=()=>{
   const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;

@@ -55,7 +55,7 @@ assert.equal(crypto.createHash("sha256").update(wakeAck).digest("hex"), wakeAckM
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.3\.1/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.4\.0/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");
