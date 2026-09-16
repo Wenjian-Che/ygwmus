@@ -544,6 +544,7 @@ const createYinggeVoice=()=>{
     playback?.catch(()=>{wakeAckPlaying=false;wakeEchoGuardUntil=Date.now()+220;playWakeChime();if(wakeState==='awake')voiceStatus('小槌我在','awake')});
   };
   const beginWakeQuestionWindow=({followup=false}={})=>{
+    if(followup)wakeDetectedAt=0;
     window.clearInterval(wakeQuestionTimer);let remaining=followup?6:9;
     if(followup)voiceStatus(`可以直接追问，${remaining} 秒后恢复唤醒待机`,'followup');else playWakeAcknowledgement();
     const show=()=>{if(followup)voiceStatus(`可以直接追问，${remaining} 秒后恢复唤醒待机`,'followup');else if(!wakeAckPlaying)voiceStatus(`正在聆听，请在 ${remaining} 秒内说出问题`,'listening')};
@@ -664,6 +665,7 @@ const createYinggeVoice=()=>{
     if(wakeState==='speaking'&&payload.awake){
       if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed');return}
       wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected');
+      reportVoiceEvent('speech_interrupted');
       stopSpeaking({rearm:false,announce:false});
       await enterAwakeConversation();
       return;
@@ -712,6 +714,7 @@ const createYinggeVoice=()=>{
       if(wakeState==='speaking'&&/小[槌锤垂陲捶吹崔]小[槌锤垂陲捶吹崔]/.test(clean)){
         if(Date.now()-wakeLastTriggerAt<WAKE_TRIGGER_COOLDOWN_MS){reportVoiceEvent('wake_duplicate_suppressed',{engine:'browser-speech-recognition'});return}
         wakeLastTriggerAt=Date.now();wakeDetectedAt=wakeLastTriggerAt;reportVoiceEvent('wake_detected',{engine:'browser-speech-recognition'});
+        reportVoiceEvent('speech_interrupted',{engine:'browser-speech-recognition'});
         stopSpeaking({rearm:false,announce:false});enterAwakeConversation();
         return;
       }
@@ -1087,7 +1090,7 @@ const createYinggeVoice=()=>{
     const run=++speechRun;
     if(canSpeak)window.speechSynthesis.cancel();
     if(currentAudio){currentAudio.pause();currentAudio=null}
-    speaking=true;updateOutputControls();voiceStatus('小槌正在组织语气','starting');armWakeDuringSpeech();
+    speaking=true;updateOutputControls();voiceStatus('小槌正在组织语气','starting');await armWakeDuringSpeech();
     try{
       if(!localCapabilities.tts)throw new Error('local tts unavailable');
       const speechBlobs=[];

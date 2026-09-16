@@ -1423,7 +1423,7 @@ const server = http.createServer(async (request, response) => {
       const body = await readJson(request).catch(() => ({}));
       const appId = appIdFrom(request, body);
       if (!appAuthorized(appId)) return sendJson(response, 403, { code: "APP_NOT_ALLOWED", message: "app_id 未注册或已停用" });
-      const allowed = new Set(["wake_started", "wake_detected", "wake_timeout", "question_submitted", "wake_duplicate_suppressed", "asr_fallback", "voice_error"]);
+      const allowed = new Set(["wake_started", "wake_detected", "wake_timeout", "question_submitted", "wake_duplicate_suppressed", "speech_interrupted", "asr_fallback", "voice_error"]);
       const event = String(body.event || "");
       if (!allowed.has(event)) return sendJson(response, 400, { code: "INVALID_VOICE_EVENT", message: "未知语音事件" });
       store.recordVoiceEvent({ app_id: appId, event, engine: String(body.engine || "").slice(0, 80), latency_ms: Number(body.latency_ms), device_class: ["mobile", "desktop"].includes(body.device_class) ? body.device_class : "unknown" });

@@ -32,6 +32,11 @@ assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/
 assert.match(app, /WAKE_TRIGGER_COOLDOWN_MS/, "重复唤醒应有短时去重保护");
 assert.match(app, /wakeNoiseFloor/, "唤醒输入应使用自适应环境噪声门限");
 assert.match(app, /wakeEchoGuardUntil/, "系统回应结束后应抑制短暂回声尾音");
+const speakFlow = app.slice(app.indexOf("const speak=async"), app.indexOf("const bind="));
+assert.match(speakFlow, /await armWakeDuringSpeech\(\)/, "朗读开始前必须等待打断监听会话就绪");
+assert.ok(speakFlow.indexOf("await armWakeDuringSpeech()") < speakFlow.indexOf("currentAudio.play()"), "打断监听必须早于音频播放就绪");
+assert.match(app, /reportVoiceEvent\('speech_interrupted'/, "成功语音打断必须留下匿名诊断事件");
+assert.match(app, /if\(followup\)wakeDetectedAt=0/, "普通追问窗口不得沿用上一次唤醒时间");
 assert.match(app, /voiceApi\+'\/events'/, "网站应上报匿名唤醒质量事件");
 for (const event of ["wake_started", "wake_detected", "wake_timeout", "question_submitted", "wake_duplicate_suppressed", "asr_fallback"]) assert.match(app, new RegExp(event), `缺少匿名语音事件：${event}`);
 assert.match(app, /voiceStatus\('小槌我在','awake'\)/, "唤醒回应文案应只有‘小槌我在’");
@@ -50,7 +55,7 @@ assert.equal(crypto.createHash("sha256").update(wakeAck).digest("hex"), wakeAckM
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.3\.0/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.3\.1/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");
