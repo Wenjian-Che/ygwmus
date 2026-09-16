@@ -286,6 +286,13 @@ body.guide-open .guide-backdrop { opacity: 1; visibility: visible; }
 .guide-panel #agentForm input::placeholder { color: #6b746d; }
 .guide-panel #agentForm input:focus { border-color: rgba(240,74,58,.66); box-shadow: 0 0 0 3px rgba(240,74,58,.1); outline: 0; }
 .guide-panel .agent-note { color: var(--agent-ink-soft); }
+.guide-info { margin-top: 8px; color: var(--agent-ink-soft); font-size: 10px; line-height: 1.45; }
+.guide-info summary { min-height: 28px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; color: #59645c; }
+.guide-info summary::-webkit-details-marker { display: none; }
+.guide-info summary::after { content: '＋'; color: #7b413a; font-size: 14px; transition: transform .2s ease; }
+.guide-info[open] summary::after { transform: rotate(45deg); }
+.guide-info .voice-privacy-note,
+.guide-info .agent-note { display: block; margin: 2px 0 6px; font-size: 10px; }
 
 .voice-control-row {
   display: flex;
@@ -334,7 +341,7 @@ body.guide-open .guide-backdrop { opacity: 1; visibility: visible; }
 .guide-panel .voice-control-row button:disabled,
 .home-agent-voice-controls button:disabled { opacity: .52; cursor: not-allowed; }
 .voice-control-row [data-voice-stop] { color: #8b3931; }
-.voice-control-row [hidden] { display: none; }
+.voice-control-row [hidden] { display: none !important; }
 .voice-state-card {
   flex: 1 1 100%;
   display: grid;
@@ -433,21 +440,45 @@ body.guide-open .guide-backdrop { opacity: 1; visibility: visible; }
   .companion-main { width: 102px; height: 140px; border-radius: 18px; }
   .companion-callout { display: none; }
   .companion-label { right: 6px; bottom: 6px; padding: 5px 7px; }
-  .guide-panel { top: 7px; right: 7px; bottom: 7px; width: calc(100vw - 14px); padding: 18px; overflow-y: auto; overscroll-behavior: contain; border-radius: 18px; }
-  .guide-head { padding-right: 86px; }
-  .guide-reset { top: 12px; right: 72px; min-height: 44px; padding: 0 8px; }
-  .guide-close { top: 12px; right: 14px; min-width: 44px; min-height: 44px; padding: 0; }
-  .guide-avatar-sprite { width: 48px; height: 62px; flex-basis: 48px; }
-  .guide-prompts { margin-top: 5px; }
-  .guide-prompts button { min-height: 44px; padding: 8px 12px; }
-  .agent-messages { min-height: 130px; }
-  .guide-panel .voice-control-row button { min-height: 48px; flex: 1 1 auto; }
-  .voice-state-card { min-height: 58px; padding: 10px 12px; }
+  .guide-panel { inset: 0; width: 100vw; height: var(--guide-viewport-height,100dvh); max-height: none; padding: max(10px,env(safe-area-inset-top)) 12px max(8px,env(safe-area-inset-bottom)); overflow: hidden; overscroll-behavior: contain; border: 0; border-radius: 0; }
+  .guide-head { min-height: 50px; padding: 0 108px 7px 0; }
+  .guide-head h2 { margin-bottom: 2px; font-size: 18px; }
+  .guide-head p { margin: 2px 0; font-size: 10px; }
+  .guide-reset { top: max(7px,env(safe-area-inset-top)); right: 58px; min-height: 44px; padding: 0 7px; }
+  .guide-close { top: max(7px,env(safe-area-inset-top)); right: 7px; min-width: 44px; min-height: 44px; padding: 0; }
+  .guide-avatar-sprite { width: 34px; height: 44px; flex-basis: 34px; background-size: auto 44px; }
+  .guide-context { margin: 5px 0 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10px; }
+  .agent-messages { min-height: 0; margin: 4px 0 6px; padding: 4px 2px 18px; scroll-padding-bottom: 18px; }
+  .agent-welcome,.agent-message { padding: 11px 12px; margin-bottom: 8px; font-size: 14px; line-height: 1.64; }
+  .guide-prompts { margin: 0 0 6px; gap: 6px; }
+  .guide-prompts button { min-height: 38px; padding: 7px 10px; }
+  .guide-panel #agentForm { padding-top: 7px; border-top: 1px solid rgba(52,62,55,.13); background: linear-gradient(180deg,rgba(235,237,233,.92),#e8ebe7 18%); }
+  .guide-panel #agentForm>label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .guide-panel #agentForm>div:first-of-type { min-height: 48px; }
+  .guide-panel #agentForm input { min-height: 48px; padding: 11px 12px; font-size: 16px; }
+  .guide-panel #agentForm button[type="submit"] { min-width: 62px; padding: 0 14px; }
+  .voice-control-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; margin-top: 7px; }
+  .guide-panel .voice-control-row button { min-width: 0; min-height: 44px; padding: 0 6px; gap: 5px; font-size: 10px; white-space: nowrap; }
+  .guide-panel .voice-control-row:has([data-voice-stop]:not([hidden])) [data-voice-output] { display: none; }
+  .voice-state-card { grid-column: 1/-1; grid-template-columns: 22px minmax(0,1fr) auto; min-height: 40px; padding: 6px 9px; gap: 7px; }
+  .voice-state-mark { width: 22px; height: 22px; }
+  .voice-state-copy { display: block; }
+  .voice-state-copy strong { display: none; }
+  .voice-control-row [data-voice-status] { display: block; min-height: 0; font-size: 11px; line-height: 1.35; }
+  .guide-info { grid-column: 1/-1; margin-top: -2px; }
+  .guide-info summary { min-height: 26px; }
   .guide-panel .voice-control-row [data-voice-input],
   .home-agent-voice-controls [data-voice-input] { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
   .guide-panel .voice-control-row [data-voice-input].is-listening,
   .home-agent-voice-controls [data-voice-input].is-listening { transform: scale(.98); box-shadow: 0 0 0 4px rgba(240,74,58,.14); }
   .context-agent-question { min-height: 44px; padding: 8px 0; display: inline-flex; align-items: center; }
+}
+
+@media (min-width: 701px) and (max-width: 1024px) {
+  .guide-panel { top: 16px; right: 16px; bottom: 16px; width: min(590px,calc(100vw - 32px)); padding: 22px; }
+  .agent-messages { min-height: 0; }
+  .guide-panel .voice-control-row button { min-height: 44px; }
+  .voice-state-card { min-height: 48px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
