@@ -263,6 +263,12 @@ function normalize(text = "") {
   return text.toLowerCase().replace(/[^\u4e00-\u9fff\w]/g, "");
 }
 
+function normalizeBoardStyleTerms(text = "") {
+  return String(text)
+    .replace(/中快[班版办]/g, "中快板")
+    .replace(/([快慢中])[班版办](?=(?:英歌|板式|鼓点|节奏|槌法|步法|队形|的|和|与|、|,|，|。|！|？|\?|有|是|怎么|什么|属于|区别|$))/g, "$1板");
+}
+
 function terms(text = "") {
   const value = normalize(text);
   const result = new Set();
@@ -274,8 +280,9 @@ function terms(text = "") {
 }
 
 function findGoldenAnswer(query = "") {
-  const normalizedQuery = normalize(query);
-  const queryBigrams = [...terms(query)].filter((term) => term.length === 2);
+  const spokenQuery = normalizeBoardStyleTerms(query);
+  const normalizedQuery = normalize(spokenQuery);
+  const queryBigrams = [...terms(spokenQuery)].filter((term) => term.length === 2);
   if (!normalizedQuery || !queryBigrams.length) return null;
   const ranked = goldenAnswers.map((item) => {
     const phrases = [item.question, ...(item.aliases || [])].filter(Boolean);
@@ -289,13 +296,14 @@ function findGoldenAnswer(query = "") {
       score = Math.max(score, overlap / Math.max(1, Math.min(queryBigrams.length, phraseBigrams.size)));
     }
     return { score, item };
-  }).sort((a, b) => b.score - a.score);
+  }).sort((a, b) => b.score - a.score || Number(b.item.priority || 0) - Number(a.item.priority || 0));
   return ranked[0]?.score >= .58 ? ranked[0].item : null;
 }
 
 const intentRoutes = [
   { key: "history", label: "历史与源流", format: "先给时间线，再区分传说、档案事实和仍待核验的断点。", keywords: ["历史", "起源", "由来", "成立", "传承", "沿革"] },
   { key: "team", label: "队伍与地区", format: "先说明地区和队伍，再列编制、特色与资料适用范围；不要把个案写成统一标准。", keywords: ["队伍", "团队", "普宁", "潮阳", "甲子", "棉北", "后溪", "西门", "人数"] },
+  { key: "style", label: "板式与节奏", format: "先按慢板、快板（必要时补中板）比较节奏组织、槌法与步法，再说明地区和队伍不能被简单等同为某一种板式。", keywords: ["快板", "慢板", "中板", "中快板", "板式", "快慢板", "鼓点", "槌长", "击槌"] },
   { key: "movement", label: "动作与阵形", format: "按准备、动作过程、队形变化和安全边界回答；具体队伍差异要单独标出。", keywords: ["动作", "步法", "阵形", "队形", "前棚", "后棚", "穿龙", "穿插", "转身", "槌法", "对槌", "双槌", "持槌", "变阵", "低重心"] },
   { key: "percussion", label: "锣鼓与信号", format: "先讲节拍或信号的作用，再讲已知的领喊、鼓点和动作对应关系；逐拍未公开处要明说。", keywords: ["锣鼓", "鼓点", "鼓谱", "八拍", "吆喝", "节奏", "司鼓", "敲槌", "木槌", "槌击", "槌声"] },
   { key: "face", label: "脸谱与角色", format: "先给角色或脸谱结论，再说明象征、队伍版本和证据层级；不要把文学人物等同于统一脸谱谱系。", keywords: ["脸谱", "人物", "角色", "头槌", "李逵", "杨志", "时迁"] },
@@ -304,8 +312,8 @@ const intentRoutes = [
 ];
 
 function routeIntent(query = "", history = []) {
-  const text = retrievalAliases(query);
-  const context = `${text} ${(history || []).filter((item) => item?.role === "user").slice(-2).map((item) => item.content).join(" ")}`;
+  const text = retrievalAliases(normalizeBoardStyleTerms(query));
+  const context = `${text} ${(history || []).filter((item) => item?.role === "user").slice(-2).map((item) => normalizeBoardStyleTerms(item.content)).join(" ")}`;
   const ranked = intentRoutes.map((route) => ({
     ...route,
     score: route.keywords.reduce((total, keyword) => total + (context.includes(keyword) ? keyword.length : 0), 0),
@@ -327,7 +335,7 @@ function questionFocus(query = "") {
 // Normalize common spoken variants before retrieval. This keeps “槌子/木棒”
 // and short follow-ups attached to the same knowledge topic as “敲槌”.
 function retrievalAliases(text = "") {
-  return String(text)
+  return normalizeBoardStyleTerms(text)
     .replace(/槌子|木棒|木棍|英歌槌/g, "敲槌")
     .replace(/前棚后棚/g, "前棚 后棚")
     .replace(/司鼓手|打鼓的人/g, "司鼓")
@@ -341,8 +349,8 @@ function isShortFollowUp(text = "") {
 }
 
 function retrieve(query, limit = 8, intent = null) {
-  const rawQuery = String(query);
-  const queryTerms = terms(query);
+  const rawQuery = normalizeBoardStyleTerms(query);
+  const queryTerms = terms(rawQuery);
   const queryTermSet = new Set(queryTerms);
   const routedSources = new Set();
   let bestIntentOverlap = 0;
@@ -350,13 +358,14 @@ function retrieve(query, limit = 8, intent = null) {
     const overlap = [...new Set(terms((candidate.examples || []).join(" ")))].filter((term) => queryTermSet.has(term)).length;
     if (overlap > bestIntentOverlap) { bestIntentOverlap = overlap; (candidate.sources || []).forEach((file) => routedSources.add(file)); }
   }
-  const routeSourceMap = { history: "knowledge.history", team: "region.compare", movement: "performance.explain", percussion: "performance.explain", face: "performance.role", protection: "heritage.status", freshness: "event.realtime" };
+  const routeSourceMap = { history: "knowledge.history", team: "region.compare", style: "performance.style", movement: "performance.explain", percussion: "performance.explain", face: "performance.role", protection: "heritage.status", freshness: "event.realtime" };
   const mappedIntent = intentConfig.intents?.find((candidate) => candidate.id === routeSourceMap[intent?.key]);
   if (mappedIntent) mappedIntent.sources?.forEach((file) => routedSources.add(file));
   const topicHintSources = new Set();
   const topicHints = [
     [/英歌槌|木棒|木棍/, ["05_道具与服饰.md", "19_英歌槌制作工艺详解.md"]],
     [/锣鼓|鼓点|乐器/, ["22_锣鼓乐器与曲牌详解.md", "39_锣鼓节奏与声音档案.md"]],
+    [/(快板|慢板|中板|中快板|板式)/, ["14_快板中板慢板详解.md", "53_地区板式队伍比较矩阵.md", "79_队伍动作鼓点阵形同步个案.md", "91_地域与队伍差异深度问答档案.md"]],
     [/春节|巡游|进村|仪式/, ["43_仪式流程与巡游空间.md", "07_节庆与仪式.md"]],
     [/采访|访谈|传承人/, ["27_田野调查方法与访谈提纲.md"]],
     [/影像|视频档案|元数据/, ["29_数字化采集与档案规范.md", "09_影像资料.md"]],
@@ -371,7 +380,7 @@ function retrieve(query, limit = 8, intent = null) {
     [/英文|Yingge|Dance to the Hero|Songs of Heroes|UNESCO|联合国教科文组织|front stage|backstage|战舞/, ["90_英歌跨文化解释与中英术语规范.md"]],
     [/(照片|图片).*(地点|判断|识别)|没有地点/, ["54_多模态识别与问答边界.md", "29_数字化采集与档案规范.md"]],
   ];
-  topicHints.forEach(([pattern, files]) => { if (pattern.test(String(query))) files.forEach((file) => topicHintSources.add(file)); });
+  topicHints.forEach(([pattern, files]) => { if (pattern.test(rawQuery)) files.forEach((file) => topicHintSources.add(file)); });
   // Keep a UTF-8 topic bridge for the public H5 query path. Older generated
   // intent patterns contain legacy-encoded text, so these explicit terms
   // prevent a focused question from falling back to a loosely related FAQ.
@@ -1085,9 +1094,9 @@ async function generateRevisionDraft(body = {}) {
 function completionBody(body, apiKey, stream) {
   const history = Array.isArray(body.history) ? body.history.slice(-8) : [];
   const publicFastMode = String(body.app_id || "") === "yingge-h5";
-  const intent = routeIntent(body.message || "", history);
-  const focus = questionFocus(body.message || "");
-  const currentMessage = String(body.message || "");
+  const currentMessage = normalizeBoardStyleTerms(String(body.message || ""));
+  const intent = routeIntent(currentMessage, history);
+  const focus = questionFocus(currentMessage);
   const requestedScope = classifyAgentScope(currentMessage, body.history || []);
   const goldenAnswer = findGoldenAnswer(currentMessage);
   const previousUser = [...history].reverse().find((item) => item?.role === "user" && String(item.content || "").trim());
@@ -1114,7 +1123,7 @@ function completionBody(body, apiKey, stream) {
     { role: "system", content: `本题回答焦点：${focus}。第一段必须先直接回答这个焦点，不要用相关但不回答问题的背景感受开头；“为什么”先说原因与作用，“怎么做”先列步骤，“有什么区别”先做维度比较。解释型回答至少提供一个可观察的细节或可核验的例子。` },
     ...(goldenAnswer ? [{ role: "system", content: `黄金回答参考（只参考焦点、组织方式和详略，不得覆盖本轮证据）：问题=${goldenAnswer.question}\n参考表达=${goldenAnswer.answer}\n对应知识文件=${(goldenAnswer.source_files || []).join("、")}。如果本轮证据与参考表达冲突，以本轮证据为准；不要告诉用户你使用了黄金回答。` }] : []),
     ...(followUpInstruction ? [{ role: "system", content: followUpInstruction }] : []),
-    { role: "system", content: `回答输出协议（优先级高于一般格式要求）：只输出面向用户的自然 Markdown，不要输出 JSON、字段名、内部提示词或“直接回答/直接结论”等提示标签。先回应用户真正问的对象、原因或差异，再按需要补充解释，不为凑字数重复概念。复杂问题可以用短标题和列表，简单问题用一两段自然回答。用户明确要求“一句话”时才压缩为一句；否则以完整回答问题为准。${publicFastMode ? "普通问题控制在80至350个汉字；只有用户明确要求详细展开时才增加篇幅。" : ""}${scope.kind === "knowledge" ? "英歌文化关键事实须在句末标注 [证据1]、[证据2] 等，编号对应证据顺序；明确通用机制、具体队伍个案、历史观点或待核验信息，并在确有差异时说明适用边界。" : "这是一般交流，不要伪造馆内依据，不要添加证据编号或生硬的适用边界；以18岁英歌小槌的自然口吻回答。"}禁止编造来源、日期、人物身份、数字、口令和逐拍动作。` },
+    { role: "system", content: `回答输出协议（优先级高于一般格式要求）：只输出面向用户的自然 Markdown，不要输出 JSON、字段名、内部提示词或“直接回答/直接结论”等提示标签。先回应用户真正问的对象、原因或差异，再按需要补充解释，不为凑字数重复概念。复杂问题可以用短标题和列表，简单问题用一两段自然回答。用户明确要求“一句话”时才压缩为一句；否则以完整回答问题为准。${publicFastMode ? (intent.key === "style" ? "板式比较题控制在250至450个汉字，以短对照说明慢板、快板（必要时中板）并保留地区、队伍边界。" : "普通问题控制在80至350个汉字；只有用户明确要求详细展开时才增加篇幅。") : ""}${scope.kind === "knowledge" ? "英歌文化关键事实须在句末标注 [证据1]、[证据2] 等，编号对应证据顺序；明确通用机制、具体队伍个案、历史观点或待核验信息，并在确有差异时说明适用边界。" : "这是一般交流，不要伪造馆内依据，不要添加证据编号或生硬的适用边界；以18岁英歌小槌的自然口吻回答。"}禁止编造来源、日期、人物身份、数字、口令和逐拍动作。` },
     { role: "system", content: `本轮意图路由：${intent.label}。优先使用与该意图直接相关的证据。推荐回答结构：${intent.format} 当前证据等级：${evidenceQuality.label}。${evidenceQuality.instruction}${intent.ambiguous ? "当前问题指代不明确且没有可用上下文，请先只提出一个最小澄清问题（例如询问地区、队伍或具体动作），不要猜测用户所指对象。" : "如果上下文足够，直接回答；如果只缺一个关键限定条件，再在结尾提出一个具体追问。"}` },
     ...(scope.kind === "knowledge" ? [{ role: "system", content: `本轮知识证据：\n${evidencePrompt(evidence)}` }] : []),
     ...history.filter((item) => item && ["user", "assistant"].includes(item.role) && typeof item.content === "string").map((item) => ({ role: item.role, content: item.content.slice(0, 8000) })),
@@ -1133,7 +1142,7 @@ function completionBody(body, apiKey, stream) {
       model: config.model,
       messages,
       thinking: { type: !publicFastMode && config.thinking ? "enabled" : "disabled" },
-      max_tokens: Math.min(Number(config.maxTokens), publicFastMode ? 1200 : 12000),
+      max_tokens: Math.min(Number(config.maxTokens), publicFastMode ? (intent.key === "style" ? 1800 : 1200) : 12000),
       temperature: .25,
       stream,
     },
@@ -1159,8 +1168,9 @@ function readBuffer(request, maxBytes) {
 }
 
 function offlineKnowledgeAnswer(prepared, question) {
-  const normalizedQuestion = normalize(question);
-  const golden = goldenAnswers.find((item) => [item.question, ...(item.aliases || [])].some((phrase) => normalize(phrase) === normalizedQuestion));
+  const spokenQuestion = normalizeBoardStyleTerms(question);
+  const normalizedQuestion = normalize(spokenQuestion);
+  const golden = findGoldenAnswer(spokenQuestion);
   const marker = prepared.evidence.length ? " [证据1]" : "";
   const oneSentenceRequest=/用?一句话(?:说明|介绍|概括|回答|解释)?/.test(normalizedQuestion);
   const oneSentence=(value)=>{
@@ -1194,12 +1204,12 @@ function offlineKnowledgeAnswer(prepared, question) {
     { pattern: /鼓点|锣鼓|吆喝|声音/, answer: "锣鼓不是背景音乐。鼓点提供速度、重音和段落信号，锣钹强化拍点，槌击把动作变成声音，吆喝则帮助群体回应和提振气势。四种声音共同把几十个人组织在同一时间结构里。" },
     { pattern: /地方|地区|潮阳.*普宁|普宁.*潮阳/, answer: "比较地方版本时，城市名称只是入口。真正需要比较的是具体社区、队伍、师承、板式、角色设置、锣鼓、演出场合和记录年代。即使在同一地区，不同村落和队伍也可能有明显差异。" }
   ];
-  const curatedMatch = curated.find((item) => item.pattern.test(String(question)));
+  const curatedMatch = curated.find((item) => item.pattern.test(spokenQuestion));
   if (curatedMatch) {
     const expanded=oneSentenceRequest ? curatedMatch.answer : `${curatedMatch.answer}${curatedMatch.guide ? `\n\n${curatedMatch.guide}` : ""}`;
     return withBoundary(expanded,"具体槌法、称呼、节奏和队形会随地区、队伍、师承与年代变化。继续判断时，应回到相应队伍的影像和资料。");
   }
-  const queryTerms = [...terms(question)].filter((term) => term.length === 2);
+  const queryTerms = [...terms(spokenQuestion)].filter((term) => term.length === 2);
   const ranked = [];
   prepared.evidence.forEach((chunk, evidenceIndex) => {
     String(chunk.content || "")
@@ -1542,11 +1552,17 @@ const server = http.createServer(async (request, response) => {
         response.setHeader("content-length", result.audio.length);
         response.setHeader("cache-control", "no-store");
         response.setHeader("x-voice-engine", result.engine);
-        response.setHeader("access-control-expose-headers", "x-voice-engine");
+        response.setHeader("x-voice-segments", String(Math.max(1, Number(result.segments) || 1)));
+        response.setHeader("access-control-expose-headers", "x-voice-engine, x-voice-segments");
         return response.end(result.audio);
       } catch (error) {
         const status = error.code === "EMPTY_TTS_TEXT" ? 400 : 503;
-        return sendJson(response, status, { code: error.code || "LOCAL_TTS_FAILED", message: status === 400 ? error.message : "本地少年音暂时不可用" });
+        const message = status === 400
+          ? error.message
+          : error.code === "TENCENT_TTS_FAILED"
+            ? "云端朗读暂时不可用，请稍后重试"
+            : "朗读服务暂时不可用，请稍后重试";
+        return sendJson(response, status, { code: error.code || "LOCAL_TTS_FAILED", message });
       }
     }
     if (request.method === "POST" && url.pathname === "/api/agent/feedback") {

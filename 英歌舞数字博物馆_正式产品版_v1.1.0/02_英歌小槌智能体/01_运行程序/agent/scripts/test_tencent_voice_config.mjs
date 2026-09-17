@@ -88,12 +88,17 @@ assert.match(socketLog.url, /^wss:\/\/asr\.cloud\.tencent\.com\/asr\/v2\/1234567
 assert.equal(socketLog.url.includes("example-secret-key"), false, "ASR 请求不得泄漏 SecretKey");
 assert.equal(socketLog.url.includes("input_sample_rate"), false, "大模型 2.0 预览引擎仅接收 16k PCM，不应发送不支持的采样率参数");
 const hotwords = new URL(socketLog.url).searchParams.get("hotword_list") || "";
-for (const term of ["英歌舞", "英歌小槌", "潮汕", "潮阳", "普宁", "揭阳", "脸谱", "槌法", "锣鼓", "阵法"]) {
+for (const term of ["英歌舞", "英歌小槌", "潮汕", "潮阳", "普宁", "揭阳", "脸谱", "槌法", "锣鼓", "阵法", "快板", "慢板", "中板", "中快板", "板式", "鼓点", "槌长", "击槌", "步法", "身法", "前棚", "后棚", "司鼓"]) {
   assert.match(hotwords, new RegExp(`${term}\\|\\d+`), `腾讯云 ASR 请求应真实携带领域热词：${term}`);
 }
 assert.equal(new URL(socketLog.url).searchParams.get("reinforce_hotword"), "1");
 assert.equal(new URL(socketLog.url).searchParams.has("vad_silence_time"), false, "不应给未声明支持的引擎强行下发 VAD 阈值");
 assert.equal(asr.status().asr.hotwordsConfigured, true, "状态接口应明确告知热词已下发");
+assert.equal(asr.status().asr.requiredHotwordsReady, true, "状态接口应确认英歌领域必备热词实际齐全");
+
+const customHotwords = createTencentVoiceClient({ TENCENT_SECRET_ID: "AKIDexample", TENCENT_SECRET_KEY: "example-secret-key", TENCENT_APP_ID: "1234567890", TENCENT_ASR_HOTWORD_LIST: "自定义词|10" });
+assert.equal(customHotwords.status().asr.hotwordCatalog, "custom-temporary-list", "自定义临时热词表不得被误标为馆方默认词表版本");
+assert.equal(customHotwords.status().asr.requiredHotwordsReady, false, "缺失领域词时状态接口必须明确提醒默认必备词未齐全");
 const signedUrl = new URL(socketLog.url);
 const receivedSignature = signedUrl.searchParams.get("signature");
 const rawParameters = [...signedUrl.searchParams.entries()].filter(([key]) => key !== "signature").sort(([a], [b]) => a.localeCompare(b));

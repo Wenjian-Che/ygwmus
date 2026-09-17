@@ -17,6 +17,6 @@ assert.match(mugeda, /startMugedaWakeQuestion\(/, "唤醒成功后必须自动�
 assert.match(mugeda, /document\.hidden\).*stopMugedaWakeStandby/, "页面隐藏时必须停止唤醒监听");
 assert.match(mugeda, /mugeda-wake-enabled/, "用户的页面唤醒偏好必须独立持久化");
 assert.match(mugeda, /activeSpeechButton/, "唤醒打断朗读时必须同时复位原朗读按钮状态");
-assert.match(loader, /mugeda-agent\.js\?v=1\.5\.0/, "木疙瘩加载器必须刷新新版脚本缓存");
+assert.match(loader, /mugeda-agent\.js\?v=1\.5\.1/, "木疙瘩加载器必须刷新新版脚本缓存");
 
 console.log("mugeda wake contract tests passed");
