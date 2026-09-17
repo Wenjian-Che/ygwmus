@@ -466,7 +466,7 @@
     launcher.addEventListener('pointercancel', function (event) { if (gestureKind === 'mouse') endLauncherGesture(event.clientX, event.clientY, true); });
     fetch(config.apiBase.replace(/\/$/, '') + '/api/health').then(function (response) { if (!response.ok) throw new Error(); return response.json(); }).then(function () { setStatus('知识库已连接'); }).catch(function () { setStatus('知识服务暂时不可用', true); });
 
-    window.MugedaYinggeAgent = { open: open, close: shut, ask: ask, setScene: function (scene) { config.scene = scene; }, version: '1.5.1' };
+    window.MugedaYinggeAgent = { open: open, close: shut, ask: ask, setScene: function (scene) { config.scene = scene; }, version: '1.5.2' };
     window.YinggeAgentWidget = window.MugedaYinggeAgent;
     if (config.autoOpen) open();
     window.dispatchEvent(new CustomEvent('yingge-agent-ready'));

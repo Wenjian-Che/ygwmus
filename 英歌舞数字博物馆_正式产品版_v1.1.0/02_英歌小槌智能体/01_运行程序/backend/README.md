@@ -23,7 +23,7 @@ node backend/server.mjs
 - `GET /api/admin/knowledge-graph`：读取确定性知识图谱的后台治理投影；缺少生产图谱文件时返回脱敏的 `not_ready`，不提供公众图谱接口；
 - `GET /api/admin/candidates`：读取每日更新候选池；
 - `POST /api/admin/candidates/review`：写入通过/驳回审核事件；
-- `POST /api/agent/feedback`：按回答 `message_id` 接收点赞、点踩和问题原因；
+- `POST /api/agent/feedback`：按回答 `message_id` 接收点赞、点踩和问题原因；英歌知识问答被点踩时会自动生成待复核补证任务；
 - `GET /api/admin/feedback`：读取真实问答、低置信度和点踩复核队列；
 - `GET /api/admin/feedback/clusters`：读取真实问题聚类、优先级和知识缺口摘要；
 - `POST /api/admin/feedback/clusters/run`：立即重算最近真实问题的语义主题；
@@ -36,7 +36,7 @@ node backend/server.mjs
 - `GET /api/admin/dynamic`：读取审核通过且未过期的动态知识；
 - `GET /api/admin/apps`：读取已注册的 H5 应用；
 - `GET /api/admin/metrics`：读取不含问题正文的请求统计；
-- `GET /api/admin/unanswered`：读取证据不足的问题清单；
+- `GET /api/admin/unanswered`：读取尚未分流的证据不足问题清单；
 - `POST /api/admin/unanswered/promote`：把问题转成知识补充任务；
 - `GET /api/admin/knowledge-tasks`：读取知识补充任务队列；
 - `POST /api/admin/knowledge-tasks/status`：更新任务状态；
@@ -46,6 +46,8 @@ node backend/server.mjs
 - `POST /api/admin/test`：使用服务端配置的模型运行管理页测试；浏览器不得传入 API Key。
 
 问答会先进行轻量意图路由（历史、队伍、动作、锣鼓、脸谱角色、保护传承、最新动态），并为每类问题提供专属回答结构；同时评估证据等级（充分、有限、不足），结果会随测试接口返回。指代不明或证据不足时，会要求模型先澄清地区、队伍、日期或具体动作。
+
+英歌知识域出现馆内知识空缺、证据不足、引用完整性失败或用户点踩时，服务会按“应用 + 规范化问题”去重，自动写入待审核的知识补证任务；同时保留未答好信号用于统计。这个动作只建立后台工作项，不会自动生成事实、写入 Markdown、重建索引或发布给公众。补充内容仍须经过来源核验、适用范围说明和人工审核，再走现有的知识重建与黄金回答闸门。
 
 黄金回答写入前会在后端重新运行答案验收门。即使绕过管理页面直接调用写入接口，只要深度、切题、关键事实、错误表述、来源、边界或别名检索任一强制项不合格，写入仍会被拒绝。
 

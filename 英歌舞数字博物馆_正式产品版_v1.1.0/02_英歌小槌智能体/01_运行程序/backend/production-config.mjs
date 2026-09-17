@@ -57,6 +57,7 @@ function configuredPath(env, key, { production, fallback }) {
 
 export function validateProductionEnvironment({ env = process.env, projectRoot, webRoot } = {}) {
   if (!projectRoot || !webRoot) throw new TypeError("projectRoot and webRoot are required");
+  const publicWebRoot = path.resolve(webRoot);
   const production = String(env.NODE_ENV || "").trim().toLowerCase() === "production";
   const allowedOrigins = String(env.AGENT_ALLOWED_ORIGINS || "")
     .split(",")
@@ -79,7 +80,7 @@ export function validateProductionEnvironment({ env = process.env, projectRoot, 
     ADMIN_PRIVATE_STATE_DIR: path.join(projectRoot, "backend", ".admin-state"),
     CURATION_CATALOG_PATH: path.join(projectRoot, "content", "curation", "exhibits.json"),
     CURATION_AUDIT_PATH: path.join(projectRoot, "content", "curation", "audit.jsonl"),
-    CURATION_PUBLIC_PATH: path.join(webRoot, "data", "exhibits.public.json"),
+    CURATION_PUBLIC_PATH: path.join(publicWebRoot, "data", "exhibits.public.json"),
     SITE_CONTENT_PATH: path.join(projectRoot, "backend", "site-content.json"),
     SITE_CONTENT_AUDIT_PATH: path.join(projectRoot, "backend", "site-content-audit.jsonl"),
     ADMIN_PLANS_PATH: path.join(projectRoot, "backend", "plans.json"),
@@ -99,6 +100,7 @@ export function validateProductionEnvironment({ env = process.env, projectRoot, 
   const resolved = Object.fromEntries(ALL_PATH_KEYS.map((key) => [key, configuredPath(env, key, { production, fallback: defaults[key] })]));
   if (production) {
     if (isWithin(privateStateRoot, projectRoot)) throw configurationError("YINGGE_PRIVATE_STATE_ROOT 必须位于项目目录之外");
+    if (intersects(publicWebRoot, privateStateRoot)) throw configurationError("YINGGE_PUBLIC_WEB_ROOT 不能与私密状态 YINGGE_PRIVATE_STATE_ROOT 相交");
     for (const key of PRIVATE_PATH_KEYS) {
       if (isWithin(resolved[key], projectRoot)) throw configurationError(`${key} 必须位于项目目录之外`);
       if (!isWithin(resolved[key], privateStateRoot)) throw configurationError(`${key} 必须位于 YINGGE_PRIVATE_STATE_ROOT 内`);
@@ -122,6 +124,7 @@ export function validateProductionEnvironment({ env = process.env, projectRoot, 
     allowedOrigins: Object.freeze(allowedOrigins),
     paths: Object.freeze({
       agentStoreDir: resolved.AGENT_STORE_DIR,
+      publicWebRoot,
       privateStateRoot,
       adminStateDir: resolved.ADMIN_PRIVATE_STATE_DIR,
       curationCatalogPath: resolved.CURATION_CATALOG_PATH,

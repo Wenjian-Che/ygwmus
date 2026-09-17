@@ -305,7 +305,7 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
           engineModelType: configured ? engineModelType : null,
           hotwordsConfigured: configured && Boolean(hotwordList || hotwordId),
           hotwordMode: hotwordList ? "temporary-list" : (hotwordId ? "vocabulary-id" : "none"),
-          hotwordCatalog: hotwordList ? (usesDefaultHotwordList ? "yingge-museum-v1.5.1" : "custom-temporary-list") : null,
+          hotwordCatalog: hotwordList ? (usesDefaultHotwordList ? "yingge-museum-v1.5.2" : "custom-temporary-list") : null,
           hotwordCount: hotwordTerms.length,
           requiredHotwordsReady: hotwordList ? requiredHotwordsReady : null,
           vadSilenceTime: vadSilenceTime || null

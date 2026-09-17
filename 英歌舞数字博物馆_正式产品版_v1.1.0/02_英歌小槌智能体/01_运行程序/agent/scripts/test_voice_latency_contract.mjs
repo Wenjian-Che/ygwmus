@@ -25,7 +25,8 @@ assert.doesNotMatch(mugeda, /识别完成，请确认文字后发送/, "木疙�
 assert.match(mugeda, /\/api\/voice\/session/, "木疙瘩应使用与网站一致的实时语音会话");
 assert.match(mugeda, /finish=1/, "木疙瘩结束录音时应显式结束实时识别会话");
 assert.doesNotMatch(mugeda, /\/api\/voice\/transcribe/, "木疙瘩不应等待整段 WAV 上传后才开始识别");
-assert.match(mugedaLoader, /mugeda-agent\.js\?v=1\.5\.1/, "木疙瘩加载器必须刷新不可变脚本缓存");
+assert.match(mugedaLoader, /script\.src\s*=\s*["']https:\/\/yinggemus\.cn\/mugeda-agent\.js["']/, "木疙瘩加载器必须指向稳定的正式脚本地址");
+assert.doesNotMatch(mugedaLoader, /mugeda-agent\.js\?v=/, "稳定脚本地址不能依赖人工递增查询参数刷新缓存");
 assert.match(mugeda, /Array\.from\(question\.replace\(\/\\s\/g, ''\)\)\.length < 2/, "木疙瘩应拦截过短、低可信的识别结果");
 assert.doesNotMatch(app, /if\(event==='done'\)\{await typing\?\.complete\(\)/, "微信 WebView 的最终回答不得等待动画帧完成");
 assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/, "收到完成帧时应立即落下完整回答文字");
@@ -55,7 +56,7 @@ assert.equal(crypto.createHash("sha256").update(wakeAck).digest("hex"), wakeAckM
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.5\.1/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.5\.2/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");

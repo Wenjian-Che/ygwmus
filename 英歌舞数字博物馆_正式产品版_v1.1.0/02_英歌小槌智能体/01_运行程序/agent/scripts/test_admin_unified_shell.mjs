@@ -3,8 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const adminRoot = path.join(root, "web", "admin");
+// The formal package keeps the public site beside the agent runtime, not in runtime/web.
+const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..", "01_公众网站");
+const adminRoot = path.join(publicRoot, "admin");
 const pages = new Map([
   ["workspace.html", "workspace"],
   ["index.html", "overview"],
@@ -24,7 +25,7 @@ for (const [file, active] of pages) {
 }
 
 const shell = fs.readFileSync(path.join(adminRoot, "admin-shell.js"), "utf8");
-const expectedOrder = ["总览", "网站内容", "真实素材", "智能助手", "设置"];
+const expectedOrder = ["总览", "网站内容", "真实素材", "智能助手", "知识反馈", "设置"];
 let cursor = -1;
 for (const label of expectedOrder) {
   const next = shell.indexOf(label);

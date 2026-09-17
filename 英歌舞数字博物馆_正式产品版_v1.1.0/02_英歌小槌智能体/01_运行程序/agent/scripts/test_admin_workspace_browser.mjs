@@ -21,8 +21,7 @@ for (const candidate of playwrightCandidates) {
 }
 if (!playwright) throw new Error("Playwright is required for the admin workspace browser regression");
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const webRoot = path.join(root, "web");
+const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..", "01_公众网站");
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -184,7 +183,7 @@ const failures = [];
 async function scenario(name, options, run) {
   const context = await browser.newContext({ viewport: options.viewport || { width: 1366, height: 900 } });
   const page = await context.newPage();
-  page.setDefaultTimeout(4000);
+  page.setDefaultTimeout(10_000);
   const state = createApiState({ authenticated: options.authenticated, modelSettingsDelayMs: options.modelSettingsDelayMs });
   await installApiMock(page, state);
   try {
@@ -219,17 +218,21 @@ try {
     assert.match(await page.locator("#workspaceActor").textContent(), /测试管理员/);
   });
 
-  await scenario("五项导航始终留在单页工作台", { authenticated: true }, async ({ page }) => {
+  await scenario("六项导航始终留在单页工作台", { authenticated: true }, async ({ page }) => {
     await page.goto(workspaceUrl, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelector("#authGate")?.hidden === true);
     const nav = page.locator("[data-admin-nav] a");
-    assert.deepEqual(await nav.allTextContents(), ["总览", "网站内容", "真实素材", "智能助手", "设置"], "工作台必须只有五个一级区域");
+    assert.deepEqual(await nav.allTextContents(), ["总览", "网站内容", "真实素材", "智能助手", "知识反馈", "设置"], "工作台必须只有六个一级区域");
     const hrefs = await nav.evaluateAll((links) => links.map((link) => link.getAttribute("href") || ""));
-    assert.ok(hrefs.every((href) => /^(?:workspace\.html)?#(?:overview|content|materials|assistant|settings)$/.test(href)), `一级导航不得跳到独立后台页面：${hrefs.join(", ")}`);
+    assert.ok(hrefs.every((href) => /^(?:workspace\.html)?#(?:overview|content|materials|assistant|knowledge|settings)$/.test(href)), `一级导航不得跳到独立后台页面：${hrefs.join(", ")}`);
 
-    const panels = ["overview", "content", "materials", "assistant", "settings"];
+    const panels = ["overview", "content", "materials", "assistant", "knowledge", "settings"];
     for (let index = 0; index < panels.length; index += 1) {
       await nav.nth(index).click();
-      await page.waitForTimeout(30);
+      await page.waitForFunction((panel) => {
+        const node = document.querySelector(`.workspace-panel[data-workspace-panel="${panel}"]`);
+        return Boolean(node && !node.hidden && node.classList.contains("is-active"));
+      }, panels[index]);
       assert.equal(new URL(page.url()).pathname, "/admin/workspace.html", `点击 ${panels[index]} 后离开了单页工作台`);
       assert.equal(await page.locator(`.workspace-panel[data-workspace-panel="${panels[index]}"]`).isVisible(), true, `${panels[index]} 面板没有显示`);
       assert.equal(await page.locator(".workspace-panel.is-active").count(), 1, "同一时间只能显示一个一级工作区");
@@ -239,6 +242,7 @@ try {
   await scenario("模型设置保存后清空密钥且不回显", { authenticated: true, modelSettingsDelayMs: 140 }, async ({ page, state }) => {
     const apiKey = "sk-browser-regression-only";
     await page.goto(`${workspaceUrl}#settings`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelector("#authGate")?.hidden === true);
     await waitFor(() => state.calls.some((call) => call.method === "GET" && call.pathname === "/api/admin/settings/model"), "模型设置初始化请求没有开始");
     await page.locator("#deepseekApiKey").fill(apiKey);
     await page.locator("#deepseekModel").selectOption("deepseek-v4-pro");
@@ -258,6 +262,7 @@ try {
 
   await scenario("助手与方案历史在同一工作区协作", { authenticated: true }, async ({ page, state }) => {
     await page.goto(`${workspaceUrl}#assistant`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => document.querySelector("#authGate")?.hidden === true);
     assert.equal(new URL(page.url()).pathname, "/admin/workspace.html");
     assert.equal(await page.locator("#workspaceAssistantForm").isVisible(), true, "助手表单没有显示在工作台中");
     assert.equal(await page.locator("#planHistory").isVisible(), true, "方案历史没有与助手同页显示");
@@ -273,12 +278,16 @@ try {
 
   await scenario("手机端所有一级工作区无横向溢出", { authenticated: true, viewport: { width: 390, height: 844 } }, async ({ page }) => {
     await page.goto(workspaceUrl, { waitUntil: "domcontentloaded" });
-    const labels = ["总览", "网站内容", "真实素材", "智能助手", "设置"];
+    await page.waitForFunction(() => document.querySelector("#authGate")?.hidden === true);
+    const labels = ["总览", "网站内容", "真实素材", "智能助手", "知识反馈", "设置"];
     for (const label of labels) {
       const toggle = page.locator("[data-admin-menu-toggle]");
       if (await toggle.isVisible() && await toggle.getAttribute("aria-expanded") !== "true") await toggle.click();
       await page.locator("[data-admin-nav] a", { hasText: label }).click();
-      await page.waitForTimeout(30);
+      await page.waitForFunction((section) => {
+        const node = document.querySelector(`.workspace-panel[data-workspace-panel="${section}"]`);
+        return Boolean(node && !node.hidden && node.classList.contains("is-active"));
+      }, ({ "总览": "overview", "网站内容": "content", "真实素材": "materials", "智能助手": "assistant", "知识反馈": "knowledge", "设置": "settings" })[label]);
       const overflow = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, document.body.scrollWidth) - window.innerWidth);
       assert.ok(overflow <= 2, `${label} 手机端存在 ${overflow}px 横向溢出`);
       assert.equal(new URL(page.url()).pathname, "/admin/workspace.html", `${label} 手机端跳出了工作台`);

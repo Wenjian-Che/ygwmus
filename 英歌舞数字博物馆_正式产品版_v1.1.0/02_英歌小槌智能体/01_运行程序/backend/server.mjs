@@ -7,6 +7,7 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createStore } from "./store.mjs";
+import { queueKnowledgeGapCandidate } from "./knowledge-gap-queue.mjs";
 import { clusterQuestions } from "./question-clusters.mjs";
 import { buildRevisionQueue, diagnoseInteraction } from "./answer-revisions.mjs";
 import { evaluateAnswerCandidate } from "./answer-acceptance.mjs";
@@ -27,6 +28,7 @@ import { createAdminAuthService } from "./admin-auth.mjs";
 import { createAdminModelSettingsStore } from "./admin-model-settings.mjs";
 import { createKnowledgeGraphStore } from "./knowledge-graph-store.mjs";
 import { validateProductionEnvironment } from "./production-config.mjs";
+import { resolvePublicWebRoot } from "./public-web-root.mjs";
 import { redactPublicRegions, createRegionStreamRedactor } from "./public-redaction.mjs";
 
 const backendDir = path.dirname(fileURLToPath(import.meta.url));
@@ -47,7 +49,7 @@ function loadEnv(file) {
 loadEnv(path.join(projectRoot, ".env"));
 loadEnv(path.join(backendDir, ".env"));
 
-const webRoot = path.join(projectRoot, "web");
+const webRoot = resolvePublicWebRoot({ env: process.env, projectRoot }).root;
 const defaultAdminStateDir = process.platform === "win32"
   ? path.join(process.env.LOCALAPPDATA || path.join(os.homedir(), "AppData", "Local"), "YinggeMuseum", "admin")
   : path.join(process.env.XDG_STATE_HOME || path.join(os.homedir(), ".local", "state"), "yingge-museum", "admin");
@@ -225,6 +227,25 @@ function appIdFrom(request, body = {}) {
 
 function appAuthorized(appId) {
   return apps.some((app) => app.app_id === appId && app.enabled !== false);
+}
+
+function isKnowledgeRelatedInteraction(interaction = {}) {
+  const scope = classifyAgentScope(String(interaction.question || ""), []);
+  if (scope.kind === "knowledge") return true;
+  const intent = String(interaction.intent || "").trim();
+  return scope.kind === "general" && Boolean(intent && intent !== "general");
+}
+
+function queueKnowledgeGap({ appId, question, intent, quality, trigger, knowledgeRelated }) {
+  return queueKnowledgeGapCandidate({
+    store,
+    appId,
+    question,
+    intent,
+    quality,
+    trigger,
+    knowledgeRelated,
+  });
 }
 
 function originAllowed(origin = "", host = "") {
@@ -1250,7 +1271,16 @@ function sendScopedChat(response, body, appId, prepared) {
   sendEvent(response, "delta", { text: answer });
   sendEvent(response, "citations", { items: [] });
   try {
-    if (scopeKind === "knowledge_gap") store.recordUnanswered({ app_id: appId, question: body.message, intent: prepared.intent.key, quality: "insufficient" });
+    if (scopeKind === "knowledge_gap") {
+      queueKnowledgeGap({
+        appId,
+        question: body.message,
+        intent: prepared.intent.key,
+        quality: "insufficient",
+        trigger: "knowledge_gap",
+        knowledgeRelated: true,
+      });
+    }
     store.recordInteraction({ message_id: messageId, app_id: appId, question: body.message, answer, intent: prepared.intent.key, quality: "not_applicable", citation_count: 0, citation_integrity: true, retrieval_ms: prepared.retrieval.elapsed_ms, model: "knowledge-scope-guard", citation_files: [] });
   } catch (error) {
     console.warn("Scoped interaction could not be persisted:", String(error?.message || error));
@@ -1269,6 +1299,16 @@ function sendOfflineChat(response, body, appId, prepared) {
   sendEvent(response, "citations", { items: prepared.citations });
   try {
     store.recordInteraction({ message_id: messageId, app_id: appId, question: body.message, answer, intent: prepared.intent.key, quality: prepared.evidenceQuality.key, citation_count: prepared.citations.length, citation_integrity: true, retrieval_ms: prepared.retrieval.elapsed_ms, model: "knowledge-base-offline", citation_files: [...new Set(prepared.evidence.map((item) => item.source_file).filter((item) => item && !String(item).startsWith("[动态]")))] });
+    if (prepared.scope.kind === "knowledge" && prepared.evidenceQuality.key !== "supported") {
+      queueKnowledgeGap({
+        appId,
+        question: body.message,
+        intent: prepared.intent.key,
+        quality: prepared.evidenceQuality.key,
+        trigger: "evidence_insufficient",
+        knowledgeRelated: true,
+      });
+    }
   } catch (error) {
     console.warn("Offline interaction could not be persisted:", String(error?.message || error));
   }
@@ -1342,7 +1382,14 @@ async function handleChat(request, response, body) {
   if (!citationCheck.passed && prepared.evidence.length) sendEvent(response, "quality", { code: "CITATION_INTEGRITY", ...citationCheck });
   try {
     if (qualityKey !== "supported") {
-      store.recordUnanswered({ app_id: appId, question: body.message, intent: prepared.intent.key, quality: qualityKey });
+      queueKnowledgeGap({
+        appId,
+        question: body.message,
+        intent: prepared.intent.key,
+        quality: qualityKey,
+        trigger: citationCheck.passed ? "evidence_insufficient" : "citation_integrity",
+        knowledgeRelated: prepared.scope.kind === "knowledge",
+      });
     }
     store.recordInteraction({ message_id: messageId, app_id: appId, question: body.message, answer: publicAnswer, intent: prepared.intent.key, quality: qualityKey, citation_count: prepared.citations.length, citation_integrity: citationCheck.passed, retrieval_ms: prepared.retrieval.elapsed_ms, model: prepared.payload.model, citation_files: [...new Set(prepared.evidence.map((item) => item.source_file).filter((item) => item && !String(item).startsWith("[动态]")))] });
   } catch (error) {
@@ -1571,8 +1618,24 @@ const server = http.createServer(async (request, response) => {
       if (!appAuthorized(appId)) return sendJson(response, 403, { code: "APP_NOT_ALLOWED", message: "app_id 未注册或已停用" });
       if (!originAllowed(requestOrigin,requestHost)) return sendJson(response, 403, { code: "ORIGIN_NOT_ALLOWED", message: "当前网页来源未加入 Agent 白名单" });
       if (!body.message_id || !["up", "down"].includes(body.rating)) return sendJson(response, 400, { code: "INVALID_FEEDBACK", message: "message_id 与 rating 无效" });
+      const interaction = body.rating === "down" ? store.listInteractions("all").find((item) => item.message_id === String(body.message_id)) : null;
       const ok = store.recordFeedback({ message_id: body.message_id, rating: body.rating, reasons: body.reasons, note: body.note });
-      return sendJson(response, ok ? 200 : 404, { ok, message: ok ? "感谢反馈，已进入质量闭环" : "未找到对应回答" });
+      let knowledgeGapQueued = false;
+      if (ok && interaction && body.rating === "down" && isKnowledgeRelatedInteraction(interaction)) {
+        try {
+          knowledgeGapQueued = queueKnowledgeGap({
+            appId: interaction.app_id || appId,
+            question: interaction.question,
+            intent: interaction.intent,
+            quality: interaction.quality,
+            trigger: "downvote",
+            knowledgeRelated: true,
+          }).queued;
+        } catch (error) {
+          console.warn("Knowledge gap feedback could not be queued:", String(error?.message || error));
+        }
+      }
+      return sendJson(response, ok ? 200 : 404, { ok, knowledge_gap_queued: knowledgeGapQueued, message: ok ? "感谢反馈，已进入质量闭环" : "未找到对应回答" });
     }
     if (request.method === "GET" && url.pathname === "/api/admin/auth/status") {
       const local = adminAuth.status();

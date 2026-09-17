@@ -225,17 +225,20 @@ const ADMIN_CONTENT_API=`${YINGGE_API_BASE}/api/site-content`;
 document.querySelector('.museum-menu summary')?.replaceChildren(document.createTextNode('在线展馆'));
 if(document.querySelector('#collections .section-title')&&!document.querySelector('.origin-entry'))document.querySelector('#collections .section-title').insertAdjacentHTML('beforeend','<a class="origin-entry" href="learn.html#origin"><span>先看英歌从哪里来</span><small>了解英歌的来历，以及目前能找到的几种解释</small><b aria-hidden="true">↗</b></a>');
 const applyManagedContent=(content={})=>{
-  const set=(selector,value)=>{const node=document.querySelector(selector);if(node&&typeof value==='string'&&value.trim())node.textContent=value};
+  const set=(selector,value)=>{const node=document.querySelector(selector);if(!node||typeof value!=='string'||!value.trim())return;if(typeof window.__yinggeSetLocalizedText==='function')window.__yinggeSetLocalizedText(node,value);else{node.dataset.localeZh=value;node.textContent=value}};
   set('.hero-label',content.hero?.eyebrow);set('.hero h1 span:nth-child(1)',content.hero?.titleLine1);set('.hero h1 span:nth-child(2)',content.hero?.titleLine2);set('.hero-body',content.hero?.body);set('.hero-actions .button-primary',content.hero?.primaryCta);set('#experiences .section-title h2',content.experiences?.title);set('#experiences .section-title p',content.experiences?.intro);
   const cards=content.experiences?.cards||{};set('.experience-main h3',cards.video?.title);set('.experience-main p',cards.video?.description);set('.experience-h5 h3',cards.h5?.title);set('.experience-h5 p',cards.h5?.description);set('.experience-guide h3',cards.agent?.title);set('.experience-guide p',cards.agent?.description);
   window.__yinggeLocaleRefresh?.();
 };
-if(new URLSearchParams(location.search).has('admin-preview'))window.addEventListener('message',event=>{
+const adminPreviewMode=new URLSearchParams(location.search).has('admin-preview');
+if(adminPreviewMode)window.addEventListener('message',event=>{
   if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='yingge:site-content-preview')return;
   if(event.data.content&&typeof event.data.content==='object')applyManagedContent(event.data.content);
 });
-try{const cached=JSON.parse(localStorage.getItem('yingge-site-content')||'null');if(cached)applyManagedContent(cached)}catch{}
-if(publicPath==='index.html'||publicPath==='')fetch(ADMIN_CONTENT_API).then(response=>response.ok?response.json():null).then(content=>{if(content){applyManagedContent(content);localStorage.setItem('yingge-site-content',JSON.stringify(content))}}).catch(()=>{});
+if(!adminPreviewMode){
+  try{const cached=JSON.parse(localStorage.getItem('yingge-site-content')||'null');if(cached)applyManagedContent(cached)}catch{}
+  if(publicPath==='index.html'||publicPath==='')fetch(ADMIN_CONTENT_API).then(response=>response.ok?response.json():null).then(content=>{if(content){applyManagedContent(content);localStorage.setItem('yingge-site-content',JSON.stringify(content))}}).catch(()=>{});
+}
 
 const guideContexts={
   'index.html':{topic:'总览',hint:'看不懂的动作、人物和地方差异，都可以问我。',prompts:[['用一句话说明什么是英歌','什么是英歌？'],['第一次看英歌应该先看什么？','第一次怎么看？'],['英歌为什么持双槌？','为什么持双槌？']]},

@@ -51,21 +51,24 @@ assert.equal(audit[0].actor.id, "author-a");
 assert.equal(audit[1].actor.role, "publisher");
 
 const fixtureRoot = path.join(tempRoot, "diagnostics-fixture");
+const publicWebRoot = path.join(tempRoot, "published-web");
 fs.mkdirSync(path.join(fixtureRoot, "agent"), { recursive: true });
 fs.mkdirSync(path.join(fixtureRoot, "web", "data"), { recursive: true });
 fs.mkdirSync(path.join(fixtureRoot, "web"), { recursive: true });
 fs.mkdirSync(path.join(fixtureRoot, "knowledge-base", "content"), { recursive: true });
+fs.mkdirSync(publicWebRoot, { recursive: true });
 fs.writeFileSync(path.join(fixtureRoot, "knowledge-base", "content", "00.md"), "# 英歌\n\n受治理的知识源。\n");
 fs.writeFileSync(path.join(fixtureRoot, "agent", "knowledge_manifest.json"), JSON.stringify({ knowledge_version: "2026.08.30.1" }));
 fs.writeFileSync(path.join(fixtureRoot, "web", "data", "build_report.json"), JSON.stringify({ knowledge_version: "2026.08.30.1", chunks: 1 }));
 fs.writeFileSync(path.join(fixtureRoot, "web", "data", "lexical_index.json"), JSON.stringify({ version: "2026.08.30.1", chunk_count: 1, postings: {}, document_frequency: {} }));
 fs.writeFileSync(path.join(fixtureRoot, "web", "data", "chunks.jsonl"), `${JSON.stringify({ id: "chunk-1", source_file: "00.md", content: "英歌是流行于潮汕及周边地区的民间表演艺术。", source_ids: ["source-a"] })}\n`);
 fs.writeFileSync(path.join(fixtureRoot, "web", "data", "source_registry.json"), JSON.stringify({ sources: { "source-a": { title: "权威来源", url: "https://example.com/source" } } }));
-fs.writeFileSync(path.join(fixtureRoot, "web", "index.html"), '<script src="app.js"></script><button data-guide-open>问小槌</button>');
-fs.writeFileSync(path.join(fixtureRoot, "web", "app.js"), "fetch('http://127.0.0.1:8787/api/agent/chat',{headers:{'x-app-id':'yingge-h5'}})");
+fs.writeFileSync(path.join(publicWebRoot, "index.html"), '<script src="app.js"></script><button data-guide-open>问小槌</button>');
+fs.writeFileSync(path.join(publicWebRoot, "app.js"), "fetch('http://127.0.0.1:8787/api/agent/chat',{headers:{'x-app-id':'yingge-h5'}})");
 
 const healthy = await runAdminDiagnostics({
   projectRoot: fixtureRoot,
+  paths: { publicWebRoot },
   runtime: {
     knowledgeVersion: "2026.08.30.1",
     chunks: [{ id: "chunk-1" }],

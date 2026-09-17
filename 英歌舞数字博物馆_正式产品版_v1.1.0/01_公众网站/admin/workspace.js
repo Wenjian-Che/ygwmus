@@ -1,8 +1,8 @@
 (() => {
   const API = window.AdminShell?.apiBase || location.origin;
-  const VALID_SECTIONS = new Set(["overview", "content", "materials", "assistant", "settings"]);
-  const TITLES = Object.freeze({ overview: "运营总览", content: "网站内容", materials: "真实素材", assistant: "智能助手", settings: "连接与设置" });
-  const state = { actor: null, auth: null, plans: [], initialized: false, graphInitialized: false, materialsView: "records" };
+  const VALID_SECTIONS = new Set(["overview", "content", "materials", "assistant", "knowledge", "settings"]);
+  const TITLES = Object.freeze({ overview: "运营总览", content: "网站内容", materials: "真实素材", assistant: "智能助手", knowledge: "知识反馈", settings: "连接与设置" });
+  const state = { actor: null, auth: null, plans: [], knowledgeTasks: [], unansweredAll: [], initialized: false, graphInitialized: false, materialsView: "records" };
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
@@ -72,6 +72,7 @@
     window.AdminShell?.activate(section);
     if (section === "overview" && state.actor) refreshOverview();
     if (section === "assistant" && state.actor) loadPlans();
+    if (section === "knowledge" && state.actor) refreshKnowledgeFeedback();
     if (section === "settings" && state.actor) loadModelSettings();
     if (section === "materials") setMaterialsView(state.materialsView);
   }
@@ -171,11 +172,144 @@
     $("#materialWorkflowStatus").textContent = curation ? (pending ? `${pending} 项素材待核验` : "素材门禁已通过") : "读取失败";
     $("#knowledgeWorkflowStatus").textContent = health?.knowledge_available ? "知识库已连接" : "知识库未连接";
     $("#modelWorkflowStatus").textContent = model?.api_key_configured ? (model.verified_at ? "连接已验证" : "已配置，待测试") : "尚未配置";
+    await refreshKnowledgeFeedback();
   }
 
   function formatDate(value) {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? "时间未知" : new Intl.DateTimeFormat("zh-CN", { dateStyle: "medium", timeStyle: "short" }).format(date);
+  }
+
+  function questionKey(item = {}) {
+    return `${String(item.app_id || "yingge-h5").trim() || "yingge-h5"}|${String(item.question || "")
+      .normalize("NFKC")
+      .toLowerCase()
+      .replace(/[\s\u3000]/gu, "")
+      .replace(/[，,。！？!?；;：:"'“”‘’（）()【】\[\]《》<>]/gu, "")}`;
+  }
+
+  function knowledgeQuality(quality) {
+    const value = String(quality || "").trim();
+    const labels = {
+      feedback_downvote: { label: "用户点踩", reason: "用户认为原回答没有解决问题；需要核对回答重点与依据。" },
+      insufficient: { label: "证据不足", reason: "现有馆内资料不足以支撑回答；需要补充可核验来源。" },
+      limited: { label: "回答范围受限", reason: "现有资料只覆盖部分情境；需要补充地区、队伍或年代边界。" },
+      unsupported: { label: "暂无可靠支撑", reason: "当前没有足够证据支持这项回答；先补证再决定是否纳入知识库。" },
+    };
+    return labels[value] || { label: value || "待核验", reason: "系统将此问题保留给人工判断与来源复核。" };
+  }
+
+  function occurrenceFor(item) {
+    const matched = state.unansweredAll.find((candidate) => questionKey(candidate) === questionKey(item));
+    return Math.max(1, Number(matched?.count || item.count || 1));
+  }
+
+  function addGapMeta(container, label, value) {
+    const item = document.createElement("div");
+    const title = document.createElement("span");
+    const detail = document.createElement("strong");
+    title.textContent = label;
+    detail.textContent = value;
+    item.append(title, detail);
+    container.append(item);
+  }
+
+  function makeKnowledgeFeedbackCard(item, { automatic = false } = {}) {
+    const quality = knowledgeQuality(item.quality);
+    const article = document.createElement("article");
+    article.className = "knowledge-feedback-card";
+
+    const head = document.createElement("div");
+    head.className = "knowledge-feedback-card-head";
+    const badge = document.createElement("span");
+    badge.className = `knowledge-feedback-badge${automatic ? "" : " is-quiet"}`;
+    badge.textContent = automatic ? "已进入待补证" : "尚未分流";
+    const time = document.createElement("time");
+    time.dateTime = item.updated_at || item.last_seen || item.created_at || "";
+    time.textContent = formatDate(item.updated_at || item.last_seen || item.created_at);
+    head.append(badge, time);
+
+    const question = document.createElement("h4");
+    question.textContent = item.question || "未提供问题内容";
+    const reason = document.createElement("p");
+    reason.className = "knowledge-feedback-reason";
+    reason.textContent = automatic ? quality.reason : "该问题还没有进入待补证队列；请先判断是否属于英歌知识范围。";
+
+    const metadata = document.createElement("div");
+    metadata.className = "knowledge-feedback-meta";
+    addGapMeta(metadata, "触发原因", automatic ? quality.label : "待人工分流");
+    addGapMeta(metadata, "证据等级", quality.label);
+    addGapMeta(metadata, "出现次数", `${occurrenceFor(item)} 次`);
+    addGapMeta(metadata, "来源状态", automatic ? "来源待核验，尚未发布" : "尚未进入审核，未发布");
+
+    const foot = document.createElement("div");
+    foot.className = "knowledge-feedback-card-foot";
+    const scope = document.createElement("span");
+    scope.textContent = `问题类型：${item.intent || "general"}`;
+    const action = document.createElement("button");
+    action.className = "workspace-button is-quiet";
+    action.type = "button";
+    if (automatic) {
+      action.dataset.closeKnowledgeGap = item.task_id || "";
+      action.textContent = "结束本次复核";
+      action.title = "仅结束该复核任务，不会发布任何知识。";
+    } else {
+      action.dataset.promoteKnowledgeGap = item.question || "";
+      action.dataset.app = item.app_id || "yingge-h5";
+      action.dataset.intent = item.intent || "general";
+      action.dataset.quality = item.quality || "insufficient";
+      action.textContent = "转为待补证";
+    }
+    foot.append(scope, action);
+    article.append(head, question, reason, metadata, foot);
+    return article;
+  }
+
+  function renderKnowledgeFeedback() {
+    const taskList = $("[data-knowledge-gap-list]");
+    const unansweredList = $("[data-knowledge-unanswered-list]");
+    if (!taskList || !unansweredList) return;
+    const tasks = state.knowledgeTasks;
+    const unanswered = state.unansweredAll.filter((item) => String(item.status || "open") === "open");
+    $("#knowledgeGapTaskCount").textContent = String(tasks.length);
+    $("#knowledgeUnansweredCount").textContent = String(unanswered.length);
+    const actionDetail = $("#knowledgeFeedbackActionDetail");
+    if (actionDetail) actionDetail.textContent = String(tasks.length) + " 个待补证，" + String(unanswered.length) + " 个尚未分流问题";
+
+    taskList.replaceChildren();
+    if (tasks.length) tasks.forEach((item) => taskList.append(makeKnowledgeFeedbackCard(item, { automatic: true })));
+    else {
+      const empty = document.createElement("p");
+      empty.className = "workspace-empty";
+      empty.textContent = "暂时没有待补证任务。符合自动标记条件的新英歌知识缺口会在这里等待人工审核。";
+      taskList.append(empty);
+    }
+
+    unansweredList.replaceChildren();
+    if (unanswered.length) unanswered.forEach((item) => unansweredList.append(makeKnowledgeFeedbackCard(item)));
+    else {
+      const empty = document.createElement("p");
+      empty.className = "workspace-empty";
+      empty.textContent = "没有尚未分流的问题。已进入待补证的项目会显示在左侧。";
+      unansweredList.append(empty);
+    }
+  }
+
+  async function refreshKnowledgeFeedback() {
+    const status = $("#knowledgeFeedbackStatus");
+    if (status) status.textContent = "正在读取知识反馈队列…";
+    try {
+      const [tasks, unanswered] = await Promise.all([
+        request("/api/admin/knowledge-tasks"),
+        request("/api/admin/unanswered?status=all"),
+      ]);
+      state.knowledgeTasks = Array.isArray(tasks.items) ? tasks.items : [];
+      state.unansweredAll = Array.isArray(unanswered.items) ? unanswered.items : [];
+      renderKnowledgeFeedback();
+      if (status) status.textContent = "待补证任务仍需人工核验来源；本页不会自动发布知识。";
+    } catch (error) {
+      if (status) status.textContent = `知识反馈队列暂时无法读取：${error.message}`;
+    }
   }
 
   function renderPlans() {
@@ -349,6 +483,42 @@
   $("#modelSettingsForm").addEventListener("submit", saveModelSettings);
   $("#testModelConnection").addEventListener("click", testModelConnection);
   $("#runWorkspaceDiagnostics").addEventListener("click", runDiagnostics);
+  $("#refreshKnowledgeFeedback")?.addEventListener("click", refreshKnowledgeFeedback);
+  document.addEventListener("click", async (event) => {
+    const promote = event.target.closest("[data-promote-knowledge-gap]");
+    if (promote) {
+      const question = String(promote.dataset.promoteKnowledgeGap || "").trim();
+      if (!question) return;
+      promote.disabled = true;
+      try {
+        await request("/api/admin/unanswered/promote", {
+          method: "POST",
+          body: JSON.stringify({ app_id: promote.dataset.app || "yingge-h5", question, intent: promote.dataset.intent || "general", quality: promote.dataset.quality || "insufficient" }),
+        });
+        notice("已转为待补证；仍需核验来源，未发布任何知识。", "success");
+        await refreshKnowledgeFeedback();
+      } catch (error) {
+        notice("无法转为待补证：" + error.message, "error");
+      } finally {
+        promote.disabled = false;
+      }
+      return;
+    }
+    const close = event.target.closest("[data-close-knowledge-gap]");
+    if (!close) return;
+    const taskId = String(close.dataset.closeKnowledgeGap || "").trim();
+    if (!taskId) return;
+    close.disabled = true;
+    try {
+      await request("/api/admin/knowledge-tasks/status", { method: "POST", body: JSON.stringify({ task_id: taskId, status: "closed" }) });
+      notice("本次复核已结束；知识仍需通过正式审核流程才会发布。", "success");
+      await refreshKnowledgeFeedback();
+    } catch (error) {
+      notice("无法更新复核任务：" + error.message, "error");
+    } finally {
+      close.disabled = false;
+    }
+  });
   for (const button of $$('[data-materials-view]')) {
     button.addEventListener("click", () => setMaterialsView(button.dataset.materialsView));
     button.addEventListener("keydown", (event) => {

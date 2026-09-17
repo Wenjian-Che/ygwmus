@@ -43,6 +43,7 @@ try {
   assert.equal(valid.bindHost, "127.0.0.1");
   assert.equal(valid.cookieSecure, true);
   assert.deepEqual(valid.allowedOrigins, ["https://museum.example.cn"]);
+  assert.equal(valid.paths.publicWebRoot, path.resolve(webRoot));
   assert.equal(valid.paths.adminStateDir, path.resolve(env.ADMIN_PRIVATE_STATE_DIR));
 
   assert.throws(() => validateProductionEnvironment({ env: { ...env, AGENT_ALLOWED_ORIGINS: "" }, projectRoot, webRoot }), /AGENT_ALLOWED_ORIGINS/);
@@ -53,6 +54,8 @@ try {
   assert.throws(() => validateProductionEnvironment({ env: { ...env, AGENT_HOST: "0.0.0.0" }, projectRoot, webRoot }), /回环地址/);
   assert.throws(() => validateProductionEnvironment({ env: { ...env, ADMIN_PRIVATE_STATE_DIR: path.join(webRoot, "admin") }, projectRoot, webRoot }), /项目目录之外/);
   assert.throws(() => validateProductionEnvironment({ env: { ...env, CURATION_PUBLIC_PATH: path.join(stateRoot, "public.json") }, projectRoot, webRoot }), /公众数据.*私密状态/);
+  assert.throws(() => validateProductionEnvironment({ env, projectRoot, webRoot: stateRoot }), /YINGGE_PUBLIC_WEB_ROOT.*私密状态/,
+    "公开网站根不得指向私密状态树");
 } finally {
   fs.rmSync(sandbox, { recursive: true, force: true });
 }

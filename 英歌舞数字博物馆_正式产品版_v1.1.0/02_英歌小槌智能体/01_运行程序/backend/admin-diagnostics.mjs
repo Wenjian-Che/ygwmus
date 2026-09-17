@@ -50,6 +50,7 @@ function safePublicExhibits(value) {
 
 export async function runAdminDiagnostics({ projectRoot, runtime, paths = {} } = {}) {
   if (!projectRoot || !runtime) throw new TypeError("projectRoot and runtime are required");
+  const publicWebRoot = paths.publicWebRoot || path.join(projectRoot, "web");
   const governanceDir = paths.knowledgeGovernanceDir || path.join(projectRoot, "agent");
   const runtimeDataDir = paths.knowledgeRuntimeDataDir || path.join(projectRoot, "web", "data");
   const sourceRoot = paths.knowledgeSourceDir || path.join(projectRoot, "knowledge-base", "content");
@@ -59,8 +60,8 @@ export async function runAdminDiagnostics({ projectRoot, runtime, paths = {} } =
     chunks: path.join(runtimeDataDir, "chunks.jsonl"),
     index: path.join(runtimeDataDir, "lexical_index.json"),
     registry: path.join(runtimeDataDir, "source_registry.json"),
-    indexHtml: path.join(projectRoot, "web", "index.html"),
-    appJs: path.join(projectRoot, "web", "app.js"),
+    indexHtml: path.join(publicWebRoot, "index.html"),
+    appJs: path.join(publicWebRoot, "app.js"),
     sourceRoot,
   };
   let artifact = null;

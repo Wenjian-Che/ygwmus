@@ -12,8 +12,7 @@ let playwright;
 for (const candidate of candidates) { try { playwright = require(candidate); break; } catch {} }
 if (!playwright) throw new Error("Playwright is required for the admin operations browser regression");
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const webRoot = path.join(root, "web");
+const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..", "01_公众网站");
 const mime = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp", ".woff2": "font/woff2", ".mp4": "video/mp4", ".json": "application/json" };
 const server = http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, "http://127.0.0.1").pathname);
@@ -41,7 +40,15 @@ async function mockApi(page, role = "author") {
     const request = route.request();
     const url = new URL(request.url());
     calls.push(`${request.method()} ${url.pathname}`);
-    const json = (payload, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(payload) });
+    const json = (payload, status = 200) => route.fulfill({
+      status,
+      contentType: "application/json",
+      headers: {
+        "access-control-allow-origin": request.headers().origin || "http://127.0.0.1:8099",
+        "access-control-allow-credentials": "true",
+      },
+      body: JSON.stringify(payload),
+    });
     if (url.pathname === "/api/admin/session") return json({ actor: { id: `${role}-qa`, role } });
     if (url.pathname === "/api/admin/site-content" && request.method() === "GET") return json(state);
     if (url.pathname === "/api/admin/site-content/preview") return json({ version: state.version, content: JSON.parse(request.postData() || "{}").content });
@@ -70,12 +77,17 @@ try {
     const calls = await mockApi(page, "author");
     await page.goto("http://127.0.0.1:8099/admin/content.html?embedded=1", { waitUntil: "networkidle" });
     await page.waitForFunction(() => document.querySelector("#actorState")?.textContent.includes("内容编辑"));
+    await page.waitForFunction(() => document.querySelector("#saveState")?.textContent.includes("已读取当前公众版本"));
+    await page.frameLocator("#previewFrame").locator(".guide-reset").waitFor({ state: "attached", timeout: 10_000 });
     assert.equal(await page.locator("#saveDraft").isDisabled(), true, "未修改时不应允许保存空操作");
     await page.locator('[name="hero.titleLine1"]').fill("从一声锣鼓，");
     assert.equal(await page.locator("#saveDraft").isEnabled(), true);
     const previewTitle = page.frameLocator("#previewFrame").locator(".hero h1 span").first();
     await assert.doesNotReject(() => previewTitle.waitFor({ state: "attached", timeout: 5000 }));
-    await page.waitForTimeout(120);
+    await page.waitForFunction((expectedTitle) => {
+      const preview = document.querySelector("#previewFrame");
+      return preview?.contentDocument?.querySelector(".hero h1 span")?.textContent?.trim() === expectedTitle;
+    }, "从一声锣鼓，");
     assert.equal((await previewTitle.textContent()).trim(), "从一声锣鼓，", "输入应通过 postMessage 即时更新预览");
     await page.locator("#saveDraft").click();
     await page.waitForFunction(() => document.querySelector("#saveState")?.textContent.includes("草稿已保存"));
