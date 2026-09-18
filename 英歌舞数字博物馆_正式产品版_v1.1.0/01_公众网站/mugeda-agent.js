@@ -74,6 +74,9 @@
     var mugedaVoiceStyle = document.createElement('style');
     mugedaVoiceStyle.textContent = '.head{min-height:50px;padding:9px 12px}.head-copy{gap:7px}.head strong{font-size:15px}.settings,.close{width:34px;height:34px;border:1px solid #cad5cd;border-radius:10px;background:transparent;color:#345446;display:grid;place-items:center;cursor:pointer}.settings{margin-left:auto}.settings svg,.close svg,.mugeda-settings svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}.settings[aria-expanded="true"]{border-color:#9ecbb1;background:#eaf5ed;color:#26734d}.form{grid-template-columns:42px minmax(0,1fr) 52px;gap:7px;min-height:62px;padding:8px 10px}.form .mic{display:grid;place-items:center;min-width:42px;min-height:44px;padding:0;border:1px solid #cbd9cf;background:#eff5f0;color:#286c4a}.form .mic span,.form .privacy{display:none}.form .send{min-width:52px;padding:0;font-size:13px}.form input{min-height:44px;padding:0 11px;font-size:16px}.mugeda-settings{position:absolute;z-index:8;inset:0;display:grid;grid-template-rows:auto 1fr auto;padding:13px;background:#f8faf6;color:#203128;opacity:0;pointer-events:none;transform:translateX(18px);transition:opacity .22s ease,transform .22s ease}.panel.settings-open .mugeda-settings{opacity:1;pointer-events:auto;transform:none}.mugeda-settings-head{display:flex;align-items:center;gap:9px;min-height:38px;padding-bottom:11px;border-bottom:1px solid #dce5de}.mugeda-settings-head>svg{color:#2b6e4b}.mugeda-settings-head strong{flex:1;font-size:16px}.settings-close{width:34px;height:34px;border:1px solid #d1ddd4;border-radius:10px;background:#fff;color:#52685a;display:grid;place-items:center}.mugeda-setting-list{padding:7px 0}.mugeda-setting-row{width:100%;display:grid;grid-template-columns:30px minmax(0,1fr) 42px;gap:9px;align-items:center;padding:13px 1px;border:0;border-bottom:1px solid #e0e7e1;background:transparent;text-align:left;color:#203128}.mugeda-setting-row strong,.mugeda-setting-row small{display:block}.mugeda-setting-row strong{font-size:13px}.mugeda-setting-row small{margin-top:3px;color:#718176;font-size:10px;line-height:1.4}.mugeda-setting-icon{width:30px;height:30px;border-radius:9px;background:#e9f3eb;color:#28704c;display:grid;place-items:center}.mugeda-setting-icon svg{width:17px;height:17px}.mugeda-toggle{position:relative;width:40px;height:23px;border-radius:999px;background:#bcc9c0}.mugeda-toggle:after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(13,42,28,.2);transition:transform .2s}.mugeda-setting-row[aria-checked="true"] .mugeda-toggle{background:#2e9567}.mugeda-setting-row[aria-checked="true"] .mugeda-toggle:after{transform:translateX(17px)}.mugeda-setting-row.is-note{cursor:default}.mugeda-settings-note{margin:0;padding:11px 1px 2px;color:#6f7e73;font-size:10px;line-height:1.55}.mugeda-settings-note strong{color:#355144}@media(orientation:portrait){.panel,.panel.open{position:fixed;left:50%;top:50%;right:auto;bottom:auto;width:min(520px,calc(100vh - 64px));height:min(340px,calc(100vw - 48px));transform:translate(-50%,-50%) rotate(90deg) scale(var(--panel-scale,1));animation:none}:host(.dock-left) .panel{left:50%;right:auto}.launcher:not(.panel-open){transform:rotate(90deg)}}';
     root.appendChild(mugedaVoiceStyle);
+    var mugedaOrientationStyle = document.createElement('style');
+    mugedaOrientationStyle.textContent = ':host(.force-landscape-agent) .panel,:host(.force-landscape-agent) .panel.open{position:fixed;left:50%;top:50%;right:auto;bottom:auto;width:var(--forced-panel-width,520px);height:var(--forced-panel-height,340px);transform:translate(-50%,-50%) rotate(90deg) scale(var(--panel-scale,1));animation:none}:host(.force-landscape-agent).dock-left .panel{left:50%;right:auto}:host(.force-landscape-agent) .launcher:not(.panel-open){transform:rotate(90deg)}';
+    root.appendChild(mugedaOrientationStyle);
     var conversationId = sessionStorage.getItem('yingge-mugeda-conversation') || ('mugeda-' + Date.now() + '-' + Math.random().toString(36).slice(2));
     var history = [];
     sessionStorage.setItem('yingge-mugeda-conversation', conversationId);
@@ -112,10 +115,24 @@
       var mediaList = suspendedMedia.slice(); suspendedMedia = [];
       mediaList.forEach(function (media) { try { var promise = media.play(); if (promise && promise.catch) promise.catch(function () {}); } catch (_) {} });
     }
-    function syncVisualViewport() { var viewport = window.visualViewport; host.style.setProperty('--vv-height', (viewport ? viewport.height : window.innerHeight) + 'px'); host.style.setProperty('--vv-top', (viewport ? viewport.offsetTop : 0) + 'px'); }
+    function syncMugedaOrientation() {
+      var orientationType = window.screen && window.screen.orientation && window.screen.orientation.type || '';
+      var physicalPortrait = /^portrait/.test(orientationType) || (!orientationType && window.screen && Number(window.screen.height) > Number(window.screen.width));
+      var forced = physicalPortrait && window.innerWidth > window.innerHeight;
+      host.classList.toggle('force-landscape-agent', forced);
+      if (forced) {
+        var screenWidth = Math.max(1, Number(window.screen.width) || window.innerHeight), screenHeight = Math.max(1, Number(window.screen.height) || window.innerWidth);
+        host.style.setProperty('--forced-panel-width', Math.min(520, Math.max(screenWidth, screenHeight) - 64) + 'px');
+        host.style.setProperty('--forced-panel-height', Math.min(340, Math.min(screenWidth, screenHeight) - 48) + 'px');
+      } else {
+        host.style.removeProperty('--forced-panel-width'); host.style.removeProperty('--forced-panel-height');
+      }
+      return forced;
+    }
+    function syncVisualViewport() { syncMugedaOrientation(); var viewport = window.visualViewport; host.style.setProperty('--vv-height', (viewport ? viewport.height : window.innerHeight) + 'px'); host.style.setProperty('--vv-top', (viewport ? viewport.offsetTop : 0) + 'px'); }
     syncVisualViewport(); window.addEventListener('resize', syncVisualViewport); if (window.visualViewport) { window.visualViewport.addEventListener('resize', syncVisualViewport); window.visualViewport.addEventListener('scroll', syncVisualViewport); }
     function fitPanelToViewport() {
-      if (!panel.classList.contains('open') || window.innerHeight <= window.innerWidth) { panel.style.removeProperty('--panel-scale'); panel.style.left = ''; panel.style.top = ''; return; }
+      if (!panel.classList.contains('open') || (window.innerHeight <= window.innerWidth && !host.classList.contains('force-landscape-agent'))) { panel.style.removeProperty('--panel-scale'); panel.style.left = ''; panel.style.top = ''; return; }
       var viewport = window.visualViewport, vw = viewport ? viewport.width : document.documentElement.clientWidth, vh = viewport ? viewport.height : document.documentElement.clientHeight, ox = viewport ? viewport.offsetLeft : 0, oy = viewport ? viewport.offsetTop : 0;
       panel.style.setProperty('--panel-scale', '1'); panel.style.left = '50%'; panel.style.top = '50%';
       requestAnimationFrame(function () {
@@ -183,8 +200,17 @@
       flush(); return parts.filter(Boolean).slice(0, 6);
     }
     function mugedaSpeechError(message, code) { var error = new Error(message); error.code = code; return error; }
-    function fetchMugedaSpeechPart(text, controller) {
-      return fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/synthesize', { method: 'POST', headers: { 'content-type': 'application/json', 'x-app-id': config.appId }, body: JSON.stringify({ text: text, speed: 1.04 }), signal: controller && controller.signal }).then(function (response) { if (!response.ok) throw mugedaSpeechError('朗读合成失败，请稍后再试', 'MUGEDA_TTS_SYNTHESIS_FAILED'); return response.blob(); });
+    function fetchMugedaSpeechPart(text, controller, attempt) {
+      attempt = Number(attempt) || 0;
+      return fetch(config.apiBase.replace(/\/$/, '') + '/api/voice/synthesize', { method: 'POST', headers: { 'content-type': 'application/json', 'x-app-id': config.appId }, body: JSON.stringify({ text: text, speed: 1.04 }), signal: controller && controller.signal }).then(function (response) {
+        if (response.ok) return response.blob();
+        if (response.status >= 500 && attempt < 1) return new Promise(function (resolve) { window.setTimeout(resolve, 140); }).then(function () { return fetchMugedaSpeechPart(text, controller, attempt + 1); });
+        throw mugedaSpeechError('朗读合成失败，请稍后再试', 'MUGEDA_TTS_SYNTHESIS_FAILED');
+      }).catch(function (error) {
+        if (error && (error.name === 'AbortError' || error.code)) throw error;
+        if (attempt < 1) return new Promise(function (resolve) { window.setTimeout(resolve, 140); }).then(function () { return fetchMugedaSpeechPart(text, controller, attempt + 1); });
+        throw mugedaSpeechError('朗读合成失败，请稍后再试', 'MUGEDA_TTS_SYNTHESIS_FAILED');
+      });
     }
     function waitForMugedaSpeechEnd(audio) { return new Promise(function (resolve, reject) { var settled = false; function done() { if (settled) return; settled = true; if (activeSpeechCompletion === done) activeSpeechCompletion = null; resolve(); } activeSpeechCompletion = done; audio.onended = done; audio.onerror = function () { if (settled) return; settled = true; if (activeSpeechCompletion === done) activeSpeechCompletion = null; reject(mugedaSpeechError('朗读播放失败，请再试一次', 'MUGEDA_TTS_PLAYBACK_FAILED')); }; }); }
     function releaseMugedaSpeechAudio(audio, url) { if (activeSpeech === audio) activeSpeech = null; if (activeSpeechUrl === url) { URL.revokeObjectURL(url); activeSpeechUrl = ''; } }
@@ -199,7 +225,7 @@
         await armMugedaWakeDuringSpeech();
         if (run !== activeSpeechRun) return;
         var url = URL.createObjectURL(blob), audio = new Audio(url), ended = waitForMugedaSpeechEnd(audio);
-        activeSpeechUrl = url; activeSpeech = audio; activeSpeechButton = button; button.disabled = false; button.classList.add('reading'); button.textContent = '停止朗读'; setStatus('小槌正在朗读');
+        activeSpeechUrl = url; activeSpeech = audio; activeSpeechButton = button; button.disabled = false; button.classList.add('reading'); button.textContent = '停止朗读 · ' + (index + 1) + '/' + parts.length; setStatus('小槌正在朗读 ' + (index + 1) + '/' + parts.length);
         try { await audio.play(); } catch (error) { releaseMugedaSpeechAudio(audio, url); if (error && error.name === 'NotAllowedError') throw mugedaSpeechError('浏览器阻止朗读，请点击“朗读回答”再试', 'MUGEDA_TTS_PLAYBACK_BLOCKED'); throw mugedaSpeechError('朗读播放失败，请再试一次', 'MUGEDA_TTS_PLAYBACK_FAILED'); }
         try { await ended; } finally { releaseMugedaSpeechAudio(audio, url); }
         if (run !== activeSpeechRun) return;
@@ -344,7 +370,7 @@
 
     var MUGEDA_WAKE_COOLDOWN_MS = 1800, MUGEDA_WAKE_ECHO_GUARD_MS = 260;
     var MUGEDA_WAKE_REQUEST = { mode: 'wake' };
-    var mugedaWakeSessionId = '', mugedaWakeRecorder = null, mugedaWakeQueue = Promise.resolve(), mugedaWakeStarting = false, mugedaWakeLastTriggerAt = 0, mugedaWakeAck = null, mugedaWakeStartPromise = null, mugedaWakeGeneration = 0, mugedaWakeTransitioning = false, mugedaWakeNoiseFloor = .004, mugedaWakeLastVoiceAt = 0, mugedaWakeEchoGuardUntil = 0;
+    var mugedaWakeSessionId = '', mugedaWakeRecorder = null, mugedaWakeQueue = Promise.resolve(), mugedaWakeStarting = false, mugedaWakeLastTriggerAt = 0, mugedaWakeAck = null, mugedaWakeStartPromise = null, mugedaWakeGeneration = 0, mugedaWakeTransitioning = false, mugedaWakeNoiseFloor = .004, mugedaWakeLastVoiceAt = 0, mugedaWakeVoiceFrames = 0, mugedaWakeEchoGuardUntil = 0;
     var mugedaWakeQuestionSessionId = '', mugedaWakeQuestionRecorder = null, mugedaWakeQuestionQueue = Promise.resolve(), mugedaWakeQuestionText = '', mugedaWakeQuestionTimer = 0, mugedaWakeQuestionActive = false, mugedaWakeQuestionFinishing = false, mugedaWakeToken = 0;
     function mugedaVoiceUrl(path) { return config.apiBase.replace(/\/$/, '') + path; }
     function reportMugedaVoiceEvent(event, extra) { var body = { event: event, engine: extra && extra.engine || 'mugeda-local-kws', device_class: window.matchMedia && window.matchMedia('(pointer:coarse)').matches ? 'mobile' : 'desktop' }; if (extra && Number.isFinite(extra.latency_ms)) body.latency_ms = Math.max(0, Math.round(extra.latency_ms)); fetch(mugedaVoiceUrl('/api/voice/events'), { method: 'POST', headers: { 'content-type': 'application/json', 'x-app-id': config.appId }, body: JSON.stringify(body), keepalive: true }).catch(function () {}); }
@@ -358,6 +384,16 @@
         if (!results[0].ok || !results[1].ok) { if (stream) stream.getTracks().forEach(function (track) { track.stop(); }); if (payload && payload.session_id) deleteMugedaVoiceSession(payload.session_id); throw (results[0].error || results[1].error || new Error('语音服务暂时不可用')); }
         return [stream, payload];
       });
+    }
+    function prewarmMugedaWakeQuestion() {
+      return acquireMugedaVoiceResources('transcribe').then(function (values) { return { values: values, error: null }; }, function (error) { return { values: null, error: error }; });
+    }
+    function releaseMugedaVoiceResources(result) {
+      var values = result && result.values;
+      if (!values) return;
+      var stream = values[0], payload = values[1];
+      if (stream) stream.getTracks().forEach(function (track) { track.stop(); });
+      if (payload && payload.session_id) deleteMugedaVoiceSession(payload.session_id);
     }
     function mugedaWakeLevel(chunks) { var energy = 0, count = 0; (chunks || []).forEach(function (chunk) { for (var index = 0; index < chunk.length; index += 1) { energy += chunk[index] * chunk[index]; count += 1; } }); return Math.sqrt(energy / Math.max(1, count)); }
     function postMugedaVoiceChunk(session, chunks, inputRate, finish) {
@@ -377,12 +413,14 @@
       if (!session) return;
       if (level < Math.max(.007, mugedaWakeNoiseFloor * 1.45)) mugedaWakeNoiseFloor = mugedaWakeNoiseFloor * .96 + level * .04;
       var likelyVoice = level >= Math.max(.011, mugedaWakeNoiseFloor * 2.35);
-      if (likelyVoice) mugedaWakeLastVoiceAt = now;
+      if (likelyVoice) { if (now - mugedaWakeLastVoiceAt > 650) mugedaWakeVoiceFrames = 0; mugedaWakeLastVoiceAt = now; mugedaWakeVoiceFrames += 1; }
+      else if (now - mugedaWakeLastVoiceAt > 320) mugedaWakeVoiceFrames = 0;
       mugedaWakeQueue = mugedaWakeQueue.catch(function () {}).then(function () { if (session !== mugedaWakeSessionId) return null; return postMugedaVoiceChunk(session, chunks, inputRate, false); }).then(function (payload) {
         if (!payload || !payload.awake) return;
         if (now < mugedaWakeEchoGuardUntil || (!likelyVoice && now - mugedaWakeLastVoiceAt > 260)) return;
+        if (mugedaWakeVoiceFrames < 2) return;
         if (Date.now() - mugedaWakeLastTriggerAt < MUGEDA_WAKE_COOLDOWN_MS) { reportMugedaVoiceEvent('wake_duplicate_suppressed'); return; }
-        mugedaWakeLastTriggerAt = Date.now(); handleMugedaWakeDetected(payload);
+        mugedaWakeVoiceFrames = 0; mugedaWakeLastTriggerAt = Date.now(); handleMugedaWakeDetected(payload);
       }).catch(function (error) { stopMugedaWakeStandby({ quiet: true }); setStatus(error.message || '页面唤醒暂时不可用', true); reportMugedaVoiceEvent('voice_error'); });
     }
     function startMugedaWakeStandby() {
@@ -390,7 +428,7 @@
       if (!mugedaWakeEnabled || !mugedaWakeArmedThisVisit || document.hidden || !canCloudVoice || mugedaWakeQuestionActive || mugedaWakeTransitioning) return Promise.resolve(false);
       if (mugedaWakeStarting) return mugedaWakeStartPromise || Promise.resolve(false);
       var generation = ++mugedaWakeGeneration;
-      mugedaWakeLastTriggerAt = 0; mugedaWakeNoiseFloor = .004; mugedaWakeLastVoiceAt = 0; mugedaWakeStarting = true; setStatus('正在开启页面唤醒');
+      mugedaWakeLastTriggerAt = 0; mugedaWakeNoiseFloor = .004; mugedaWakeLastVoiceAt = 0; mugedaWakeVoiceFrames = 0; mugedaWakeStarting = true; setStatus('正在开启页面唤醒');
       mugedaWakeStartPromise = acquireMugedaVoiceResources(MUGEDA_WAKE_REQUEST.mode).then(function (values) {
         var stream = values[0], payload = values[1];
         if (generation !== mugedaWakeGeneration || !mugedaWakeEnabled || !mugedaWakeArmedThisVisit || document.hidden || mugedaWakeTransitioning) { stream.getTracks().forEach(function (track) { track.stop(); }); deleteMugedaVoiceSession(payload.session_id); return false; }
@@ -403,11 +441,11 @@
     }
     function armMugedaWakeDuringSpeech() { if (!mugedaWakeEnabled || !mugedaWakeArmedThisVisit || document.hidden) return Promise.resolve(false); mugedaWakeEchoGuardUntil = Math.max(mugedaWakeEchoGuardUntil, Date.now() + MUGEDA_WAKE_ECHO_GUARD_MS); return startMugedaWakeStandby().catch(function () { return false; }); }
     function playMugedaWakeAcknowledgement() { if (mugedaWakeAck) { try { mugedaWakeAck.pause(); } catch (_) {} } return new Promise(function (resolve) { var finished = false, done = function () { if (finished) return; finished = true; mugedaWakeEchoGuardUntil = Date.now() + MUGEDA_WAKE_ECHO_GUARD_MS; window.clearTimeout(timer); resolve(); }; mugedaWakeAck = new Audio(mugedaVoiceUrl('/assets/voice/xiaochui-wake-response.wav?v=1.2.2')); mugedaWakeAck.onended = done; mugedaWakeAck.onerror = done; var timer = window.setTimeout(done, 1800), playback = mugedaWakeAck.play(); if (playback && playback.catch) playback.catch(function () { reportMugedaVoiceEvent('voice_error'); done(); }); }); }
-    function handleMugedaWakeDetected(payload) { mugedaWakeTransitioning = true; stopMugedaWakeStandby({ quiet: true }); stopSpeech(); cancelMugedaAnswerForWake(); suspendPageAudio(); open(); setStatus('小槌我在'); reportMugedaVoiceEvent('wake_detected', { engine: payload.engine || 'mugeda-local-kws' }); playMugedaWakeAcknowledgement().then(function () { mugedaWakeTransitioning = false; startMugedaWakeQuestion(); }); }
+    function handleMugedaWakeDetected(payload) { mugedaWakeTransitioning = true; stopMugedaWakeStandby({ quiet: true }); stopSpeech(); cancelMugedaAnswerForWake(); suspendPageAudio(); open(); setStatus('小槌我在'); reportMugedaVoiceEvent('wake_detected', { engine: payload.engine || 'mugeda-local-kws' }); var questionResources = prewarmMugedaWakeQuestion(); playMugedaWakeAcknowledgement().then(function () { mugedaWakeTransitioning = false; startMugedaWakeQuestion(questionResources); }); }
     function stopMugedaWakeQuestion(options) { options = options || {}; var recorder = mugedaWakeQuestionRecorder, session = mugedaWakeQuestionSessionId; window.clearTimeout(mugedaWakeQuestionTimer); mugedaWakeQuestionTimer = 0; mugedaWakeQuestionActive = false; mugedaWakeQuestionFinishing = false; mugedaWakeQuestionRecorder = null; mugedaWakeQuestionSessionId = ''; mugedaWakeQuestionQueue = Promise.resolve(); if (recorder) recorder.cancel(); deleteMugedaVoiceSession(session); if (!options.quiet) setStatus('没有听到完整问题，已恢复待机'); if (options.rearm !== false) resumeMugedaWakeIfEnabled(); }
     function enqueueMugedaWakeQuestionChunk(chunks, inputRate, finish) { var session = mugedaWakeQuestionSessionId; if (!session) return Promise.resolve(null); mugedaWakeQuestionQueue = mugedaWakeQuestionQueue.catch(function () {}).then(function () { if (session !== mugedaWakeQuestionSessionId) return null; return postMugedaVoiceChunk(session, chunks, inputRate, Boolean(finish)); }).then(function (payload) { if (!payload) return null; if (payload.text) mugedaWakeQuestionText = normalizeVoiceText(payload.text); if (!finish && payload.endpoint && mugedaWakeQuestionText) completeMugedaWakeQuestion(); return payload; }); return mugedaWakeQuestionQueue; }
     function completeMugedaWakeQuestion() { if (!mugedaWakeQuestionActive || mugedaWakeQuestionFinishing) return; mugedaWakeQuestionFinishing = true; window.clearTimeout(mugedaWakeQuestionTimer); mugedaWakeQuestionTimer = 0; var recorder = mugedaWakeQuestionRecorder; mugedaWakeQuestionRecorder = null; if (!recorder) { stopMugedaWakeQuestion({ quiet: true }); return; } setStatus('正在确认你的问题'); recorder.finish().then(function (tail) { return enqueueMugedaWakeQuestionChunk(tail.chunks.length ? tail.chunks : [new Float32Array(320)], tail.inputRate, true); }).then(function (payload) { var text = normalizeVoiceText((payload && payload.text) || mugedaWakeQuestionText); var session = mugedaWakeQuestionSessionId; mugedaWakeQuestionSessionId = ''; deleteMugedaVoiceSession(session); mugedaWakeQuestionActive = false; mugedaWakeQuestionFinishing = false; if (Array.from(text.replace(/\s/g, '')).length < 2) { setStatus('没有听清完整问题，请再说一次', true); resumeMugedaWakeIfEnabled(); return; } input.value = text; reportMugedaVoiceEvent('question_submitted'); setStatus('问题已发送，正在组织回答'); ask(text, { replaceActive: true }); resumeMugedaWakeIfEnabled(); }).catch(function (error) { mugedaWakeQuestionFinishing = false; stopMugedaWakeQuestion({ quiet: true }); setStatus(error.message || '语音识别暂时不可用', true); resumeMugedaWakeIfEnabled(); }); }
-    function startMugedaWakeQuestion() { if (!canCloudVoice || document.hidden) { mugedaWakeTransitioning = false; resumeMugedaWakeIfEnabled(); return; } stopMugedaWakeQuestion({ quiet: true, rearm: false }); mugedaWakeQuestionActive = true; mugedaWakeQuestionText = ''; setStatus('正在听你的问题'); var token = ++mugedaWakeToken; mugedaWakeQuestionTimer = window.setTimeout(function () { if (token !== mugedaWakeToken || !mugedaWakeQuestionActive) return; reportMugedaVoiceEvent('wake_timeout'); stopMugedaWakeQuestion({ quiet: false }); }, 9000); acquireMugedaVoiceResources('transcribe').then(function (values) { var stream = values[0], payload = values[1]; if (token !== mugedaWakeToken || !mugedaWakeQuestionActive) { stream.getTracks().forEach(function (track) { track.stop(); }); deleteMugedaVoiceSession(payload.session_id); return; } mugedaWakeQuestionSessionId = payload.session_id; mugedaWakeQuestionQueue = Promise.resolve(); mugedaWakeQuestionRecorder = beginMugedaPcmRecorder(stream, function (chunks, inputRate) { enqueueMugedaWakeQuestionChunk(chunks, inputRate, false).catch(function (error) { stopMugedaWakeQuestion({ quiet: true }); setStatus(error.message || '语音识别暂时不可用', true); }); }); }).catch(function (error) { if (token !== mugedaWakeToken) return; stopMugedaWakeQuestion({ quiet: true }); setStatus(error.message || '语音识别暂时不可用', true); }); }
+    function startMugedaWakeQuestion(prewarmed) { if (!canCloudVoice || document.hidden) { mugedaWakeTransitioning = false; if (prewarmed) prewarmed.then(releaseMugedaVoiceResources); resumeMugedaWakeIfEnabled(); return; } stopMugedaWakeQuestion({ quiet: true, rearm: false }); mugedaWakeQuestionActive = true; mugedaWakeQuestionText = ''; setStatus('正在听你的问题'); var token = ++mugedaWakeToken; mugedaWakeQuestionTimer = window.setTimeout(function () { if (token !== mugedaWakeToken || !mugedaWakeQuestionActive) return; reportMugedaVoiceEvent('wake_timeout'); stopMugedaWakeQuestion({ quiet: false }); }, 9000); (prewarmed || prewarmMugedaWakeQuestion()).then(function (result) { if (result.error) throw result.error; var values = result.values, stream = values[0], payload = values[1]; if (token !== mugedaWakeToken || !mugedaWakeQuestionActive) { releaseMugedaVoiceResources(result); return; } mugedaWakeQuestionSessionId = payload.session_id; mugedaWakeQuestionQueue = Promise.resolve(); mugedaWakeQuestionRecorder = beginMugedaPcmRecorder(stream, function (chunks, inputRate) { enqueueMugedaWakeQuestionChunk(chunks, inputRate, false).catch(function (error) { stopMugedaWakeQuestion({ quiet: true }); setStatus(error.message || '语音识别暂时不可用', true); }); }); }).catch(function (error) { if (token !== mugedaWakeToken) return; stopMugedaWakeQuestion({ quiet: true }); setStatus(error.message || '语音识别暂时不可用', true); }); }
     function resumeMugedaWakeIfEnabled() { if (!mugedaWakeEnabled || !mugedaWakeArmedThisVisit || document.hidden || mugedaWakeRecorder || mugedaWakeQuestionActive || mugedaWakeStarting || mugedaWakeTransitioning) return; window.setTimeout(startMugedaWakeStandby, 160); }
     window.addEventListener('pagehide', function () { stopMugedaWakeQuestion({ quiet: true, rearm: false }); stopMugedaWakeStandby({ quiet: true }); });
     document.addEventListener('visibilitychange', function () { if (document.hidden) { stopMugedaWakeQuestion({ quiet: true, rearm: false }); stopMugedaWakeStandby({ quiet: true }); } });
@@ -466,7 +504,7 @@
     launcher.addEventListener('pointercancel', function (event) { if (gestureKind === 'mouse') endLauncherGesture(event.clientX, event.clientY, true); });
     fetch(config.apiBase.replace(/\/$/, '') + '/api/health').then(function (response) { if (!response.ok) throw new Error(); return response.json(); }).then(function () { setStatus('知识库已连接'); }).catch(function () { setStatus('知识服务暂时不可用', true); });
 
-    window.MugedaYinggeAgent = { open: open, close: shut, ask: ask, setScene: function (scene) { config.scene = scene; }, version: '1.5.2' };
+    window.MugedaYinggeAgent = { open: open, close: shut, ask: ask, setScene: function (scene) { config.scene = scene; }, version: '1.5.3' };
     window.YinggeAgentWidget = window.MugedaYinggeAgent;
     if (config.autoOpen) open();
     window.dispatchEvent(new CustomEvent('yingge-agent-ready'));

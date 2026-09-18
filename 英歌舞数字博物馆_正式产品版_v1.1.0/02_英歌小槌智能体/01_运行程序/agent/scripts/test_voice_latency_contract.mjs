@@ -32,10 +32,15 @@ assert.doesNotMatch(app, /if\(event==='done'\)\{await typing\?\.complete\(\)/, "
 assert.match(app, /if\(event==='done'\)\{typing\?\.cancel\(\);renderAgentAnswer/, "收到完成帧时应立即落下完整回答文字");
 assert.match(app, /WAKE_TRIGGER_COOLDOWN_MS/, "重复唤醒应有短时去重保护");
 assert.match(app, /wakeNoiseFloor/, "唤醒输入应使用自适应环境噪声门限");
+assert.match(app, /wakeVoiceFrames/, "网站唤醒必须累计连续语音帧，拒绝单次高能量碰撞声");
+assert.match(app, /confirmedVoiceFrames<3/, "网站本地 KWS 至少需要三帧连续语音能量才可接受唤醒结果");
 assert.match(app, /wakeEchoGuardUntil/, "系统回应结束后应抑制短暂回声尾音");
 const speakFlow = app.slice(app.indexOf("const speak=async"), app.indexOf("const bind="));
 assert.match(speakFlow, /await armWakeDuringSpeech\(\)/, "朗读开始前必须等待打断监听会话就绪");
 assert.ok(speakFlow.indexOf("await armWakeDuringSpeech()") < speakFlow.indexOf("currentAudio.play()"), "打断监听必须早于音频播放就绪");
+assert.match(app, /const fetchSpeechBlob=async\(text,attempt=0\)/, "网站短句朗读必须有独立的可重试请求器");
+assert.match(app, /response\.status>=500&&attempt<1/, "网站 TTS 临时服务错误应自动重试一次");
+assert.match(app, /utterance\.onerror=.*wakeState='answering'.*rearmWakeStandby\(\)/, "系统朗读失败后必须退出 speaking 并恢复唤醒待机");
 assert.match(app, /reportVoiceEvent\('speech_interrupted'/, "成功语音打断必须留下匿名诊断事件");
 assert.match(app, /if\(followup\)wakeDetectedAt=0/, "普通追问窗口不得沿用上一次唤醒时间");
 assert.match(app, /voiceApi\+'\/events'/, "网站应上报匿名唤醒质量事件");
@@ -56,7 +61,7 @@ assert.equal(crypto.createHash("sha256").update(wakeAck).digest("hex"), wakeAckM
 
 for (const name of fs.readdirSync(path.join(root, "01_公众网站")).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(root, "01_公众网站", name), "utf8");
-  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.5\.2/, `${name} 必须刷新不可变缓存版本`);
+  if (html.includes("app.js?v=")) assert.match(html, /app\.js\?v=1\.5\.3/, `${name} 必须刷新不可变缓存版本`);
 }
 
 console.log("voice latency contract tests passed");
