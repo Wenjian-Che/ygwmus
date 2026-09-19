@@ -6,8 +6,10 @@ import { spawn } from "node:child_process";
 import { runProductionPreflight } from "../../backend/production-preflight.mjs";
 
 const root = fs.mkdtempSync(path.join(os.tmpdir(), "yingge-production-server-"));
+const formalPackageRoot = path.resolve(process.cwd(), "..", "..");
 const privateRoot = path.join(root, "private");
 const publicRoot = path.join(root, "public");
+const publicWebRoot = path.join(root, "web");
 const runtimeData = path.join(privateRoot, "knowledge", "runtime");
 const governance = path.join(privateRoot, "knowledge", "governance");
 const catalog = path.join(privateRoot, "curation", "exhibits.json");
@@ -18,6 +20,9 @@ fs.mkdirSync(path.dirname(catalog), { recursive: true });
 fs.mkdirSync(path.dirname(publicProjection), { recursive: true });
 fs.mkdirSync(runtimeData, { recursive: true });
 fs.mkdirSync(governance, { recursive: true });
+fs.mkdirSync(publicWebRoot, { recursive: true });
+fs.writeFileSync(path.join(publicWebRoot, "index.html"), "<!doctype html><script src=\"app.js\"></script>\n");
+fs.writeFileSync(path.join(publicWebRoot, "app.js"), "window.YinggeMuseum=true;\n");
 for (const directory of [
   path.join(privateRoot, "agent"), path.join(privateRoot, "admin"), path.join(privateRoot, "audit"),
   path.join(privateRoot, "content"), path.join(privateRoot, "plans"), path.join(privateRoot, "apps"),
@@ -25,7 +30,7 @@ for (const directory of [
   path.join(privateRoot, "knowledge", "generated"), path.join(privateRoot, "backups"),
 ]) fs.mkdirSync(directory, { recursive: true });
 fs.copyFileSync("content/curation/exhibits.json", catalog);
-fs.copyFileSync("web/data/exhibits.public.json", publicProjection);
+fs.copyFileSync(path.join(formalPackageRoot, "01_公众网站", "data", "exhibits.public.json"), publicProjection);
 for (const name of ["chunks.jsonl", "lexical_index.json", "source_registry.json", "build_report.json"]) {
   const source = path.join("agent", "runtime", name);
   if (fs.existsSync(source)) fs.copyFileSync(source, path.join(runtimeData, name));
@@ -61,7 +66,23 @@ const productionEnv = {
     ADMIN_CREDENTIALS_JSON: "",
     DEEPSEEK_API_KEY: "",
     CURATION_PRIVATE_MEDIA_ROOT: "",
+    YINGGE_PUBLIC_WEB_ROOT: publicWebRoot,
 };
+
+await assert.rejects(
+  () => runProductionPreflight({
+    env: {
+      ...productionEnv,
+      YINGGE_PUBLIC_WEB_ROOT: path.join(root, "missing-web"),
+      ADMIN_CREDENTIALS_JSON: JSON.stringify({
+        "reviewer-token-at-least-32-random-characters": { id: "release-reviewer", role: "reviewer" },
+        "publisher-token-at-least-32-random-characters": { id: "release-publisher", role: "publisher" },
+      }),
+    },
+  }),
+  /缺少公众网站目录/,
+  "生产预检必须阻止丢失的正式公众网站根目录",
+);
 
 const preflight = await runProductionPreflight({
   env: {

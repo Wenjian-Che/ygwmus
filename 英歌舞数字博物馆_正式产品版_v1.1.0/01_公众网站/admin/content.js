@@ -57,6 +57,10 @@
     frame.contentWindow?.postMessage({ type: 'yingge:site-content-preview', content }, location.origin);
   }
 
+  frame.addEventListener('load', () => {
+    if (contentReady) postPreview(readForm());
+  });
+
   async function request(path, options = {}) {
     const response = await fetch(`${API}${path}`, { ...options, credentials: 'include' });
     let payload = {};

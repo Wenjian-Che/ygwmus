@@ -3,10 +3,10 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateProductionEnvironment } from "./production-config.mjs";
+import { assertPublicWebRootReadable, resolvePublicWebRoot } from "./public-web-root.mjs";
 
 const backendDir = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(backendDir, "..");
-const webRoot = path.join(projectRoot, "web");
 
 function fail(message) {
   throw Object.assign(new Error(message), { code: "PRODUCTION_PREFLIGHT_FAILED" });
@@ -81,7 +81,7 @@ function assertPublicProjection(file) {
   if (forbidden.test(serialized) || /(?:[A-Za-z]:\\|\\\\|\/home\/|\/var\/lib\/)/.test(serialized)) fail("策展公众投影包含私密治理字段或内部绝对路径");
 }
 
-function assertStaticRootClean() {
+function assertStaticRootClean(webRoot) {
   const forbidden = [
     path.join(webRoot, ".env"),
     path.join(webRoot, "data", "chunks.jsonl"),
@@ -115,8 +115,11 @@ async function assertSqliteWritable(directory) {
 export async function runProductionPreflight({ env = process.env } = {}) {
   const [major, minor] = process.versions.node.split(".").map(Number);
   if (major < 22 || (major === 22 && minor < 14)) fail("生产环境需要 Node.js 22.14.0 或更高版本");
+  const webRoot = resolvePublicWebRoot({ env, projectRoot }).root;
   const runtime = validateProductionEnvironment({ env, projectRoot, webRoot });
   if (!runtime.production) fail("生产预检要求 NODE_ENV=production");
+  try { assertPublicWebRootReadable(webRoot); }
+  catch (error) { fail(error.message); }
   assertRoleCredentials(env.ADMIN_CREDENTIALS_JSON);
 
   const directoryPaths = [
@@ -146,7 +149,7 @@ export async function runProductionPreflight({ env = process.env } = {}) {
   assertPublicProjection(runtime.paths.curationPublicPath);
   for (const name of ["chunks.jsonl", "lexical_index.json", "source_registry.json", "build_report.json"]) requireFile(path.join(runtime.paths.knowledgeRuntimeDataDir, name));
   for (const name of ["rag_config.json", "retrieval_eval.json", "golden_answer_eval.json", "intents.json", "knowledge_manifest.json", "golden_answers.json"]) requireFile(path.join(runtime.paths.knowledgeGovernanceDir, name));
-  assertStaticRootClean();
+  assertStaticRootClean(webRoot);
   await assertSqliteWritable(runtime.paths.agentStoreDir);
 
   return Object.freeze({

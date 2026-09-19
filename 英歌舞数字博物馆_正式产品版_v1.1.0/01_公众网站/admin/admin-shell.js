@@ -4,6 +4,7 @@
     { key: "content", label: "网站内容", href: "workspace.html#content" },
     { key: "materials", label: "真实素材", href: "workspace.html#materials" },
     { key: "assistant", label: "智能助手", href: "workspace.html#assistant" },
+    { key: "knowledge", label: "知识反馈", href: "workspace.html#knowledge" },
     { key: "settings", label: "设置", href: "workspace.html#settings" },
   ]);
   const ROLE_LABELS = Object.freeze({ owner: "管理员", author: "内容编辑", reviewer: "内容审核", publisher: "内容发布" });

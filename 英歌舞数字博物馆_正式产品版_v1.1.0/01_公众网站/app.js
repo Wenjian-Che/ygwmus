@@ -225,17 +225,20 @@ const ADMIN_CONTENT_API=`${YINGGE_API_BASE}/api/site-content`;
 document.querySelector('.museum-menu summary')?.replaceChildren(document.createTextNode('在线展馆'));
 if(document.querySelector('#collections .section-title')&&!document.querySelector('.origin-entry'))document.querySelector('#collections .section-title').insertAdjacentHTML('beforeend','<a class="origin-entry" href="learn.html#origin"><span>先看英歌从哪里来</span><small>了解英歌的来历，以及目前能找到的几种解释</small><b aria-hidden="true">↗</b></a>');
 const applyManagedContent=(content={})=>{
-  const set=(selector,value)=>{const node=document.querySelector(selector);if(node&&typeof value==='string'&&value.trim())node.textContent=value};
+  const set=(selector,value)=>{const node=document.querySelector(selector);if(!node||typeof value!=='string'||!value.trim())return;if(typeof window.__yinggeSetLocalizedText==='function')window.__yinggeSetLocalizedText(node,value);else{node.dataset.localeZh=value;node.textContent=value}};
   set('.hero-label',content.hero?.eyebrow);set('.hero h1 span:nth-child(1)',content.hero?.titleLine1);set('.hero h1 span:nth-child(2)',content.hero?.titleLine2);set('.hero-body',content.hero?.body);set('.hero-actions .button-primary',content.hero?.primaryCta);set('#experiences .section-title h2',content.experiences?.title);set('#experiences .section-title p',content.experiences?.intro);
   const cards=content.experiences?.cards||{};set('.experience-main h3',cards.video?.title);set('.experience-main p',cards.video?.description);set('.experience-h5 h3',cards.h5?.title);set('.experience-h5 p',cards.h5?.description);set('.experience-guide h3',cards.agent?.title);set('.experience-guide p',cards.agent?.description);
   window.__yinggeLocaleRefresh?.();
 };
-if(new URLSearchParams(location.search).has('admin-preview'))window.addEventListener('message',event=>{
+const adminPreviewMode=new URLSearchParams(location.search).has('admin-preview');
+if(adminPreviewMode)window.addEventListener('message',event=>{
   if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='yingge:site-content-preview')return;
   if(event.data.content&&typeof event.data.content==='object')applyManagedContent(event.data.content);
 });
-try{const cached=JSON.parse(localStorage.getItem('yingge-site-content')||'null');if(cached)applyManagedContent(cached)}catch{}
-if(publicPath==='index.html'||publicPath==='')fetch(ADMIN_CONTENT_API).then(response=>response.ok?response.json():null).then(content=>{if(content){applyManagedContent(content);localStorage.setItem('yingge-site-content',JSON.stringify(content))}}).catch(()=>{});
+if(!adminPreviewMode){
+  try{const cached=JSON.parse(localStorage.getItem('yingge-site-content')||'null');if(cached)applyManagedContent(cached)}catch{}
+  if(publicPath==='index.html'||publicPath==='')fetch(ADMIN_CONTENT_API).then(response=>response.ok?response.json():null).then(content=>{if(content){applyManagedContent(content);localStorage.setItem('yingge-site-content',JSON.stringify(content))}}).catch(()=>{});
+}
 
 const guideContexts={
   'index.html':{topic:'总览',hint:'看不懂的动作、人物和地方差异，都可以问我。',prompts:[['用一句话说明什么是英歌','什么是英歌？'],['第一次看英歌应该先看什么？','第一次怎么看？'],['英歌为什么持双槌？','为什么持双槌？']]},
@@ -354,6 +357,7 @@ const createYinggeVoice=()=>{
   let wakeEchoGuardUntil=0;
   let wakeNoiseFloor=.004;
   let wakeLastVoiceAt=0;
+  let wakeVoiceFrames=0;
   let wakeDetectedAt=0;
   let wakeEngine='unknown';
   let wakeFlowToken=0;
@@ -689,7 +693,7 @@ const createYinggeVoice=()=>{
       await queueConfirmedAwakeQuestion(payload.text);
     }
   };
-  const sendWakeSamples=(chunks,inputRate)=>{
+  const sendWakeSamples=(chunks,inputRate,confirmedVoiceFrames=0)=>{
     const session=wakeSessionId,flowToken=wakeFlowToken;
     if(!session||!['standby','awake','speaking'].includes(wakeState)||(wakeState==='awake'&&wakeAckPlaying))return;
     const pcm=resamplePcm(chunks,inputRate,16000);
@@ -699,6 +703,8 @@ const createYinggeVoice=()=>{
       const response=await fetch(voiceApi+'/session/'+encodeURIComponent(session)+'/chunk?sample_rate=16000',{method:'POST',headers:{'content-type':'application/octet-stream','x-app-id':'yingge-h5'},body});
       const payload=await response.json().catch(()=>({}));
       if(!response.ok)throw new Error(payload.message||'唤醒识别暂时不可用');
+      if(payload.awake&&['standby','speaking'].includes(wakeState)&&confirmedVoiceFrames<3)return;
+      if(payload.awake)wakeVoiceFrames=0;
       await handleWakePayload(payload);
     }).catch(async error=>{voiceStatus(error.message||'唤醒识别暂时不可用');await stopWakeStandby({quiet:true})});
   };
@@ -765,7 +771,7 @@ const createYinggeVoice=()=>{
       const context=new AudioContextClass();
       const source=context.createMediaStreamSource(stream);
       const processor=context.createScriptProcessor(4096,1,1);
-      wakeNoiseFloor=.004;wakeLastVoiceAt=0;
+      wakeNoiseFloor=.004;wakeLastVoiceAt=0;wakeVoiceFrames=0;
       let closed=false;
       processor.onaudioprocess=event=>{
         if(!['standby','awake','speaking'].includes(wakeState)){event.outputBuffer?.getChannelData(0).fill(0);return}
@@ -775,12 +781,13 @@ const createYinggeVoice=()=>{
         const level=Math.sqrt(energy/Math.max(1,chunk.length)),now=Date.now();
         if(level<Math.max(.007,wakeNoiseFloor*1.45))wakeNoiseFloor=wakeNoiseFloor*.96+level*.04;
         const likelyVoice=level>=Math.max(.011,wakeNoiseFloor*2.35);
-        if(likelyVoice)wakeLastVoiceAt=now;
+        if(likelyVoice){if(now-wakeLastVoiceAt>650)wakeVoiceFrames=0;wakeLastVoiceAt=now;wakeVoiceFrames+=1}
+        else if(now-wakeLastVoiceAt>320)wakeVoiceFrames=0;
         if(now<wakeEchoGuardUntil||(!likelyVoice&&now-wakeLastVoiceAt>260))chunk.fill(0);
         wakeChunks.push(chunk);wakeChunkLength+=chunk.length;
         if(likelyVoice&&now-wakeSignalStatusAt>700){wakeSignalStatusAt=now;voiceStatus(wakeState==='awake'?'正在聆听你的问题':wakeState==='speaking'?'检测到声音，正在判断是否需要打断':'已检测到语音，正在识别唤醒词',wakeState==='awake'?'listening':wakeState==='speaking'?'speaking':'recognizing')}
         event.outputBuffer?.getChannelData(0).fill(0);
-        if(wakeChunkLength>=context.sampleRate*.25){const batch=wakeChunks;wakeChunks=[];wakeChunkLength=0;sendWakeSamples(batch,context.sampleRate)}
+        if(wakeChunkLength>=context.sampleRate*.25){const batch=wakeChunks,confirmedVoiceFrames=wakeVoiceFrames;wakeChunks=[];wakeChunkLength=0;sendWakeSamples(batch,context.sampleRate,confirmedVoiceFrames)}
       };
       source.connect(processor);processor.connect(context.destination);
       wakeRecorder={async close(){if(closed)return;closed=true;processor.disconnect();source.disconnect();stream.getTracks().forEach(track=>track.stop());await context.close()}};
@@ -817,6 +824,8 @@ const createYinggeVoice=()=>{
     .replace(/英哥/g,'英歌')
     .replace(/小锤/g,'小槌')
     .replace(/锤法/g,'槌法')
+    .replace(/中快[班版办]/g,'中快板')
+    .replace(/([快慢中])[班版办](?=(?:英歌|板式|鼓点|节奏|槌法|步法|队形|的|和|与|、|,|，|。|！|？|\?|有|是|怎么|什么|属于|区别|$))/g,'$1板')
     .replace(/潮男/g,'潮南')
     .replace(/普林/g,'普宁')
     .trim();
@@ -1075,6 +1084,13 @@ const createYinggeVoice=()=>{
       return chunks.flatMap(item=>item.length>SPEECH_CHUNK_TARGET+8?(item.match(new RegExp(`.{1,${SPEECH_CHUNK_TARGET}}`,'g'))||[item]):[item]);
     });
   };
+  const fetchSpeechBlob=async(text,attempt=0)=>{
+    let response;
+    try{response=await fetch(voiceApi+'/synthesize',{method:'POST',headers:{'content-type':'application/json','x-app-id':'yingge-h5'},body:JSON.stringify({text,speed:1.04})})}
+    catch(error){if(attempt<1){await new Promise(resolve=>window.setTimeout(resolve,140));return fetchSpeechBlob(text,attempt+1)}throw error}
+    if(!response.ok){if(response.status>=500&&attempt<1){await new Promise(resolve=>window.setTimeout(resolve,140));return fetchSpeechBlob(text,attempt+1)}throw new Error('tts failed')}
+    return response.blob();
+  };
   const speakWithBrowser=(clean,run)=>{
     if(!canSpeak)return false;
     const phrases=speechPhrases(clean);if(!phrases.length)return false;
@@ -1086,7 +1102,7 @@ const createYinggeVoice=()=>{
       utterance.lang=document.documentElement.dataset.locale==='en'?'en-US':'zh-CN';utterance.rate=.98;utterance.pitch=1.02;utterance.volume=1;utterance.voice=voice;
       utterance.onstart=()=>{if(run===speechRun)voiceStatus(`正在朗读 ${index+1}/${phrases.length}，喊“小槌小槌”可以打断`,'speaking')};
       utterance.onend=()=>{if(run===speechRun)window.setTimeout(()=>play(index+1),/[。！？；]$/.test(phrase)?55:20)};
-      utterance.onerror=()=>{if(run!==speechRun)return;speaking=false;updateOutputControls();voiceStatus('语音朗读暂时不可用')};
+      utterance.onerror=()=>{if(run!==speechRun)return;speaking=false;updateOutputControls();voiceStatus('语音朗读暂时不可用，已恢复唤醒待机','error');reportVoiceEvent('voice_error');if(wakeState==='speaking'){wakeState='answering';updateWakeControls()}rearmWakeStandby()};
       window.speechSynthesis.speak(utterance);
     };
     play(0);return true;
@@ -1104,7 +1120,7 @@ const createYinggeVoice=()=>{
       const speechBlobs=[];
       const loadSpeechBlob=index=>{
         if(index>=phrases.length)return Promise.resolve(null);
-        if(!speechBlobs[index])speechBlobs[index]=fetch(voiceApi+'/synthesize',{method:'POST',headers:{'content-type':'application/json','x-app-id':'yingge-h5'},body:JSON.stringify({text:phrases[index],speed:1.04})}).then(response=>{if(!response.ok)throw new Error('tts failed');return response.blob()});
+        if(!speechBlobs[index])speechBlobs[index]=fetchSpeechBlob(phrases[index]);
         return speechBlobs[index];
       };
       const playLocalPhrase=async index=>{

@@ -1,7 +1,7 @@
 {
   "name": "yingge-digital-museum",
   "private": true,
-  "version": "1.5.0",
+  "version": "1.5.3",
   "description": "英歌舞数字博物馆前台、互动展馆与英歌小槌知识服务",
   "engines": {
     "node": ">=22.14.0"
@@ -9,17 +9,18 @@
   "scripts": {
     "start:agent": "node backend/server.mjs",
     "start:production": "node backend/production-preflight.mjs && node backend/server.mjs",
-    "test:agent": "node agent/scripts/test_agent_runtime.mjs && node agent/scripts/test_agent_scope_guard.mjs && node agent/scripts/test_agent_scope_protocol.mjs && node agent/scripts/test_agent_answer_protocol.mjs",
+    "test:agent": "node agent/scripts/test_agent_runtime.mjs && node agent/scripts/test_agent_scope_guard.mjs && node agent/scripts/test_agent_scope_protocol.mjs && node agent/scripts/test_agent_answer_protocol.mjs && node agent/scripts/test_knowledge_gap_queue.mjs && node agent/scripts/test_knowledge_gap_auto_queue_api.mjs",
     "test:framework": "node agent/scripts/test_framework_integration.mjs",
     "test:editorial": "node agent/scripts/test_museum_editorial_system.mjs",
     "test:editorial:browser": "node agent/scripts/test_museum_editorial_browser.mjs",
-    "test:admin-operations": "node agent/scripts/test_admin_operations.mjs && node agent/scripts/test_admin_operations_api.mjs && node agent/scripts/test_admin_operations_ui.mjs && node agent/scripts/test_admin_operations_browser.mjs",
+    "test:admin-operations": "node agent/scripts/test_admin_operations.mjs && node agent/scripts/test_admin_operations_api.mjs && node agent/scripts/test_admin_operations_ui.mjs && node agent/scripts/test_knowledge_gap_admin_ui.mjs && node agent/scripts/test_admin_operations_browser.mjs",
     "test:admin-shell": "node agent/scripts/test_admin_unified_shell.mjs && node agent/scripts/test_admin_single_workspace.mjs && node agent/scripts/test_admin_workspace_browser.mjs",
     "test:admin-workspace": "node agent/scripts/test_admin_login_settings.mjs && node agent/scripts/test_admin_login_api.mjs && node agent/scripts/test_admin_unified_shell.mjs && node agent/scripts/test_admin_single_workspace.mjs && node agent/scripts/test_admin_workspace_browser.mjs",
     "test:knowledge-graph": "node agent/scripts/test_knowledge_graph_contract.mjs && node agent/scripts/test_knowledge_graph_api.mjs && node agent/scripts/test_knowledge_graph_client.mjs && node agent/scripts/test_knowledge_graph_browser.mjs",
     "test:curation": "node agent/scripts/test_curation_slice.mjs && node agent/scripts/test_curation_store.mjs && node agent/scripts/test_curation_schema.mjs && node agent/scripts/test_curation_crud.mjs && node agent/scripts/test_curation_publish.mjs && node agent/scripts/test_curation_review_governance.mjs && node agent/scripts/test_curation_audit.mjs && node agent/scripts/test_admin_security.mjs && node agent/scripts/test_private_media_service.mjs && node agent/scripts/test_private_media_api.mjs && node agent/scripts/test_media_authorization_gate.mjs && node agent/scripts/test_media_trust_workbench.mjs && node agent/scripts/test_curation_admin.mjs && node agent/scripts/test_curation_links.mjs",
     "validate:knowledge": "node agent/scripts/validate_structured.mjs",
-    "test:deployment": "node agent/scripts/test_production_config.mjs && node agent/scripts/test_production_server.mjs && node agent/scripts/test_deployment_files.mjs"
+    "test:deployment": "node agent/scripts/test_public_web_root.mjs && node agent/scripts/test_production_config.mjs && node agent/scripts/test_production_server.mjs && node agent/scripts/test_deployment_files.mjs",
+    "test:voice": "node agent/scripts/test_board_style_voice_normalization.mjs && node agent/scripts/test_board_style_routing_contract.mjs && node agent/scripts/test_local_board_style_normalization.mjs && node agent/scripts/test_voice_board_style_ui_contract.mjs && node agent/scripts/test_board_style_offline_e2e.mjs && node agent/scripts/test_tts_observability_contract.mjs && node agent/scripts/test_tencent_voice_config.mjs && node agent/scripts/test_mugeda_speech_interrupt_contract.mjs && node agent/scripts/test_mugeda_answer_interrupt_contract.mjs && node agent/scripts/test_mugeda_voice_resource_cleanup_contract.mjs && node agent/scripts/test_mugeda_wake_noise_contract.mjs && node agent/scripts/test_mugeda_wake_contract.mjs && node agent/scripts/test_mugeda_wake_browser.cjs && node agent/scripts/test_voice_latency_contract.mjs && node agent/scripts/test_realtime_voice_provider.mjs && node agent/scripts/test_voice_telemetry.mjs && node agent/scripts/test_responsive_agent_ui.mjs"
   },
   "dependencies": {
     "gsap": "^3.13.0",

@@ -27,10 +27,13 @@ assert.match(nginx, /proxy_pass http:\/\/127\.0\.0\.1:8787/);
 assert.match(nginx, /proxy_buffering off/);
 assert.match(nginx, /Strict-Transport-Security/);
 assert.match(nginx, /Content-Security-Policy/);
+assert.match(nginx, /location = \/mugeda-agent\.js\s*\{[\s\S]*?try_files \$uri =404;[\s\S]*?etag on;[\s\S]*?if_modified_since exact;[\s\S]*?Cache-Control "no-cache, max-age=0, must-revalidate, s-maxage=0"/,
+  "稳定的木疙瘩脚本必须每次重新校验，不能由 CDN 或微信长期复用旧版本");
 for (const sensitiveName of ["chunks", "lexical_index", "source_registry", "build_report"]) assert.match(nginx, new RegExp(sensitiveName));
 assert.doesNotMatch(nginx, /Access-Control-Allow-Origin\s+\*/i);
 assert.match(nginx, /location = \/_museum_auth\s*\{[\s\S]*?internal;/);
-assert.match(nginx, /proxy_pass http:\/\/127\.0\.0\.1:8787\/api\/admin\/session/);
+assert.match(nginx, /proxy_pass http:\/\/127\.0\.0\.1:8787\/api\/admin\/session;/,
+  "鉴权子请求必须命中后端真实的无尾斜杠路由");
 assert.match(nginx, /proxy_pass_request_body off/);
 assert.match(nginx, /proxy_set_header Content-Length ""/);
 assert.match(nginx, /proxy_set_header Cookie \$http_cookie/);
@@ -39,7 +42,7 @@ assert.match(nginx, /proxy_set_header Origin \$scheme:\/\/\$host/);
 
 const environment = fs.readFileSync("deploy/yingge-museum.env.example", "utf8");
 for (const key of [
-  "NODE_ENV", "AGENT_ALLOWED_ORIGINS", "AGENT_COOKIE_SECURE", "YINGGE_PRIVATE_STATE_ROOT",
+  "NODE_ENV", "AGENT_ALLOWED_ORIGINS", "AGENT_COOKIE_SECURE", "YINGGE_PUBLIC_WEB_ROOT", "YINGGE_PRIVATE_STATE_ROOT",
   "AGENT_STORE_DIR", "ADMIN_PRIVATE_STATE_DIR", "CURATION_CATALOG_PATH", "CURATION_AUDIT_PATH",
   "CURATION_PUBLIC_PATH", "SITE_CONTENT_PATH", "SITE_CONTENT_AUDIT_PATH", "ADMIN_PLANS_PATH",
   "ADMIN_APPS_PATH", "AGENT_OPERATIONS_STATE_DIR", "KNOWLEDGE_GOVERNANCE_DIR", "KNOWLEDGE_SOURCE_DIR",
@@ -51,6 +54,8 @@ assert.doesNotMatch(environment, /sk-[A-Za-z0-9]{8,}|SecretKey\s*=\s*\S+/i, "环
 const readme = fs.readFileSync("deploy/README.md", "utf8");
 for (const phrase of ["Node.js 22", "首次管理员", "/api/health", "/api/ready", "回滚", "单实例", "未授权素材"]) assert.match(readme, new RegExp(phrase));
 assert.match(readme, /-g nginx -m 2750 \/var\/lib\/yingge-museum\/public\/data/);
+assert.match(readme, /YINGGE_PUBLIC_WEB_ROOT=\/srv\/yingge-museum\/current\/web/,
+  "部署说明必须明确运行时使用的正式公众网站根目录");
 assert.doesNotMatch(readme, /www-data/);
 const restore = fs.readFileSync("deploy/restore.md", "utf8");
 assert.match(restore, /停止服务/);

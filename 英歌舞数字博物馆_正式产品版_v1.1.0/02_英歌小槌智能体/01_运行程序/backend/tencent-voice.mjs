@@ -11,6 +11,8 @@ export function normalizeTencentTranscript(text = "") {
     .replace(/英哥/g, "英歌")
     .replace(/小[锤垂陲捶吹崔]/g, "小槌")
     .replace(/锤法/g, "槌法")
+    .replace(/中快[班版办]/g, "中快板")
+    .replace(/([快慢中])[班版办](?=(?:英歌|板式|鼓点|节奏|槌法|步法|队形|的|和|与|、|,|，|。|！|？|\?|有|是|怎么|什么|属于|区别|$))/g, "$1板")
     .replace(/潮男/g, "潮南")
     .replace(/朝阳(?=英歌|地区|队|$)/g, "潮阳")
     .replace(/普林/g, "普宁")
@@ -21,6 +23,16 @@ function positiveInteger(value, fallback) {
   const parsed = Number(value);
   return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
 }
+
+const DEFAULT_ASR_HOTWORD_LIST = [
+  "英歌舞|11", "英歌小槌|11", "潮汕|10", "汕头|9", "潮阳|10", "潮南|9", "普宁|10", "揭阳|9",
+  "脸谱|10", "槌法|11", "锣鼓|10", "阵法|10", "双槌|9", "蛇步|9", "布田英歌|10", "麦穗花阵|10",
+  "水浒传|9", "中华战舞|9", "非物质文化遗产|8", "英歌队|9",
+  "快板|11", "慢板|11", "中板|10", "中快板|10", "板式|10", "鼓点|10", "槌长|9", "击槌|9",
+  "步法|10", "身法|9", "前棚|9", "后棚|9", "司鼓|10"
+].join(",");
+
+const REQUIRED_ASR_HOTWORDS = ["英歌舞", "英歌小槌", "潮汕", "潮阳", "普宁", "揭阳", "脸谱", "槌法", "锣鼓", "阵法", "快板", "慢板", "中板", "中快板", "板式", "鼓点", "槌长", "击槌", "步法", "身法", "前棚", "后棚", "司鼓"];
 
 function fromCredentialText(text) {
   const lines = String(text || "").replace(/^\uFEFF/, "").split(/\r?\n/);
@@ -144,7 +156,11 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
   const sampleRate = [8000, 16000, 24000].includes(Number(env.TENCENT_TTS_SAMPLE_RATE)) ? Number(env.TENCENT_TTS_SAMPLE_RATE) : 24000;
   const region = clean(env.TENCENT_REGION) || "ap-guangzhou";
   const hotwordId = clean(env.TENCENT_ASR_HOTWORD_ID);
-  const hotwordList = clean(env.TENCENT_ASR_HOTWORD_LIST) || (hotwordId ? "" : "英歌舞|11,英歌小槌|11,潮汕|9,汕头|9,潮阳|9,潮南|9,普宁|9,揭阳|9,脸谱|9,槌法|10,锣鼓|9,阵法|9,双槌|9,蛇步|9,布田英歌|10,麦穗花阵|10,水浒传|9,中华战舞|9,非物质文化遗产|8,英歌队|8");
+  const configuredHotwordList = clean(env.TENCENT_ASR_HOTWORD_LIST);
+  const usesDefaultHotwordList = !configuredHotwordList && !hotwordId;
+  const hotwordList = configuredHotwordList || (hotwordId ? "" : DEFAULT_ASR_HOTWORD_LIST);
+  const hotwordTerms = hotwordList.split(",").map((entry) => clean(entry.split("|")[0])).filter(Boolean);
+  const requiredHotwordsReady = REQUIRED_ASR_HOTWORDS.every((term) => hotwordTerms.includes(term));
   const configuredVad = Number(env.TENCENT_ASR_VAD_SILENCE_TIME);
   const vadSilenceTime = engineModelType === "16k_zh" ? (Number.isFinite(configuredVad) && configuredVad >= 240 && configuredVad <= 2000 ? Math.round(configuredVad) : 650) : 0;
   async function createRecognitionSession() {
@@ -283,7 +299,17 @@ export function createTencentVoiceClient(env = process.env, { fetchFn = globalTh
       return {
         configured,
         provider: configured ? "tencent-cloud" : "local",
-        asr: { available: configured, engine: configured ? "tencent-realtime-asr" : null, engineModelType: configured ? engineModelType : null, hotwordsConfigured: configured && Boolean(hotwordList || hotwordId), hotwordMode: hotwordList ? "temporary-list" : (hotwordId ? "vocabulary-id" : "none"), vadSilenceTime: vadSilenceTime || null },
+        asr: {
+          available: configured,
+          engine: configured ? "tencent-realtime-asr" : null,
+          engineModelType: configured ? engineModelType : null,
+          hotwordsConfigured: configured && Boolean(hotwordList || hotwordId),
+          hotwordMode: hotwordList ? "temporary-list" : (hotwordId ? "vocabulary-id" : "none"),
+          hotwordCatalog: hotwordList ? (usesDefaultHotwordList ? "yingge-museum-v1.5.2" : "custom-temporary-list") : null,
+          hotwordCount: hotwordTerms.length,
+          requiredHotwordsReady: hotwordList ? requiredHotwordsReady : null,
+          vadSilenceTime: vadSilenceTime || null
+        },
         tts: { available: configured, engine: configured ? "tencent-tts" : null, voiceType: configured ? voiceType : null, sampleRate: configured ? sampleRate : null }
       };
     },

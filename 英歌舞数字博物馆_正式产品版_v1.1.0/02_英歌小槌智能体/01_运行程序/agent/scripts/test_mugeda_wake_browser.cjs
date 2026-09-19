@@ -14,12 +14,37 @@ const server = http.createServer((request, response) => {
   fs.createReadStream(file).pipe(response);
 });
 
+let browser;
 (async () => {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const port = server.address().port;
-  const browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' });
+  browser = await chromium.launch({ headless: true, executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe' });
+  const forcedContext = await browser.newContext({ viewport: { width: 844, height: 390 } });
+  const forcedPage = await forcedContext.newPage();
+  await forcedPage.addInitScript(() => {
+    Object.defineProperty(window.screen, 'width', { configurable: true, get: () => 390 });
+    Object.defineProperty(window.screen, 'height', { configurable: true, get: () => 844 });
+    Object.defineProperty(window.screen, 'orientation', { configurable: true, value: { type: 'portrait-primary', angle: 0 } });
+  });
+  await forcedPage.route('https://yinggemus.cn/api/**', route => route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
+  await forcedPage.goto(`http://127.0.0.1:${port}/mugeda-agent-test.html?forced-landscape=1`, { waitUntil: 'networkidle' });
+  await forcedPage.waitForFunction(() => window.MugedaYinggeAgent);
+  await forcedPage.locator('#yingge-mugeda-agent').locator('.launcher').click();
+  await forcedPage.waitForTimeout(260);
+  const forcedLayout = await forcedPage.evaluate(() => {
+    const host = document.querySelector('#yingge-mugeda-agent'), panel = host.shadowRoot.querySelector('.panel'), rect = panel.getBoundingClientRect();
+    return { forced: host.classList.contains('force-landscape-agent'), transform: getComputedStyle(panel).transform, layoutWidth: panel.clientWidth, layoutHeight: panel.clientHeight, left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom, viewportWidth: innerWidth, viewportHeight: innerHeight, centerX: rect.left + rect.width / 2, centerY: rect.top + rect.height / 2 };
+  });
+  assert.equal(forcedLayout.forced, true, '木疙瘩横向布局视口处于竖屏真机时必须启用强制横向智能体');
+  assert.notEqual(forcedLayout.transform, 'none', '强制横屏画布中的智能体必须跟随画布旋转');
+  assert.ok(forcedLayout.layoutWidth > forcedLayout.layoutHeight, '旋转前的智能体内部排版必须保持横向');
+  assert.ok(forcedLayout.left >= 8 && forcedLayout.top >= 8 && forcedLayout.right <= forcedLayout.viewportWidth - 8 && forcedLayout.bottom <= forcedLayout.viewportHeight - 8, '旋转后智能体四边不得偏出可视区域');
+  assert.ok(Math.abs(forcedLayout.centerX - forcedLayout.viewportWidth / 2) <= 2 && Math.abs(forcedLayout.centerY - forcedLayout.viewportHeight / 2) <= 2, '旋转后智能体必须保持可视区正中心，不能发生位置偏移');
+  await forcedContext.close();
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
   const modes = [];
+  const ttsRequests = [];
+  const answerText = '英歌舞是一种流传于潮汕和粤东部分地区的传统舞蹈，表演者手持双槌，在锣鼓和吆喝的节奏中，以步法、身法、槌法和队形行进完成集体表演。快板与慢板不只差在速度，还要比较鼓点密度、停顿方式、槌长、击槌组合、重心转换和具体队伍的自称；不同地区的称谓和做法也可能不同。';
   let wakeChunk = 0, questionChunk = 0;
   await page.addInitScript(() => {
     const stream = { getTracks: () => [{ stop() {} }] };
@@ -32,7 +57,15 @@ const server = http.createServer((request, response) => {
       close() { return Promise.resolve(); }
       resume() { return Promise.resolve(); }
     };
-    window.Audio = class { play() { queueMicrotask(() => this.onended && this.onended()); return Promise.resolve(); } pause() {} };
+    window.Audio = class {
+      constructor(src) { this.src = src; }
+      play() {
+        if (String(this.src).includes('xiaochui-wake-response.wav')) { window.__wakeAckAudio = this; return Promise.resolve(); }
+        if (String(this.src).startsWith('blob:') && window.__holdSpeechAudio) { window.__activeSpeechAudio = this; return Promise.resolve(); }
+        queueMicrotask(() => this.onended && this.onended()); return Promise.resolve();
+      }
+      pause() { this.paused = true; }
+    };
   });
   await page.route('https://yinggemus.cn/api/**', async route => {
     const request = route.request(), url = new URL(request.url());
@@ -45,29 +78,74 @@ const server = http.createServer((request, response) => {
     if (url.pathname.includes('/api/voice/session/wake-session/chunk')) { wakeChunk += 1; return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ awake: wakeChunk >= 1, text: wakeChunk >= 1 ? '小槌小槌' : '' }) }); }
     if (url.pathname.includes('/api/voice/session/question-session/chunk')) { questionChunk += 1; return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ endpoint: questionChunk >= 1, text: '英歌舞是什么' }) }); }
     if (url.pathname.startsWith('/api/voice/session/') && request.method() === 'DELETE') return route.fulfill({ status: 204 });
-    if (url.pathname === '/api/agent/chat') return route.fulfill({ contentType: 'text/event-stream', body: 'event: delta\ndata: {"text":"英歌舞是一种广东潮汕地区的民间舞蹈。"}\n\nevent: citations\ndata: {"items":[]}\n\n' });
+    if (url.pathname === '/api/voice/synthesize') {
+      ttsRequests.push(JSON.parse(request.postData()));
+      if (ttsRequests.length === 1) return route.fulfill({ status: 503, contentType: 'application/json', body: '{"message":"temporary tts failure"}' });
+      return route.fulfill({ contentType: 'audio/wav', body: Buffer.from('RIFFmock-audio') });
+    }
+    if (url.pathname === '/api/agent/chat') return route.fulfill({ contentType: 'text/event-stream', body: `event: delta\ndata: ${JSON.stringify({ text: answerText })}\n\nevent: citations\ndata: {"items":[]}\n\n` });
     return route.fulfill({ status: 404, contentType: 'application/json', body: '{}' });
   });
   await page.goto(`http://127.0.0.1:${port}/mugeda-agent-test.html`, { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.MugedaYinggeAgent);
   const host = page.locator('#yingge-mugeda-agent');
   await host.locator('.launcher').click();
+  await page.waitForTimeout(260);
+  const portraitLayout = await page.evaluate(() => {
+    const panel = document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.panel');
+    const rect = panel.getBoundingClientRect();
+    return { transform: getComputedStyle(panel).transform, layoutWidth: panel.clientWidth, layoutHeight: panel.clientHeight, left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+  });
+  assert.notEqual(portraitLayout.transform, 'none', '手机竖屏应保持横向英歌小槌界面');
+  assert.ok(portraitLayout.layoutWidth > portraitLayout.layoutHeight, '竖屏设备中的英歌小槌内部布局必须保持横向');
   await host.locator('.settings').click();
   await host.locator('[data-setting="wake"]').click();
   await page.waitForFunction(() => window.__mugedaProcessors.length === 1);
+  await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.001); window.__mugedaProcessors[0].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.waitForTimeout(80);
+  assert.equal(await page.evaluate(() => window.__mugedaProcessors.length), 1, '低能量环境噪声即使被 KWS 误报，也不得打开提问窗口');
   await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[0].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.waitForTimeout(80);
+  assert.deepEqual(modes, ['wake'], '单次短促高能量干扰不得触发唤醒');
+  await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[0].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.waitForFunction(() => window.__wakeAckAudio);
+  await page.waitForFunction(() => window.__mugedaProcessors.length === 1 && window.__mugedaProcessors[0].onaudioprocess);
+  await page.waitForTimeout(80);
+  assert.deepEqual(modes, ['wake', 'transcribe'], '播放“小槌我在”期间必须并行预热问题转写，不能等回应结束后才连接 ASR');
+  await page.evaluate(() => window.__wakeAckAudio.onended && window.__wakeAckAudio.onended());
   await page.waitForFunction(() => window.__mugedaProcessors.length === 2);
   await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[1].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
-  await page.waitForFunction(() => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.messages').textContent.includes('英歌舞是一种广东潮汕地区的民间舞蹈。'));
+  await page.waitForFunction((expected) => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.messages').textContent.includes(expected), answerText);
   const result = await page.evaluate(() => {
     const root = document.querySelector('#yingge-mugeda-agent').shadowRoot;
     return { wakeEnabled: root.querySelector('[data-setting="wake"]').getAttribute('aria-checked'), panelOpen: root.querySelector('.panel').classList.contains('open'), text: root.querySelector('.messages').textContent };
   });
-  assert.deepEqual(modes, ['wake', 'transcribe'], '唤醒后必须由本地 KWS 切换到问题转写会话');
+  assert.deepEqual(modes, ['wake', 'transcribe', 'wake'], '问题提交后必须立即恢复 KWS，令生成与朗读阶段都可被再次唤醒打断');
   assert.equal(result.wakeEnabled, 'true');
   assert.equal(result.panelOpen, true);
   assert.match(result.text, /英歌舞是什么/);
+  await page.waitForFunction(() => window.__mugedaProcessors.length === 3, null, { timeout: 3000 });
+  await page.evaluate(() => { window.__holdSpeechAudio = true; });
+  await page.evaluate(() => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.speak').click());
+  await page.waitForFunction(() => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.speak').classList.contains('reading'));
+  assert.match(await host.locator('.speak').textContent(), /1\/\d+/, '移动端朗读按钮应显示当前分段进度');
+  assert.match(await host.locator('.status').textContent(), /朗读 1\/\d+/, '移动端状态栏应清楚显示朗读进度');
+  await page.waitForTimeout(80);
+  assert.ok(ttsRequests.length >= 3, '首段合成暂时失败时应自动重试，同时长回答仍需提前准备下一段');
+  assert.equal(ttsRequests[0].text, ttsRequests[1].text, 'TTS 临时失败后应只重试当前分段，不能从整篇回答重新开始');
+  assert.ok(ttsRequests.every((item) => Array.from(item.text || '').length <= 108), '每个朗读请求应保持短句，优先降低首句开口延迟');
+  await page.waitForTimeout(280);
+  await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[2].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[2].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.waitForFunction(() => window.__wakeAckAudio);
+  await page.waitForFunction(() => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelector('.status').textContent.includes('小槌我在'));
+  await page.evaluate(() => window.__wakeAckAudio.onended && window.__wakeAckAudio.onended());
+  await page.waitForFunction(() => window.__mugedaProcessors.length === 4, null, { timeout: 3000 });
+  await page.evaluate(() => { const samples = new Float32Array(4096); samples.fill(.04); window.__mugedaProcessors[3].onaudioprocess({ inputBuffer: { getChannelData: () => samples }, outputBuffer: { getChannelData: () => new Float32Array(4096) } }); });
+  await page.waitForFunction(() => document.querySelector('#yingge-mugeda-agent').shadowRoot.querySelectorAll('.message.user').length === 2);
+  await page.waitForTimeout(220);
+  assert.deepEqual(modes, ['wake', 'transcribe', 'wake', 'transcribe', 'wake'], '完成第二次提问后必须再次回到待机，形成可连续使用的唤醒循环');
   await browser.close();
   await new Promise(resolve => server.close(resolve));
   console.log('mugeda wake browser tests passed');
-})().catch(async error => { console.error(error); await new Promise(resolve => server.close(resolve)); process.exit(1); });
+})().catch(async error => { console.error(error); await browser?.close().catch(() => {}); await new Promise(resolve => server.close(resolve)); process.exit(1); });

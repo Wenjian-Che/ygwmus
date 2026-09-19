@@ -102,12 +102,14 @@ export function transcriptHasWakeWord(text = "") {
   return normalizeWakeTranscript(text).includes("小槌小槌");
 }
 
-function normalizeMuseumTerms(text = "") {
+export function normalizeMuseumTerms(text = "") {
   return String(text)
     .replace(/[鹰莺][哥歌]/g, "英歌")
     .replace(/[英应鹰莺]哥/g, "英歌")
     .replace(/小锤/g, "小槌")
     .replace(/锤法/g, "槌法")
+    .replace(/中快[班版办]/g, "中快板")
+    .replace(/([快慢中])[班版办](?=(?:英歌|板式|鼓点|节奏|槌法|步法|队形|的|和|与|、|,|，|。|！|？|\?|有|是|怎么|什么|属于|区别|$))/g, "$1板")
     .replace(/潮男/g, "潮南")
     .replace(/朝阳/g, "潮阳")
     .replace(/[武五]宁/g, "普宁")

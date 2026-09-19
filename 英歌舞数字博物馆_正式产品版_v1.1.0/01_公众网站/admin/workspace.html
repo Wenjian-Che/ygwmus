@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#14231b">
   <title>运营工作台｜英歌舞数字博物馆</title>
   <link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="64x64" href="/favicon.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="admin-shell.css?v=20260831-mobile2">
-  <link rel="stylesheet" href="workspace.css?v=20260831-mobile2">
+  <link rel="stylesheet" href="admin-shell.css?v=1.5.2">
+  <link rel="stylesheet" href="workspace.css?v=1.5.2">
   <link rel="stylesheet" href="knowledge-graph.css?v=graph-1">
 </head>
 <body data-admin-page="workspace" class="admin-workspace-page">
@@ -39,6 +39,7 @@
           <button type="button" data-open-workspace="content"><span>编辑网站内容</span><strong>修改首页文字，保存草稿并预览</strong><em>进入</em></button>
           <button type="button" data-open-workspace="materials"><span>审核真实素材</span><strong>核对来源、授权、隐私和发布状态</strong><em>进入</em></button>
           <button type="button" data-open-workspace="assistant"><span>让小槌协助</span><strong>讨论改写、策展说明或运营方案</strong><em>进入</em></button>
+          <button type="button" data-open-workspace="knowledge"><span>审核知识反馈</span><strong id="knowledgeFeedbackActionDetail">查看待补证与尚未分流的问题</strong><em>处理</em></button>
           <button type="button" data-open-workspace="settings"><span>检查系统连接</span><strong>登录、模型设置和知识库诊断</strong><em>进入</em></button>
         </div>
         <section class="workspace-diagnostics" aria-labelledby="diagnosticTitle">
@@ -149,6 +150,37 @@
         </div>
       </section>
 
+      <section class="workspace-panel" data-workspace-panel="knowledge" data-knowledge-feedback aria-labelledby="knowledgeFeedbackTitle">
+        <div class="workspace-section-heading">
+          <div><h2 id="knowledgeFeedbackTitle">知识反馈</h2><p>把未能充分回答的英歌问题留在可审查队列中，再决定是否补充正式知识库。</p></div>
+          <button class="workspace-button is-quiet" id="refreshKnowledgeFeedback" type="button">刷新队列</button>
+        </div>
+        <section class="knowledge-feedback-principle" aria-labelledby="knowledgeFeedbackPrincipleTitle">
+          <div><h3 id="knowledgeFeedbackPrincipleTitle">系统自动标记，不自动发布。</h3><p>英歌相关问题出现证据不足、没有可核验来源或用户点踩时，系统会自动建立“待补证”任务。它只是审核信号，不是新事实；完成来源、地区／队伍／年代与边界复核前，不会自动发布到知识库。</p></div>
+          <dl>
+            <div><dt>自动触发</dt><dd>证据不足、来源缺失、用户点踩</dd></div>
+            <div><dt>来源状态</dt><dd>待核验，尚未发布</dd></div>
+            <div><dt>完成条件</dt><dd>人工补证、审核并重建索引</dd></div>
+          </dl>
+        </section>
+        <div class="knowledge-feedback-metrics" aria-live="polite">
+          <article><span>待补证任务</span><strong id="knowledgeGapTaskCount">0</strong><small>已入队，等待人工核验</small></article>
+          <article><span>尚未分流</span><strong id="knowledgeUnansweredCount">0</strong><small>还没有建立补证任务</small></article>
+          <article><span>发布状态</span><strong>未自动发布</strong><small>待补证不等于已发布知识</small></article>
+        </div>
+        <div class="knowledge-feedback-columns">
+          <section class="knowledge-feedback-list-panel" aria-labelledby="knowledgeGapListTitle">
+            <div class="knowledge-feedback-list-head"><div><h3 id="knowledgeGapListTitle">待补证任务</h3><p>每项都保留触发原因、证据等级、出现次数与来源状态。</p></div><span class="knowledge-feedback-state">待人工审核</span></div>
+            <div class="knowledge-feedback-list" data-knowledge-gap-list><p class="workspace-empty">正在读取待补证任务。</p></div>
+          </section>
+          <section class="knowledge-feedback-list-panel" aria-labelledby="knowledgeUnansweredListTitle">
+            <div class="knowledge-feedback-list-head"><div><h3 id="knowledgeUnansweredListTitle">尚未分流的问题</h3><p>可人工转为待补证；转入后仍需来源审核。</p></div><span class="knowledge-feedback-state is-quiet">尚未入队</span></div>
+            <div class="knowledge-feedback-list" data-knowledge-unanswered-list><p class="workspace-empty">正在读取未分流问题。</p></div>
+          </section>
+        </div>
+        <p class="knowledge-feedback-status" id="knowledgeFeedbackStatus" role="status"></p>
+      </section>
+
       <section class="workspace-panel" data-workspace-panel="settings" aria-labelledby="settingsTitle">
         <div class="workspace-section-heading"><div><h2 id="settingsTitle">连接与设置</h2><p>模型密钥只提交给本机服务端。页面只显示是否已配置，不会读取或回显明文。</p></div></div>
         <div class="settings-layout">
@@ -195,8 +227,8 @@
       <p class="auth-message" id="authMessage" role="alert"></p>
     </div>
   </div>
-  <script src="admin-shell.js?v=20260831-mobile2"></script>
+  <script src="admin-shell.js?v=1.5.2"></script>
   <script src="knowledge-graph.js?v=graph-1"></script>
-  <script src="workspace.js?v=20260831-mobile2"></script>
+  <script src="workspace.js?v=1.5.2"></script>
 </body>
 </html>

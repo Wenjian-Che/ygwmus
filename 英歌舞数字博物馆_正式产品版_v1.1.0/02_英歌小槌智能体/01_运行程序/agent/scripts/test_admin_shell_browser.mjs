@@ -11,8 +11,7 @@ let playwright;
 for (const candidate of candidates) { try { playwright = require(candidate); break; } catch {} }
 if (!playwright) throw new Error("Playwright is required for the unified admin shell regression");
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
-const webRoot = path.join(root, "web");
+const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..", "..", "01_公众网站");
 const mime = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".png": "image/png", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".webp": "image/webp", ".woff2": "font/woff2", ".json": "application/json" };
 const server = http.createServer((request, response) => {
   const pathname = decodeURIComponent(new URL(request.url, "http://127.0.0.1").pathname);
@@ -29,7 +28,7 @@ const browserExecutables = [process.env.PLAYWRIGHT_BROWSER_EXECUTABLE, "C:\\Prog
 const executablePath = browserExecutables.find((candidate) => fs.existsSync(candidate));
 const browser = await playwright.chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) });
 
-const navLabels = ["运营总览", "页面内容", "真实素材", "英歌小槌", "方案记录"];
+const navLabels = ["总览", "网站内容", "真实素材", "智能助手", "知识反馈", "设置"];
 const pages = [
   { key: "overview", file: "index.html", selector: "#metricGrid" },
   { key: "content", file: "content.html", selector: "#contentForm" },
@@ -73,7 +72,7 @@ try {
     assert.equal(await page.locator("[data-admin-nav] [aria-current='page']").getAttribute("data-admin-nav-key"), item.key);
     assert.equal(await page.locator("[data-admin-sidebar]").count(), 1);
     assert.equal(await page.locator(".admin-rail,.content-rail,.assistant-sidebar,.ops-rail,.plans-rail").count(), 0);
-    assert.match(await page.locator("[data-admin-brand]").innerText(), /英歌舞数字博物馆\s*后台管理/);
+    assert.match(await page.locator("[data-admin-brand]").innerText(), /英歌舞数字博物馆\s*运营工作台/);
     assert.equal(await page.locator("[data-admin-identity]").count(), 1);
     assert.equal(await page.locator("[data-admin-status]").count(), 1);
     await page.waitForFunction(() => document.querySelector("[data-admin-status]")?.textContent === "知识服务已连接");
